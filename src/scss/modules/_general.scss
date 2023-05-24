@@ -1,0 +1,39 @@
+html, body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+// Colors
+$color1: #14243a;
+$color2: #0ea0dc;
+$color3: #727C89;
+$color4: #989898;
+
+// Container
+.wpf-container {
+  @extend .container;
+  @extend .is-fluid;
+  position: relative;
+  /*background:#eee;*/
+  @include desktop {
+    width: $desktop !important;
+  }
+  @include widescreen {
+    width: $widescreen !important;
+  }
+  @include fullhd {
+    width: $fullhd !important;
+  }
+}
+
+// Main wrapper
+#page {
+  padding: 16px 0 0 0;
+}
+
+a{
+ color: $color1;
+  &:link:hover{
+    color: $color2;
+  }
+}
+

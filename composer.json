@@ -1,0 +1,17 @@
+{
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/wpcodefactory/wpfactory-autoloader"
+    }
+  ],
+  "require": {
+    "wpfactory/wpfactory-autoloader":"dev-master"
+  },
+  "autoload": {
+    "files": ["src/php/wpfactory-functions.php"]
+  },
+  "config": {
+    "preferred-install": "dist"
+  }
+}

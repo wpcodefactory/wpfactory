@@ -1,0 +1,20 @@
+@import "footer-menu";
+
+// Set footer always at bottom
+#page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#content {
+  flex: 1;
+}
+
+// Credits
+.site-info-credits {
+  font-size: 14px;
+  color: $color3;
+  border-top: 1px solid #E3E5E7;
+  padding: 35px 0;
+}

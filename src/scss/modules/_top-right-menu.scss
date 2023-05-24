@@ -1,0 +1,30 @@
+.top-right-navigation {
+  @extend .wpfactory-primary-navigation;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding-right: inherit;
+
+  @include mobile {
+    display: none;
+  }
+
+  .menu {
+    > li {
+      text-align: right;
+      vertical-align: bottom;
+      margin: 0 0 0 35px;
+      a {
+        cursor: pointer;
+        padding: 10px 0px;
+        color:$color1;
+        &:hover{
+          filter: invert(0) sepia(0) saturate(5000%) hue-rotate(346deg) brightness(100%) contrast(100%)
+        }
+
+        //filter: hue-rotate(130deg);
+      }
+    }
+  }
+
+}

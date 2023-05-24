@@ -1,0 +1,94 @@
+// Handheld menu
+.handheld-navigation {
+  display: none;
+  @include mobile {
+    display: block;
+  }
+  height: 0px;
+  transition: height 0.3s ease-in-out;
+  overflow: hidden;
+  font-size: 15px;
+
+  a {
+    text-decoration: none;
+    padding: 10px 0;
+    display: block;
+  }
+
+  li {
+    margin: 0px 0;
+    border-bottom: 1px solid #efefef;
+
+    &:last-child {
+      border: none;
+    }
+  }
+
+  #menu-handheld {
+    margin: 40px 0 45px 0;
+  }
+}
+
+// Hamburger Menu that should open the handheld menu
+.site-navigation-menu-toggle-wrapper {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 11px;
+  padding-right: inherit;
+
+  @include mobile {
+    display: block;
+  }
+
+  .label {
+    display: none;
+    margin: 0 2px 0 5px;
+    padding: 0;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  button.menu-toggle {
+    cursor: pointer;
+    color: #fff;
+    text-align: left;
+    float: right;
+    position: relative;
+    background: #8A63CD;
+    box-shadow: none;
+    border-radius: 3px;
+    border: none;
+    padding: 0px 8px 0px 28px;
+    min-height: 30px;
+
+    &:before {
+      transform: translateY(-5px);
+    }
+
+    &:before, &:after, span.style:before {
+      content: "";
+      display: block;
+      height: 2px;
+      width: 15px;
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      margin-top: -1px;
+      transition: all, ease, .2s;
+      border-radius: 3px;
+      background: #fff;
+    }
+
+    span.style {
+
+    }
+
+    &:after {
+      transform: translateY(5px);
+    }
+  }
+
+}
+
+

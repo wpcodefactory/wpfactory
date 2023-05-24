@@ -1,0 +1,22 @@
+/**
+ * WPFactory theme - Style.
+ *
+ * @version 1.0.0
+ * @since   1.0.0
+ * @author  WPFactory
+ */
+
+// Bulma
+@import
+"./node_modules/bulma/sass/base/minireset",
+"./node_modules/bulma/sass/utilities/all",
+"./node_modules/bulma/sass/helpers/spacing",
+"./node_modules/bulma/sass/helpers/flexbox",
+"./node_modules/bulma/sass/elements/container",
+  //"./node_modules/bulma/sass/grid/columns",
+"./node_modules/bulma/sass/layout/all";
+
+// WPFactory theme
+@import "modules/general",
+"modules/header",
+"modules/footer";

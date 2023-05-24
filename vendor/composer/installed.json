@@ -1,0 +1,36 @@
+{
+    "packages": [
+        {
+            "name": "wpfactory/wpfactory-autoloader",
+            "version": "dev-master",
+            "version_normalized": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wpcodefactory/wpfactory-autoloader.git",
+                "reference": "d4387cb8fa8aa9f759dbc067ea9201d1d7a70cbc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wpcodefactory/wpfactory-autoloader/zipball/d4387cb8fa8aa9f759dbc067ea9201d1d7a70cbc",
+                "reference": "d4387cb8fa8aa9f759dbc067ea9201d1d7a70cbc",
+                "shasum": ""
+            },
+            "time": "2023-03-29T21:59:00+00:00",
+            "default-branch": true,
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "classmap": [
+                    "src/php/"
+                ]
+            },
+            "support": {
+                "source": "https://github.com/wpcodefactory/wpfactory-autoloader/tree/v1.0.2",
+                "issues": "https://github.com/wpcodefactory/wpfactory-autoloader/issues"
+            },
+            "install-path": "../wpfactory/wpfactory-autoloader"
+        }
+    ],
+    "dev": true,
+    "dev-package-names": []
+}
