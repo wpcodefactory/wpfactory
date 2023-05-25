@@ -1,6 +1,7 @@
 var path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+var SpritesmithPlugin = require('webpack-spritesmith');
 
 
 // change these variables to fit your project
@@ -65,6 +66,21 @@ const devConfig = {
         chunkFilename: 'js/modules/[name].js',
     },
     plugins: [
+
+        new SpritesmithPlugin({
+            src: {
+                cwd: path.resolve(__dirname, 'src/img/icons'),
+                glob: '*.png'
+            },
+            target: {
+                image: path.resolve(__dirname, 'src/spritesmith-generated/sprite.png'),
+                css: path.resolve(__dirname, 'src/spritesmith-generated/sprite.scss')
+            },
+            apiOptions: {
+                cssImageRef: "/src/spritesmith-generated/sprite.png"
+            }
+        }),
+
         new MiniCssExtractPlugin({
             filename: 'css/[name].css',
         }),

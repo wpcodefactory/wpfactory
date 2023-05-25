@@ -1646,6 +1646,14 @@ a:link:hover {
   color: #0ea0dc;
 }
 
+/*.icon-facebook{
+  &:before{
+    background: transparent url('/src/img/icons/icon-facebook.png') no-repeat;
+    width:16px;
+    height:16px;
+  }
+}
+*/
 .wpfactory-primary-navigation, .top-right-navigation {
   display: inline-block;
   font-size: 16px;
@@ -1666,10 +1674,11 @@ a:link:hover {
   padding: 0 0 10px 0;
 }
 .wpfactory-primary-navigation .menu > li.menu-item-has-children > a:after, .top-right-navigation .menu > li.menu-item-has-children > a:after {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: -84px -28px;
   width: 10px;
   height: 6px;
   content: "";
-  background: transparent url(..//img/20e9466229ac158f9815.png) no-repeat;
   display: inline-block;
   vertical-align: top;
   margin: 8px 0 0 7px;
@@ -1919,6 +1928,12 @@ a:link:hover {
   color: #727C89;
   border-top: 1px solid #E3E5E7;
   padding: 35px 0;
+}
+
+.entry-title {
+  font-size: 30px;
+  font-weight: 800;
+  color: #14243a;
 }
 
 /*# sourceMappingURL=frontend.css.map*/

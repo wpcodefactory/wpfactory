@@ -23,10 +23,8 @@
 
       &.menu-item-has-children > a {
         &:after {
-          width: 10px;
-          height: 6px;
+          @include sprite($icon-arrow-down);
           content: "";
-          background: transparent url('/src/img/arrow-down.png') no-repeat;
           display: inline-block;
           vertical-align: top;
           margin: 8px 0 0 7px;

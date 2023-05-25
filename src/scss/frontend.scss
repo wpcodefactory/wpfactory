@@ -17,6 +17,10 @@
 "./node_modules/bulma/sass/layout/all";
 
 // WPFactory theme
-@import "modules/general",
+@import
+"../spritesmith-generated/sprite",
+"modules/general",
 "modules/header",
-"modules/footer";
+"modules/footer",
+"modules/content"
+;

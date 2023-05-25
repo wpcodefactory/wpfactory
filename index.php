@@ -1,8 +1,9 @@
 <?php
 get_header(); ?>
 
-	<div id="primary" class="content-area">
-		<main id="main" class="site-main" role="main">
+
+    <div id="primary" class="content-area">
+        <main id="main" class="site-main" role="main">
 
 			<?php
 			if ( have_posts() ) :
@@ -16,8 +17,8 @@ get_header(); ?>
 			endif;
 			?>
 
-		</main><!-- #main -->
-	</div><!-- #primary -->
+        </main><!-- #main -->
+    </div><!-- #primary -->
 
 <?php
 do_action( 'wpfactory_sidebar' );
