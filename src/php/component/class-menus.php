@@ -74,6 +74,17 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Menus' ) ) {
 			return $classes;
 		}
 
+		/**
+         * add_nav_menu_item_hide_label_class.
+         *
+		 * @version 1.0.0
+		 * @since   1.0.0
+         *
+		 * @param $classes
+		 * @param $item
+		 *
+		 * @return mixed
+		 */
 		function add_nav_menu_item_hide_label_class( $classes, $item ) {
 			if ( true === filter_var(carbon_get_nav_menu_item_meta( $item->ID, 'wpft_hide_label' ),FILTER_VALIDATE_BOOLEAN) ) {
 				$classes[] = 'wpft-hide-label';

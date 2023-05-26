@@ -31,7 +31,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Admin_Settings\Admin_Settings' )
 		function init() {
 			add_action( 'after_setup_theme', array( $this, 'initialize_carbon_fields_library' ) );
 			add_action( 'carbon_fields_register_fields', array( $this, 'create_settings_page' ) );
-			add_action( 'admin_enqueue_scripts', array( $this, 'load_admin_style' ) );
+			add_action( 'admin_print_footer_scripts', array( $this, 'load_admin_style' ) );
 			// Sanitize options.
 			add_action( 'carbon_fields_container_activated', array( $this, 'sanitize_fields' ) );
 		}

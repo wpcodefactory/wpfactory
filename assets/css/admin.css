@@ -24,4 +24,12 @@
   margin: 0;
 }
 
+.cf-container__tabs-list .cf-container__tabs-item {
+  font-size: 14px !important;
+}
+
+.cf-container__tabs-list .cf-container__tabs-item {
+  /*font-weight:600*/
+}
+
 /*# sourceMappingURL=admin.css.map*/
