@@ -32,11 +32,14 @@
 
 // Carbon fields separator
 .cf-field.cf-separator h3{
-  margin:0;
+  margin:3px 0;
 }
 
 // Carbon fields tabs
 .cf-container__tabs-list .cf-container__tabs-item{
   font-size:14px !important;
   /*font-weight:600*/
+}
+.cf-container__tabs-list .cf-container__tabs-item button{
+  padding:5px 10px;
 }

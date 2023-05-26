@@ -21,7 +21,7 @@
 }
 
 .cf-field.cf-separator h3 {
-  margin: 0;
+  margin: 3px 0;
 }
 
 .cf-container__tabs-list .cf-container__tabs-item {
@@ -30,6 +30,10 @@
 
 .cf-container__tabs-list .cf-container__tabs-item {
   /*font-weight:600*/
+}
+
+.cf-container__tabs-list .cf-container__tabs-item button {
+  padding: 5px 10px;
 }
 
 /*# sourceMappingURL=admin.css.map*/
