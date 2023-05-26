@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly
 
-//if ( ! interface_exists( 'WPFactory\WPFactory_Theme\Theme_Component' ) ) {
+if ( ! interface_exists( 'WPFactory\WPFactory_Theme\Theme_Component' ) ) {
 
 	interface Theme_Component {
 
@@ -24,4 +24,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 		 */
 		public function init();
 	}
-//}
+}

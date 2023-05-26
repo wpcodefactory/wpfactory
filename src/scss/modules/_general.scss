@@ -30,18 +30,40 @@ $color4: #989898;
   padding: 16px 0 0 0;
 }
 
-a{
- color: $color1;
-  &:link:hover{
+a {
+  color: $color1;
+
+  &:link:hover {
     color: $color2;
   }
 }
 
-/*.icon-facebook{
-  &:before{
-    background: transparent url('/src/img/icons/icon-facebook.png') no-repeat;
-    width:16px;
-    height:16px;
+// Menu icons from sprites
+@mixin wpft_sprites($sprites) {
+  @each $sprite in $sprites {
+    $sprite-name: nth($sprite, 10);
+    .wpft-#{$sprite-name} a::before {
+      @include sprite($sprite);
+      content: "";
+      display: inline-block;
+    }
   }
 }
-*/
+
+@include wpft_sprites($spritesheet-sprites);
+
+.wpft-has-icon{
+  a{
+    &:before{
+      margin:-3px 10px 0 0;
+      vertical-align: middle;
+    }
+  }
+}
+
+// Hide menu item labels
+.wpft-hide-label{
+  .hide{
+    display:none !important;
+  }
+}

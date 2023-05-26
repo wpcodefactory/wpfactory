@@ -1646,14 +1646,195 @@ a:link:hover {
   color: #0ea0dc;
 }
 
-/*.icon-facebook{
-  &:before{
-    background: transparent url('/src/img/icons/icon-facebook.png') no-repeat;
-    width:16px;
-    height:16px;
-  }
+.wpft-icon-account a::before {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: -39px -41px;
+  width: 18px;
+  height: 20px;
+  content: "";
+  display: inline-block;
 }
-*/
+
+.wpft-icon-all-plugins a::before {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: -44px -22px;
+  width: 20px;
+  height: 18px;
+  content: "";
+  display: inline-block;
+}
+
+.wpft-icon-all a::before {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: -64px 0px;
+  width: 20px;
+  height: 18px;
+  content: "";
+  display: inline-block;
+}
+
+.wpft-icon-arrow-down a::before {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: -84px -28px;
+  width: 10px;
+  height: 6px;
+  content: "";
+  display: inline-block;
+}
+
+.wpft-icon-blog a::before {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: -64px -18px;
+  width: 18px;
+  height: 20px;
+  content: "";
+  display: inline-block;
+}
+
+.wpft-icon-bundle a::before {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: 0px 0px;
+  width: 23px;
+  height: 20px;
+  content: "";
+  display: inline-block;
+}
+
+.wpft-icon-cart a::before {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: 0px -20px;
+  width: 21px;
+  height: 21px;
+  content: "";
+  display: inline-block;
+}
+
+.wpft-icon-coupon a::before {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: -20px -41px;
+  width: 19px;
+  height: 20px;
+  content: "";
+  display: inline-block;
+}
+
+.wpft-icon-facebook a::before {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: -84px -12px;
+  width: 9px;
+  height: 16px;
+  content: "";
+  display: inline-block;
+}
+
+.wpft-icon-faq a::before {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: -23px -21px;
+  width: 20px;
+  height: 20px;
+  content: "";
+  display: inline-block;
+}
+
+.wpft-icon-instagram a::before {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: -36px -61px;
+  width: 15px;
+  height: 16px;
+  content: "";
+  display: inline-block;
+}
+
+.wpft-icon-linkedin a::before {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: -68px -61px;
+  width: 15px;
+  height: 14px;
+  content: "";
+  display: inline-block;
+}
+
+.wpft-icon-order a::before {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: -44px 0px;
+  width: 20px;
+  height: 22px;
+  content: "";
+  display: inline-block;
+}
+
+.wpft-icon-product a::before {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: -64px -38px;
+  width: 20px;
+  height: 18px;
+  content: "";
+  display: inline-block;
+}
+
+.wpft-icon-report a::before {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: 0px -61px;
+  width: 18px;
+  height: 20px;
+  content: "";
+  display: inline-block;
+}
+
+.wpft-icon-search a::before {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: -23px 0px;
+  width: 21px;
+  height: 21px;
+  content: "";
+  display: inline-block;
+}
+
+.wpft-icon-single-price a::before {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: -18px -61px;
+  width: 18px;
+  height: 19px;
+  content: "";
+  display: inline-block;
+}
+
+.wpft-icon-support a::before {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: 0px -41px;
+  width: 20px;
+  height: 20px;
+  content: "";
+  display: inline-block;
+}
+
+.wpft-icon-twitter a::before {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: -51px -61px;
+  width: 17px;
+  height: 14px;
+  content: "";
+  display: inline-block;
+}
+
+.wpft-icon-youtube a::before {
+  background-image: url(..//img/a3bf6eba0590609d3e3b.png);
+  background-position: -84px 0px;
+  width: 15px;
+  height: 12px;
+  content: "";
+  display: inline-block;
+}
+
+.wpft-has-icon a:before {
+  margin: -3px 10px 0 0;
+  vertical-align: middle;
+}
+
+.wpft-hide-label .hide {
+  display: none !important;
+}
+
 .wpfactory-primary-navigation, .top-right-navigation {
   display: inline-block;
   font-size: 16px;

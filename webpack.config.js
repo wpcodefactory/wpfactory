@@ -7,8 +7,9 @@ var SpritesmithPlugin = require('webpack-spritesmith');
 // change these variables to fit your project
 const outputPath = './assets';
 const entryPoints = {
-    //admin: ['./src/js/admin.js', './src/scss/admin.scss'],
+    //admin-settings: ['./src/js/admin-settings.js', './src/scss/admin-settings.scss'],
     //frontend: ['./src/scss/frontend.scss']
+    admin: ['./src/scss/admin.scss'],
     frontend: ['./src/scss/frontend.scss', './src/js/frontend.js']
 };
 

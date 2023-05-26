@@ -1,0 +1,36 @@
+// WPFactory menu on admin
+#adminmenu .toplevel_page_crb_carbon_fields_container_wpfactory_settings {
+  div.wp-menu-image img {
+    width: 21px;
+    //filter: brightness(1000) contrast(200%);
+  }
+
+  &.current{
+    div.wp-menu-image img {
+      opacity:1;
+    }
+  }
+}
+
+// Nav menu items
+#update-nav-menu{
+  .cf-container {
+    .cf-field{
+      padding:0 0 10px 0;
+    }
+    .cf-field__label{
+     font-weight:normal;
+      color:#646970;
+      padding:0;
+    }
+    .cf-text,.cf-field{
+      border:none;
+    }
+  }
+
+}
+
+// Carbon fields separator
+.cf-field.cf-separator h3{
+  margin:0;
+}

@@ -6,7 +6,8 @@
     }
   ],
   "require": {
-    "wpfactory/wpfactory-autoloader":"dev-master"
+    "wpfactory/wpfactory-autoloader":"dev-master",
+    "htmlburger/carbon-fields": "*"
   },
   "autoload": {
     "files": ["src/php/wpfactory-functions.php"]

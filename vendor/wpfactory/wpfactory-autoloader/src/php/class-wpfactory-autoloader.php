@@ -154,8 +154,6 @@ if ( ! class_exists( 'WPFactory\WPFactory_Autoloader' ) ) {
 				foreach ( $possible_class_prefixes as $possible_prefix ) {
 					$filename    = $this->get_filename_from_relative_class( $relative_class, $possible_prefix );
 					$file        = $base_dir . str_replace( '\\', DIRECTORY_SEPARATOR, $filename );
-					error_log('-------');
-					//error_log(print_r($file,true));
 					$file_exists = $this->require_file( $file );
 					if ( $file_exists ) {
 						break;

@@ -9,6 +9,8 @@
 
 namespace WPFactory\WPFactory_Theme;
 
+use WPFactory\WPFactory_Theme\Admin_Settings\Admin_Settings;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly
@@ -34,6 +36,15 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 		protected $theme_components = array();
 
 		/**
+		 * Options.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @var Options
+		 */
+		protected $options;
+
+		/**
 		 * Init.
 		 *
 		 * @version 1.0.0
@@ -42,6 +53,9 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 		 * @return void
 		 */
 		function init() {
+			// Options.
+			$this->options = new Options();
+			$this->options->init();
 			// General setup.
 			add_action( 'after_setup_theme', array( $this, 'general_setup' ) );
 			add_action( 'init', array( $this, 'general_setup' ) );
@@ -49,6 +63,9 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ), 10 );
 			// Initializes theme components.
 			$this->initialize_theme_components();
+			// Admin settings.
+			$admin_settings = new Admin_Settings();
+			$admin_settings->init();
 		}
 
 		/**
@@ -61,9 +78,9 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 		 */
 		function get_theme_component_classes() {
 			return array(
-				'\\WPFactory\\WPFactory_Theme\\Menus',
-				'\\WPFactory\\WPFactory_Theme\\Logo',
-				'\\WPFactory\\WPFactory_Theme\\Footer',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Menus',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Logo',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Footer',
 			);
 		}
 
@@ -245,6 +262,9 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 		/**
 		 * Get component.
 		 *
+		 * @version 1.0.0
+		 * @since   1.0.0
+		 *
 		 * @param $class_name
 		 *
 		 * @return false|mixed
@@ -259,5 +279,19 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 
 			return false;
 		}
+
+		/**
+		 * get_options.
+		 *
+		 * @version 1.0.0
+		 * @since   1.0.0
+		 *
+		 * @return Options
+		 */
+		public function get_options(): Options {
+			return $this->options;
+		}
+
+
 	}
 }
