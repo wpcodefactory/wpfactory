@@ -1,0 +1,30 @@
+// Menu icons from sprites
+@mixin wpft_sprites($sprites) {
+  @each $sprite in $sprites {
+    $sprite-name: nth($sprite, 10);
+    .wpft-#{$sprite-name} > a::before {
+      @include sprite($sprite);
+      content: "";
+      display: inline-block;
+    }
+  }
+}
+
+@include wpft_sprites($spritesheet-sprites);
+
+.wpft-has-icon{
+  > a{
+    &:before{
+      margin:-3px 9px 0 0;
+      vertical-align: middle;
+    }
+  }
+}
+
+// Adjustments
+.wpft-icon-facebook{
+  a::before {
+    margin-left:3px;
+    margin-right:12px;
+  }
+}
