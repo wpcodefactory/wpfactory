@@ -1,8 +1,15 @@
 .top-right-navigation {
-  @extend .wpfactory-primary-navigation;
+  //@extend .wpfactory-primary-navigation;
+  //@extend .wpft-primary-navigation;
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  display: inline-block;
   position: absolute;
-  right: 0;
-  top: 0;
+  right: -10px;
+  top: 12px;
   padding-right: inherit;
 
   @include mobile {
@@ -11,14 +18,17 @@
 
   .menu {
     > li {
-      text-align: right;
-      vertical-align: bottom;
-      margin: 0 0 0 35px;
-      a {
+      display: inline-block;
+      //vertical-align: bottom;
+      vertical-align: top;
+      margin: 0 0 0 16px;
+
+      > a {
         cursor: pointer;
-        padding: 10px 0px;
-        color:$color1;
-        &:hover{
+        padding: 10px 10px;
+        color: $color1;
+
+        &:hover {
           filter: invert(0) sepia(0) saturate(5000%) hue-rotate(346deg) brightness(100%) contrast(100%)
         }
 
@@ -26,5 +36,55 @@
       }
     }
   }
+}
 
+// Cart icon on top right menu
+.wpft-is-header-cart {
+  position: relative;
+
+  .product_list_widget {
+    height: auto !important;
+  }
+
+  > a {
+    padding-bottom: 30px !important;
+  }
+
+  &:hover {
+    .widget_shopping_cart {
+      top: 0;
+      display: block;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .product_list_widget {
+      height: auto;
+    }
+  }
+
+  .site-header-cart {
+    float: none !important;
+    position: absolute;
+    left:25%;
+    width: 270px !important;
+    top: 20px;
+    padding: 0px 0 0 0;
+    margin: 0 auto;
+    transform: translateX(-50%)
+  }
+
+  .widget_shopping_cart {
+    @extend .wpft-round-white-box;
+    transition: .25s;
+    pointer-events: none;
+    opacity: 0;
+    left: 0;
+    top: -12px;
+    margin-top: 15px;
+  }
+
+  .site-header-cart .widget_shopping_cart .buttons, .site-header-cart .widget_shopping_cart .total {
+    background: none;
+  }
 }

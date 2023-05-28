@@ -9,11 +9,10 @@ $color3: #727C89;
 $color4: #989898;
 
 // Container
-.wpf-container {
-  @extend .container;
-  @extend .is-fluid;
+/*.wpf-container {
+  //@extend .container;
+  //@extend .is-fluid;
   position: relative;
-  /*background:#eee;*/
   @include desktop {
     width: $desktop !important;
   }
@@ -23,47 +22,47 @@ $color4: #989898;
   @include fullhd {
     width: $fullhd !important;
   }
-}
+}*/
 
+.col-full{
+  @include desktop {
+    max-width:$desktop;
+  }
+  @include widescreen {
+    max-width: $desktop;
+  }
+  @include fullhd {
+    max-width: $widescreen;
+  }
+}
 // Main wrapper
 #page {
   padding: 16px 0 0 0;
 }
 
-a {
+// Links
+/*a {
   color: $color1;
 
   &:link:hover {
     color: $color2;
   }
-}
-
-// Menu icons from sprites
-@mixin wpft_sprites($sprites) {
-  @each $sprite in $sprites {
-    $sprite-name: nth($sprite, 10);
-    .wpft-#{$sprite-name} a::before {
-      @include sprite($sprite);
-      content: "";
-      display: inline-block;
-    }
-  }
-}
-
-@include wpft_sprites($spritesheet-sprites);
-
-.wpft-has-icon{
-  a{
-    &:before{
-      margin:-3px 10px 0 0;
-      vertical-align: middle;
-    }
-  }
-}
+}*/
 
 // Hide menu item labels
 .wpft-hide-label{
   .hide{
     display:none !important;
   }
+}
+
+// Animate top down
+
+
+// Round white box
+.wpft-round-white-box{
+  background: #fff;
+  z-index: 2;
+  border-radius: 5px;
+  box-shadow: 0px 11px 20px -12px rgba(0, 0, 0, 0.45);
 }

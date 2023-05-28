@@ -1,13 +1,21 @@
 // Top menu
-.wpfactory-primary-navigation {
+//.wpfactory-primary-navigation {
+//.primary-navigation{
+.wpft-primary-navigation {
   display: inline-block;
   font-size: 16px;
   font-weight: 700;
+  vertical-align: top;
+  margin:-2px 0 0 0;
 
-  #menu-top-left{
+  .menu {
     @include mobile {
       display: none;
     }
+  }
+
+  li a:hover{
+    color:$color2;
   }
 
   .menu {
@@ -27,9 +35,9 @@
           content: "";
           display: inline-block;
           vertical-align: top;
-          margin: 8px 0 0 7px;
+          margin: 10px 0 0 7px;
           opacity: 1;
-          transition: .25s;
+          transition: opacity .25s;
         }
       }
 
@@ -40,7 +48,9 @@
           color: $color2;
 
           &:after {
-            opacity: 0.5;
+            opacity: 1;
+
+            transform:rotateZ(180deg);
           }
         }
       }
@@ -62,16 +72,15 @@
     }
 
     li {
+
       // Submenu
       ul {
-        background: #fff;
+        @extend .wpft-round-white-box;
         z-index: 2;
         pointer-events: none;
         opacity: 0;
         transition: .25s;
         position: absolute;
-        border-radius: 5px;
-        box-shadow: 0px 11px 20px -12px rgba(0, 0, 0, 0.45);
         margin: -5px 0 0 20px;
         padding: 0 0 15px 0;
 
@@ -85,7 +94,7 @@
       padding: 0px 0px 0px 0px;
 
       a {
-        padding: 15px 28px 15px 25px;
+        padding: 17px 28px 17px 25px;
       }
     }
 

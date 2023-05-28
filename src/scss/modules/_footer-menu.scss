@@ -1,87 +1,97 @@
-// Bottom menu
-.site-footer {
-  padding: 110px 0 40px 0;
-  background: linear-gradient(179.14deg, #F2F5FA 0.66%, #FFFFFF 20.97%);
-}
-
-#menu-footer {
- //@extend .columns;
-
-  margin-left:0;
-  margin-right:0;
-  //@extend .is-marginless;
-
-  @include tablet {
-    display:flex;
-    justify-content: space-between;
+.menu-footer-container {
+  ul{
+    list-style: none;
+    padding:0;
+    margin:0;
   }
 
-  @include mobile {
-    > li {
-      > a {
-        border-bottom:1px solid #efefef;
-        padding-bottom:3px;
-        width: 100%;
-        display: block;
-        margin-bottom:0px;
-      }
+  a{
+    text-decoration: none;
+  }
+
+  .menu {
+    //@extend .columns;
+
+    margin-left: 0;
+    margin-right: 0;
+    //@extend .is-marginless;
+
+    @include tablet {
+      display: flex;
+      justify-content: space-between;
     }
-  }
 
-  // Parent menu item
-  > li {
-    //@extend .is-one-fifth;
-    //@extend .column;
-
-    font-size: 16px;
-    font-weight: 700;
-    margin: 0 0 25px 0;
-
-
-
-    &:last-child li a {
-      &:hover {
-        text-decoration: none;
-
-        span {
-          text-decoration: underline;
+    @include mobile {
+      > li {
+        > a {
+          border-bottom: 1px solid #efefef;
+          padding-bottom: 3px;
+          width: 100%;
+          display: block;
+          margin-bottom: 0px;
         }
       }
     }
-  }
 
-  .sub-menu {
-    margin-top: 10px;
-  }
+    // Parent menu item
+    > li {
+      //@extend .is-one-fifth;
+      //@extend .column;
 
-  // Submenu item
-  li li {
-    font-size: 14px;
-    font-weight: 400;
-    color: $color3;
-    line-height: 20px;
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0 0 25px 0;
 
-    a {
-      display: block;
-      width: 100%;
-      color: $color3;
-      text-decoration: none;
-      padding: 5px 0;
-
-      span {
-
+      > a{
+        cursor: text ;
+        pointer-events: none;
       }
 
-      &:hover {
-        color: $color2;
-        text-decoration: underline;
-      }
+      // Last column: Social icons.
+      &:last-child li a {
+        &:hover {
+          text-decoration: none;
 
+          span {
+            text-decoration: underline;
+          }
+        }
+      }
     }
 
-    // Submenu item icons
-    i {
-      margin-right: 7px;
+    .sub-menu {
+      margin-top: 10px;
+    }
+
+    // Submenu item
+    li li {
+      font-size: 14px;
+      font-weight: 400;
+      color: $color3;
+      line-height: 20px;
+
+      a {
+        display: block;
+        width: 100%;
+        color: $color3;
+        text-decoration: none;
+        padding: 5px 0;
+
+        span {
+
+        }
+
+        &:hover {
+          color: $color2;
+          text-decoration: underline;
+        }
+
+      }
+
+      // Submenu item icons
+      i {
+        margin-right: 7px;
+      }
     }
   }
 }

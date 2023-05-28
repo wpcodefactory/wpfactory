@@ -1,7 +1,13 @@
 @import "footer-menu";
 
+// Bottom menu
+.site-footer {
+  padding: 100px 0 0px 0;
+  background: linear-gradient(179.14deg, #F2F5FA 0.66%, #FFFFFF 20.97%);
+}
+
 // Set footer always at bottom
-#page {
+/*#page {
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -10,11 +16,19 @@
 #content {
   flex: 1;
 }
+*/
 
 // Credits
-.site-info-credits {
+.site-info-wrapper {
   font-size: 14px;
   color: $color3;
   border-top: 1px solid #E3E5E7;
   padding: 35px 0;
+  .site-info{
+    padding:0;
+  }
+  margin:40px 0 0 0;
+  @include mobile(){
+    margin-bottom:100px;
+  }
 }

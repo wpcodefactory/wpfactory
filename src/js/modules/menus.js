@@ -10,10 +10,12 @@ const menus = {
     handle_handheld_navigation: function (params) {
         const toggler = document.querySelector(params.handheld_toggler_selector);
         const elementToToggle = document.querySelector(params.handheld_menu_selector);
-        toggler.addEventListener('mousedown', () => {
-            menus.toggleHeight(elementToToggle);
-            elementToToggle.classList.toggle('active');
-        });
+        if (toggler && elementToToggle) {
+            toggler.addEventListener('mousedown', () => {
+                menus.toggleHeight(elementToToggle);
+                elementToToggle.classList.toggle('active');
+            });
+        }
     },
     toggleHeight: function (element) {
         if (!element.style.height || element.style.height == '0px') {

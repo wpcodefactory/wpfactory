@@ -66,6 +66,9 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 			// Admin settings.
 			$admin_settings = new Admin_Settings();
 			$admin_settings->init();
+			// Storefront customziations.
+			/*$storefront = new Storefront();
+			$storefront->init();*/
 		}
 
 		/**
@@ -80,7 +83,10 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 			return array(
 				'\\WPFactory\\WPFactory_Theme\\Component\\Menus',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Logo',
-				'\\WPFactory\\WPFactory_Theme\\Component\\Footer',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Credit',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Search',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Cart',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Sidebar',
 			);
 		}
 
@@ -97,11 +103,12 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 			$version = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? current_time( 'timestamp' ) : $this->get_version();
 
 			// Main frontend style.
-			wp_enqueue_style( 'wpfactory-style', get_theme_file_uri( '/assets/css/frontend' . $suffix . '.css' ), '', $version );
+			wp_enqueue_style( 'wpfactory-style', get_theme_file_uri( '/assets/css/frontend' . $suffix . '.css' ), array('storefront-woocommerce-style'), $version );
+			//wp_enqueue_style( 'wpfactory-style', get_theme_file_uri( '/assets/css/frontend' . $suffix . '.css' ), '', $version );
 
 			// Main frontend script.
 			wp_enqueue_script( 'wpfactory-frontend-js',
-				get_template_directory_uri() . '/assets/js/frontend' . $suffix . '.js',
+				get_theme_file_uri( '/assets/js/frontend' . $suffix . '.js' ),
 				array( 'jquery' ),
 				$version,
 				false

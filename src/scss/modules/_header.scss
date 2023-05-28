@@ -2,14 +2,51 @@
 @import "top-right-menu";
 @import "handheld-menu";
 
+// Header
 #masthead{
   margin-bottom:15px;
+  .col-full{
+    position:relative;
+  }
+}
+.site-header{
+  padding-top:12px;
+  border:none;
 }
 
 // Logo
-.site-branding {
+.wpft-main-navigation{
+  display:inline-block;
+  vertical-align: top;
+  ul{
+    list-style: none;
+  }
+}
+.site-header .site-branding {
   display: inline-block;
   vertical-align: top;
-  margin: 0 50px 0 0;
+  margin: 0 50px 0 0 !important;
+
+  float:none !important;
+  width:auto !important;
 }
 
+// Breadcrumb
+.storefront-breadcrumb{
+  padding-top:35px;
+}
+.woocommerce-breadcrumb{
+  a:first-of-type::before{
+    @include sprite($icon-home);
+    font-family:none;
+    content:" ";
+    vertical-align:top;
+    margin-top:1px;
+    margin-right:20px;
+  }
+  .breadcrumb-separator{
+    margin:0 15px;
+  }
+    //@mixin sprite($icon-home) {
+  //}
+}

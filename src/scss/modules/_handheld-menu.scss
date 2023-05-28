@@ -1,5 +1,5 @@
 // Handheld menu
-.handheld-navigation {
+.wpft-handheld-navigation {
   display: none;
   @include mobile {
     display: block;
@@ -24,8 +24,8 @@
     }
   }
 
-  #menu-handheld {
-    margin: 40px 0 45px 0;
+  .menu {
+    margin: 50px 0 0px 0;
   }
 }
 
