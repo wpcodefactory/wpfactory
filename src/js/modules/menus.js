@@ -1,3 +1,6 @@
+let general = require('./general');
+general.init()
+
 const menus = {
     init: function () {
         this.handle_handheld_navigation(
@@ -12,17 +15,9 @@ const menus = {
         const elementToToggle = document.querySelector(params.handheld_menu_selector);
         if (toggler && elementToToggle) {
             toggler.addEventListener('mousedown', () => {
-                menus.toggleHeight(elementToToggle);
+                general.toggleHeight(elementToToggle);
                 elementToToggle.classList.toggle('active');
             });
-        }
-    },
-    toggleHeight: function (element) {
-        if (!element.style.height || element.style.height == '0px') {
-            //element.style.height = Array.prototype.reduce.call(element.childNodes, function(p, c) {return p + (c.offsetHeight || 0);}, 0) + 'px';
-            element.style.height = element.scrollHeight + 'px'
-        } else {
-            element.style.height = '0px';
         }
     }
 }

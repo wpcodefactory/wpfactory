@@ -23,10 +23,22 @@
       vertical-align: top;
       margin: 0 0 0 16px;
 
+      &.wpft-has-icon{
+        > a{
+          &:before{
+            margin-right:0;
+            margin-left:0;
+            //margin:-3px 9px 0 0;
+            //vertical-align: middle;
+          }
+        }
+      }
+
       > a {
         cursor: pointer;
-        padding: 10px 10px;
+        padding: 10px 12px;
         color: $color1;
+        margin:0;
 
         &:hover {
           filter: invert(0) sepia(0) saturate(5000%) hue-rotate(346deg) brightness(100%) contrast(100%)
@@ -48,6 +60,13 @@
 
   > a {
     padding-bottom: 30px !important;
+    margin:0;
+  }
+
+  /* Cart total */
+  .cart-info{
+    position:absolute;
+    display:none;
   }
 
   &:hover {

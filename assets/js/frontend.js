@@ -8,6 +8,14 @@
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var map = {
+	"./general": [
+		"./src/js/modules/general.js",
+		"src_js_modules_general_js"
+	],
+	"./general.js": [
+		"./src/js/modules/general.js",
+		"src_js_modules_general_js"
+	],
 	"./menus": [
 		"./src/js/modules/menus.js",
 		"src_js_modules_menus_js"
@@ -15,6 +23,14 @@ var map = {
 	"./menus.js": [
 		"./src/js/modules/menus.js",
 		"src_js_modules_menus_js"
+	],
+	"./search": [
+		"./src/js/modules/search.js",
+		"src_js_modules_search_js"
+	],
+	"./search.js": [
+		"./src/js/modules/search.js",
+		"src_js_modules_search_js"
 	]
 };
 function webpackAsyncContext(req) {

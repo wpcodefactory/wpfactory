@@ -11,3 +11,14 @@ $autoloader->init();
 // Initializes the theme.
 $theme = wpf_get_theme();
 $theme->init();
+
+/**
+ * Cart Link
+ * Displayed a link to the cart including the number of items present and the cart total
+ *
+ * @return void
+ * @since  1.0.0
+ */
+function storefront_cart_link() {
+	wpf_get_theme()->get_component('Cart')->storefront_cart_link();
+}

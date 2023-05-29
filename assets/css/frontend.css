@@ -65,6 +65,12 @@ html, body {
     color: $color2;
   }
 }*/
+a:focus {
+  outline-style: none;
+  box-shadow: none;
+  border-color: transparent;
+}
+
 .wpft-hide-label .hide {
   display: none !important;
 }
@@ -393,10 +399,15 @@ html, body {
   vertical-align: top;
   margin: 0 0 0 16px;
 }
+.top-right-navigation .menu > li.wpft-has-icon > a:before {
+  margin-right: 0;
+  margin-left: 0;
+}
 .top-right-navigation .menu > li > a {
   cursor: pointer;
-  padding: 10px 10px;
+  padding: 10px 12px;
   color: #14243a;
+  margin: 0;
 }
 .top-right-navigation .menu > li > a:hover {
   filter: invert(0) sepia(0) saturate(5000%) hue-rotate(346deg) brightness(100%) contrast(100%);
@@ -404,12 +415,20 @@ html, body {
 
 .wpft-is-header-cart {
   position: relative;
+  /* Cart total */
 }
 .wpft-is-header-cart .product_list_widget {
   height: auto !important;
 }
 .wpft-is-header-cart > a {
   padding-bottom: 30px !important;
+}
+.wpft-is-header-cart > a {
+  margin: 0;
+}
+.wpft-is-header-cart .cart-info {
+  position: absolute;
+  display: none;
 }
 .wpft-is-header-cart:hover .widget_shopping_cart {
   top: 0;
@@ -524,6 +543,47 @@ html, body {
   transform: translateY(5px);
 }
 
+.storefront-handheld-footer-bar {
+  border-top: 1px solid #fff;
+  box-shadow: none;
+}
+
+.storefront-handheld-footer-bar ul li a {
+  background: #8A63CD;
+  border-right: 1px solid #fff;
+}
+.storefront-handheld-footer-bar ul li > a::before {
+  content: "" !important;
+}
+.storefront-handheld-footer-bar ul li > a::before {
+  filter: brightness(5000%) contrast(100%);
+  padding: 0;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+.storefront-handheld-footer-bar ul li.my-account > a::before {
+  background-image: url(..//img/fcafa53646178755dc83.png);
+  background-position: -39px -41px;
+  width: 18px;
+  height: 20px;
+}
+.storefront-handheld-footer-bar ul li.search > a::before {
+  background-image: url(..//img/fcafa53646178755dc83.png);
+  background-position: -23px 0px;
+  width: 21px;
+  height: 21px;
+}
+.storefront-handheld-footer-bar ul li.cart > a::before {
+  background-image: url(..//img/fcafa53646178755dc83.png);
+  background-position: 0px -20px;
+  width: 21px;
+  height: 21px;
+}
+
 #masthead {
   margin-bottom: 15px;
 }
@@ -572,6 +632,12 @@ html, body {
 }
 .woocommerce-breadcrumb .breadcrumb-separator {
   margin: 0 15px;
+}
+
+.wpft-search-bar {
+  overflow: hidden;
+  height: 0px;
+  transition: height 0.3s ease-in-out;
 }
 
 .menu-footer-container ul {

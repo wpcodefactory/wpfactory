@@ -50,3 +50,10 @@
     //@mixin sprite($icon-home) {
   //}
 }
+
+// Search
+.wpft-search-bar{
+  overflow: hidden;
+  height: 0px;
+  transition: height 0.3s ease-in-out;
+}

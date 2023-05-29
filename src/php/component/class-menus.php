@@ -41,10 +41,37 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Menus' ) ) {
 			add_filter( 'wpft_nav_menu_item_icons', array( $this, 'get_nav_menu_item_icons' ) );
 			add_filter( 'nav_menu_css_class', array( $this, 'add_nav_menu_item_icon_class' ), 10, 2 );
 
-			// Info to handheld menu.
+			// JS
+			add_filter( 'wpft_js_modules_required', array( $this, 'load_menus_js' ) );
 			add_filter( 'wpft_frontend_js_info', array( $this, 'append_info_to_frontend_js' ) );
 		}
 
+		/**
+         * load_menus_js.
+         *
+		 * @version 1.0.0
+		 * @since   1.0.0
+         *
+		 * @param $required_modules
+		 *
+		 * @return mixed
+		 */
+		function load_menus_js( $required_modules ) {
+			$required_modules[] = 'menus';
+
+			return $required_modules;
+		}
+
+		/**
+         * change_registered_menus.
+         *
+		 * @version 1.0.0
+		 * @since   1.0.0
+         *
+		 * @param $menus
+		 *
+		 * @return mixed
+		 */
 		function change_registered_menus( $menus ) {
 			$menus['top_left'] = __( 'Top left Menu', 'wpfactory' );
 			//$menus['top_right'] = __( 'Top Right Menu', 'wpfactory' );
@@ -56,6 +83,14 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Menus' ) ) {
 			return $menus;
 		}
 
+		/**
+         * setup_menus.
+         *
+		 * @version 1.0.0
+		 * @since   1.0.0
+         *
+		 * @return void
+		 */
 		function setup_menus() {
 			// Primary navigation.
 			remove_action( 'storefront_header', 'storefront_primary_navigation_wrapper', 42 );
@@ -70,11 +105,22 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Menus' ) ) {
 			// Handheld naviagation.
 			add_action( 'storefront_header', array( $this, 'handle_handheld_menu' ), 22 );
 			add_action( 'storefront_header', array( $this, 'site_navigation_menu_toggler' ), 23 );
+			add_filter('storefront_handheld_footer_bar_links',array($this,'handheld_footer_bar_links'));
 
 			// Top right menu.
 			add_action( 'storefront_header', array( $this, 'top_right_menu' ), 24 );
 		}
 
+		/**
+         * hide_nav_menu_item_label.
+         *
+		 * @version 1.0.0
+		 * @since   1.0.0
+         *
+		 * @param $items
+		 *
+		 * @return array|mixed|string|string[]|null
+		 */
 		function hide_nav_menu_item_label( $items ) {
 			if ( 'yes' === wpf_get_option( '_wpft_hide_nav_menu_item_label', 'yes' ) ) {
 				$items = preg_replace( '/(wpft-hide-label.*<a.*>)(.*)(<\/a>)/m', '$1<span class="hide">$3</span>', $items );
@@ -193,6 +239,10 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Menus' ) ) {
 			);
 		}
 
+        function handheld_footer_bar_links($links){
+            error_log(print_r($links,true));
+            return $links;
+        }
 
 		/**
 		 * Display Primary Navigation.
@@ -248,11 +298,11 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Menus' ) ) {
 
 		function top_right_menu() {
 			$items_html_arr = array(
-				sprintf('<li class="wpft-icon-search wpft-has-icon wpft-hide-label"><a><label class="hide">%s</label></a></li>',__( 'Search', 'wpfactory' )),
-				apply_filters('wpft_header_cart_li_html',''),
+				apply_filters( 'wpft_header_search_li_html', '' ),
+				apply_filters( 'wpft_header_cart_li_html', '' ),
 				sprintf( '<li class="wpft-icon-account wpft-has-icon wpft-hide-label"><a href="%s"><label class="hide">%s</label></a></li>', get_permalink( wc_get_page_id( 'myaccount' ) ), __( 'My Account', 'wpfactory' ) ),
 			);
-			$items_html = implode( $items_html_arr );
+			$items_html     = implode( $items_html_arr );
 			?>
             <div class="top-right-navigation">
                 <ul class="menu">

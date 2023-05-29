@@ -48,6 +48,13 @@ $color4: #989898;
     color: $color2;
   }
 }*/
+a:focus{
+  outline-style: none;
+  box-shadow: none;
+  border-color: transparent;
+  //background-color: #eee;
+  //color: white;
+}
 
 // Hide menu item labels
 .wpft-hide-label{
@@ -55,9 +62,6 @@ $color4: #989898;
     display:none !important;
   }
 }
-
-// Animate top down
-
 
 // Round white box
 .wpft-round-white-box{

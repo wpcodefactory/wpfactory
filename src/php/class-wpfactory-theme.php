@@ -115,7 +115,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 			);
 			wp_add_inline_script( 'wpfactory-frontend-js', 'const WPFTFEJS = ' . json_encode( apply_filters( 'wpft_frontend_js_info', array(
 					'themeURI'        => get_theme_file_uri(),
-					'modulesRequired' => apply_filters( 'wpft_js_modules_required', array( 'menus' ) )
+					'modulesRequired' => apply_filters( 'wpft_js_modules_required', array() )
 				) ) ), 'before'
 			);
 
@@ -279,7 +279,8 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 		function get_component( $class_name ) {
 			foreach ( $this->theme_components as $component ) {
 				$component_name = get_class( $component );
-				if ( $component_name === $class_name || trim( $component_name, "\\WPFactory\\WPFactory_Theme\\" ) === $class_name ) {
+				$component_name_without_namespace = substr( $component_name, strrpos( $component_name, "\\" ) + 1 );
+				if ( $component_name === $class_name || $component_name_without_namespace === $class_name ) {
 					return $component;
 				}
 			}
