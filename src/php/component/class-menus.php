@@ -105,7 +105,6 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Menus' ) ) {
 			// Handheld naviagation.
 			add_action( 'storefront_header', array( $this, 'handle_handheld_menu' ), 22 );
 			add_action( 'storefront_header', array( $this, 'site_navigation_menu_toggler' ), 23 );
-			add_filter('storefront_handheld_footer_bar_links',array($this,'handheld_footer_bar_links'));
 
 			// Top right menu.
 			add_action( 'storefront_header', array( $this, 'top_right_menu' ), 24 );
@@ -239,10 +238,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Menus' ) ) {
 			);
 		}
 
-        function handheld_footer_bar_links($links){
-            error_log(print_r($links,true));
-            return $links;
-        }
+
 
 		/**
 		 * Display Primary Navigation.
