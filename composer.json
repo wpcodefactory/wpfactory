@@ -7,12 +7,16 @@
   ],
   "require": {
     "wpfactory/wpfactory-autoloader":"dev-master",
-    "htmlburger/carbon-fields": "*"
+    "timber/timber": "dev-master",
+    "htmlburger/carbon-fields": "dev-master"
   },
   "autoload": {
     "files": ["src/php/wpfactory-functions.php"]
   },
   "config": {
-    "preferred-install": "dist"
+    "preferred-install": "dist",
+    "allow-plugins": {
+      "composer/installers": true
+    }
   }
 }

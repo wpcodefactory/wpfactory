@@ -121,7 +121,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Menus' ) ) {
 		 * @return array|mixed|string|string[]|null
 		 */
 		function hide_nav_menu_item_label( $items ) {
-			if ( 'yes' === wpf_get_option( '_wpft_hide_nav_menu_item_label', 'yes' ) ) {
+			if ( 'yes' === wpft_get_option( '_wpft_hide_nav_menu_item_label', 'yes' ) ) {
 				$items = preg_replace( '/(wpft-hide-label.*<a.*>)(.*)(<\/a>)/m', '$1<span class="hide">$3</span>', $items );
 			}
 
@@ -141,7 +141,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Menus' ) ) {
 		 */
 		function add_nav_menu_item_icon_class( $classes, $item ) {
 			if (
-				'yes' === wpf_get_option( '_wpft_add_menu_icons', 'yes' ) &&
+				'yes' === wpft_get_option( '_wpft_add_menu_icons', 'yes' ) &&
 				! empty( $icon = carbon_get_nav_menu_item_meta( $item->ID, 'wpft_icon' ) )
 			) {
 				$classes[] = 'wpft-has-icon wpft-icon-' . $icon;

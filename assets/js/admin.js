@@ -1,5 +1,4 @@
 /******/ (() => { // webpackBootstrap
-/******/ 	"use strict";
 /******/ 	// The require scope
 /******/ 	var __webpack_require__ = {};
 /******/ 	
@@ -17,11 +16,25 @@
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+(() => {
+"use strict";
+var __webpack_exports__ = {};
 /*!*****************************!*\
   !*** ./src/scss/admin.scss ***!
   \*****************************/
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
+
+})();
+
+// This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.
+(() => {
+/*!*************************!*\
+  !*** ./src/js/admin.js ***!
+  \*************************/
+
+})();
 
 /******/ })()
 ;

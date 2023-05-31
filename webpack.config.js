@@ -9,7 +9,7 @@ const outputPath = './assets';
 const entryPoints = {
     //admin-settings: ['./src/js/admin-settings.js', './src/scss/admin-settings.scss'],
     //frontend: ['./src/scss/frontend.scss']
-    admin: ['./src/scss/admin.scss'],
+    admin: ['./src/scss/admin.scss','./src/js/admin.js'],
     frontend: ['./src/scss/frontend.scss', './src/js/frontend.js']
 };
 

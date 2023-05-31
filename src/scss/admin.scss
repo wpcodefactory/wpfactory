@@ -1,5 +1,5 @@
 // WPFactory menu on admin
-#adminmenu .toplevel_page_crb_carbon_fields_container_wpfactory_settings {
+#adminmenu .toplevel_page_crb_carbon_fields_container_wpfactory_settings, #adminmenu .toplevel_page_wpft {
   div.wp-menu-image img {
     width: 21px;
     //filter: brightness(1000) contrast(200%);
@@ -42,4 +42,12 @@
 }
 .cf-container__tabs-list .cf-container__tabs-item button{
   padding:5px 10px;
+}
+
+// Carbon field select type
+.cf-container {
+  .wp-core-ui select {
+    width: 100%;
+    max-width: none;
+  }
 }

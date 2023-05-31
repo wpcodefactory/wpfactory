@@ -43,8 +43,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Sidebar' ) ) {
 		 */
 		function set_full_width_css_on_all_pages_but_shop( $classes ) {
 			if (
-				! is_shop() &&
-				! is_product_category()
+				wpft_is_current_page_full_width_content()
 			) {
 				$classes[] = 'storefront-full-width-content';
 			}
@@ -60,8 +59,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Sidebar' ) ) {
 		 */
 		function leave_sidebar_on_shop_only() {
 			if (
-				! is_shop() &&
-				! is_product_category()
+				wpft_is_current_page_full_width_content()
 			) {
 				remove_action( 'storefront_sidebar', 'storefront_get_sidebar', 10 );
 			}

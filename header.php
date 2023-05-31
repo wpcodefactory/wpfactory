@@ -62,7 +62,8 @@
 
 	<div id="content" class="site-content" tabindex="-1">
 		<!--<div class="col-full">-->
-        <div class="col-full">
+		<?php if ( ! wpft_is_current_page_full_width_content() ) : ?>
+        <div class="col-full"><?php endif; ?>
 
 <?php
 do_action( 'storefront_content_top' );

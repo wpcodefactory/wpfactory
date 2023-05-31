@@ -1,6 +1,6 @@
 <?php
 /**
- * WPFactory theme - Admin Settings.
+ * WPFactory theme - General tab.
  *
  * @version 1.0.0
  * @since   1.0.0
@@ -53,14 +53,14 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Admin_Settings\General_Tab' ) ) 
 		 * @return void
 		 */
 		function handle_nav_menu_item_options() {
-			if ( 'yes' === wpf_get_option( '_wpft_add_menu_icons', 'yes' ) ) {
+			if ( 'yes' === wpft_get_option( '_wpft_add_menu_icons', 'yes' ) ) {
 				Container::make( 'nav_menu_item', __( 'Menu Settings', 'wpfactory' ) )
 				         ->add_fields( array(
 					         Field::make( 'select', 'wpft_icon', __( 'Icon', 'wpfactory' ) )
 					              ->add_options( apply_filters( 'wpft_nav_menu_item_icons', array() ) )
 				         ) );
 			}
-			if ( 'yes' === wpf_get_option( '_wpft_hide_nav_menu_item_label', 'yes' ) ) {
+			if ( 'yes' === wpft_get_option( '_wpft_hide_nav_menu_item_label', 'yes' ) ) {
 				Container::make( 'nav_menu_item', __( 'Menu Settings', 'wpfactory' ) )
 				         ->add_fields( array(
 					         Field::make( 'checkbox', 'wpft_hide_label', __( 'Hide label', 'wpfactory' ) )

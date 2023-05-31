@@ -10,6 +10,7 @@
 namespace WPFactory\WPFactory_Theme;
 
 use WPFactory\WPFactory_Theme\Admin_Settings\Admin_Settings;
+use WPFactory\WPFactory_Theme\Page_Builder\Page_Builder;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -66,9 +67,9 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 			// Admin settings.
 			$admin_settings = new Admin_Settings();
 			$admin_settings->init();
-			// Storefront customziations.
-			/*$storefront = new Storefront();
-			$storefront->init();*/
+			// Page builder
+			$page_builder = new Page_Builder();
+			$page_builder->init();
 		}
 
 		/**
@@ -87,6 +88,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 				'\\WPFactory\\WPFactory_Theme\\Component\\Search',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Cart',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Sidebar',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Home',
 			);
 		}
 
@@ -277,7 +279,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 		 * @return false|mixed
 		 */
 		function get_component( $class_name ) {
-			foreach ( $this->theme_components as $component ) {
+			foreach ( $this->get_theme_components() as $component ) {
 				$component_name = get_class( $component );
 				$component_name_without_namespace = substr( $component_name, strrpos( $component_name, "\\" ) + 1 );
 				if ( $component_name === $class_name || $component_name_without_namespace === $class_name ) {

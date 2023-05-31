@@ -10,7 +10,8 @@
 ?>
 
 <!--</div>--><!-- .col-full -->
-</div><!-- .col-full -->
+<?php if ( ! wpft_is_current_page_full_width_content() ) : ?>
+</div><?php endif; ?>
 </div><!-- #content -->
 
 <?php do_action( 'storefront_before_footer' ); ?>

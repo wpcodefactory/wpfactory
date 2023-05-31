@@ -9,7 +9,7 @@ $autoloader->add_namespace( '\WPFactory\WPFactory_Theme', plugin_dir_path( __FIL
 $autoloader->init();
 
 // Initializes the theme.
-$theme = wpf_get_theme();
+$theme = wpft_get_theme();
 $theme->init();
 
 /**
@@ -20,5 +20,5 @@ $theme->init();
  * @since  1.0.0
  */
 function storefront_cart_link() {
-	wpf_get_theme()->get_component('Cart')->storefront_cart_link();
+	wpft_get_theme()->get_component('Cart')->storefront_cart_link();
 }

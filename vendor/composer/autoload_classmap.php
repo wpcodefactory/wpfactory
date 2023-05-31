@@ -6,6 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AltoRouter' => $vendorDir . '/altorouter/altorouter/AltoRouter.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'WPFactory\\WPFactory_Autoloader\\WPFactory_Autoloader' => $vendorDir . '/wpfactory/wpfactory-autoloader/src/php/class-wpfactory-autoloader.php',
 );
