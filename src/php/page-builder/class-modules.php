@@ -11,6 +11,7 @@ namespace WPFactory\WPFactory_Theme\Page_Builder;
 
 use Carbon_Fields\Container;
 use Carbon_Fields\Field;
+use Carbon_Fields\Helper\Helper;
 use \Timber\Timber;
 use WPFactory\WPFactory_Theme\Carbon_Fields\Carbon_Fields_Post_Meta_Datastore;
 
@@ -34,7 +35,10 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Page_Builder\Modules' ) ) {
 			add_action( 'carbon_fields_register_fields', array( $this, 'create_module_fields' ) );
 			add_action( 'carbon_fields_register_fields', array( $this, 'create_module_fields_on_custom_cpt' ), 22 );
 			add_filter( 'parent_file', array( $this, 'highlight_wpfactory_menu_on_module_editing' ) );
-			add_action( 'init', array( $this, 'manage_modules_displays_from_hook_settings' ) );
+			add_action( 'carbon_fields_fields_registered', array(
+				$this,
+				'manage_modules_displays_from_hook_settings'
+			) );
 		}
 
 		function manage_modules_displays_from_hook_settings() {
@@ -92,30 +96,59 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Page_Builder\Modules' ) ) {
 		}
 
 		function display_module( $args = null ) {
-			$args           = wp_parse_args( $args, array(
+			$args                      = wp_parse_args( $args, array(
 				'module_id'     => null,
 				'template_vars' => null,
 			) );
-			$module_id      = $args['module_id'];
-			$template_vars  = $args['template_vars'];
-			$template       = carbon_get_post_meta( $module_id, 'wpft_template' );
-			$module_classes = array(
-				'wpftpb-module',
-				'wpftpb-module-' . $module_id,
+			$module_id                 = $args['module_id'];
+			$template_vars             = $args['template_vars'];
+			$template                  = carbon_get_post_meta( $module_id, 'wpft_template' );
+			$module_classes            = array(
+				'wpftpb-mod',
 			);
-			$template       = '<section class="wpftpb-section"><div class="' . implode( " ", array_map( 'sanitize_html_class', $module_classes ) ) . '">' . $template . '</div></section>';
-			$output         = \Timber::compile_string( $template, $template_vars );
+			$module_wrapper_classes    = array(
+				'wpftpb-section',
+				'wpftpb-mod-wrapper-' . $module_id,
+			);
+			$static_css_classes_option = carbon_get_post_meta( $module_id, 'wpft_css_classes' );
+			if ( ! empty( $static_css_classes_option ) ) {
+				$module_wrapper_classes = array_merge( $module_wrapper_classes, explode( " ", $static_css_classes_option ) );
+			}
+			if ( ! empty( $vars_to_css = carbon_get_post_meta( $module_id, 'wpft_template_vars_to_css' ) ) ) {
+				$vars_to_css            = array_map( 'trim', explode( ',', $vars_to_css ) );
+				$intersection_keys      = array_intersect( $vars_to_css, array_keys( $template_vars ) );
+				$result                 = array_intersect_key( $template_vars, array_flip( $intersection_keys ) );
+				$result                 = array_map( 'sanitize_title_with_dashes', $result );
+				$module_wrapper_classes = array_merge( $module_wrapper_classes, $result );
+			}
+			$template = sprintf(
+				'<section class="%s"><div class="%s">%s</div></section>',
+				implode( " ", $this->sanitize_css_classes_array( $module_wrapper_classes ) ),
+				implode( " ", $this->sanitize_css_classes_array( $module_classes ) ),
+				$template
+			);
+			$output   = \Timber::compile_string( $template, $template_vars );
 			echo $output;
 		}
 
+		function sanitize_css_classes_array( $classes ) {
+			return array_map( 'sanitize_html_class', $classes );
+		}
+
 		function display_modules( $current_area_info, $post_id = null ) {
-			$post_id = ! is_null( $post_id ) ? $post_id : get_the_ID();
+
+			$post_id           = ! is_null( $post_id ) ? $post_id : get_the_ID();
 			$modules_from_post = carbon_get_post_meta( $post_id, 'wpft_modules_' . $current_area_info['cpt']['key'] . '_' . $current_area_info['area_key'] );
 			if ( empty( $modules_from_post ) && ! empty( $default_modules = $current_area_info['default_modules'] ) ) {
 				$timber          = new \Timber\Timber();
 				$context['post'] = new \Timber\Post( $post_id );
 				foreach ( $default_modules as $module ) {
 					$template_vars = wp_list_pluck( carbon_get_post_meta( $module['id'], 'wpft_template_variables' ), 'default_value', 'var_id' );
+					if ( ! empty( $inherited_modules = carbon_get_post_meta( $module['id'], 'wpft_inherited_modules' ) ) ) {
+						foreach ( $inherited_modules as $inherited_module_id ) {
+							$template_vars = array_merge( $template_vars, wp_list_pluck( carbon_get_post_meta( $inherited_module_id, 'wpft_template_variables' ), 'default_value', 'var_id' ) );
+						}
+					}
 					$this->display_module( array(
 						'module_id'     => $module['id'],
 						'template_vars' => array_merge( $context, $template_vars ),
@@ -212,35 +245,6 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Page_Builder\Modules' ) ) {
 			}
 		}
 
-		/*function create_module_fields_on_custom_cpt_old() {
-			//$test = carbon_get_theme_option( 'wpft_modules_settings' );
-			//error_log(print_r($test,true));
-
-			$modules_formatted      = $this->get_modules_posts_formatted();
-			$modules_formatted_json = json_encode( $modules_formatted );
-			$fields                 = array(
-				Field::make( 'select', 'module', __( 'Module', 'wpfactory' ) )->set_options( function () use ( $modules_formatted ) {
-
-					return $modules_formatted;
-				} )
-			);
-			$fields                 = array_merge( $fields, $this->get_dynamic_fields( array_keys( $modules_formatted ) ) );
-			Container::make( 'post_meta', __( 'Page builder', 'wpfactory' ) )
-			         ->set_datastore( new Carbon_Fields_Post_Meta_Datastore() )
-			         ->where( 'post_type', 'CUSTOM', function ( $post_type ) {
-				         $post_types = carbon_get_theme_option( 'wpft_page_builder_cpt_relation' );
-
-				         //return in_array( $post_type, $post_types );
-				         return in_array( $post_type, array('product') );
-			         } )
-			         ->add_fields( array(
-				         Field::make( 'complex', 'wpft_modules', __( 'Modules' ) )
-				              ->set_collapsed( true )
-				              ->add_fields( $fields )
-				              ->set_header_template( '<%-' . $modules_formatted_json . '[module] %>' )
-			         ) );
-		}*/
-
 		function highlight_wpfactory_menu_on_module_editing( $parent_file ) {
 			global $pagenow;
 			if ( 'post.php' === $pagenow && isset( $_GET['post'] ) && 'wpft_module' === get_post_type( $_GET['post'] ) ) {
@@ -272,7 +276,11 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Page_Builder\Modules' ) ) {
 						continue;
 					}
 					$ids_used[ $field_id ] = $field_id;
-					$field                 = Field::make( $variable['var_type'], $field_id, $variable['var_label'] );
+					$cb_field_type         = in_array( $variable['var_type'], array(
+						'url',
+						'number'
+					) ) ? 'text' : $variable['var_type'];
+					$field                 = Field::make( $cb_field_type, $field_id, $variable['var_label'] );
 					if ( 'select' === $variable['var_type'] ) {
 						$field->set_options( wp_list_pluck( $variable['select_options'], 'option_label', 'option_id' ) );
 					}
@@ -288,8 +296,10 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Page_Builder\Modules' ) ) {
 						$field->set_default_value( $default_value );
 					}
 
-					if ( 'url' === $variable['txt_attribute'] ) {
+					if ( 'url' === $variable['var_type'] ) {
 						$field->set_attribute( 'type', 'url' );
+					} elseif ( 'number' === $variable['var_type'] ) {
+						$field->set_attribute( 'type', 'number' );
 					}
 					$fields[] = $field;
 				}
@@ -323,16 +333,11 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Page_Builder\Modules' ) ) {
 						     Field::make( 'select', 'var_type', 'Type' )->set_width( '50%' )
 						          ->add_options( array(
 							          'text'   => 'Text',
+							          'url'    => 'URL',
+							          'number' => 'Number',
 							          'select' => 'Select',
 							          'image'  => 'Image'
 						          ) ),
-						     Field::make( 'select', 'txt_attribute', 'Attribute' )->set_width( '50%' )
-						          ->add_options( array(
-							          'none'   => 'None',
-							          'url'    => 'URL',
-							          'number' => 'Number'
-						          ) )
-						          ->set_conditional_logic( $this->get_var_type_conditional( 'text' ) ),
 
 						     Field::make( 'complex', 'select_options', __( 'Select options' ) )
 						          ->set_collapsed( true )
@@ -366,24 +371,34 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Page_Builder\Modules' ) ) {
 
 			Container::make( 'post_meta', __( 'Module options', 'wpfactory' ) )
 			         ->set_datastore( new Carbon_Fields_Post_Meta_Datastore() )
-				//->set_priority( 'low' )
-				     ->where( 'post_type', '=', 'wpft_module' )
-			         ->add_fields( array(
+			         ->where( 'post_type', '=', 'wpft_module' )
+			         ->add_tab( __( 'General', 'wpfactory' ), array(
 				         Field::make( 'set', 'wpft_inherited_modules', __( 'Inherit module(s)', 'wpfactory' ) )->set_options( function () {
 					         $args              = array();
 					         $modules_formatted = $this->get_modules_posts_formatted( $args );
-					         if (
-						         ( isset( $_REQUEST['post'] ) && ! empty( $post_id = $_REQUEST['post'] ) ) ||
-						         ( isset( $_REQUEST['post_ID'] ) && ! empty( $post_id = $_REQUEST['post_ID'] ) )
-					         ) {
+					         if ( ! empty( $post_id = $this->get_post_id_from_request() ) ) {
 						         unset( $modules_formatted[ $post_id ] );
 					         }
 
 					         return $modules_formatted;
 				         } )
 				              ->limit_options( 5 ),
-				         //Field::make( 'text', 'var_id', 'ID' ),
+			         ) )
+			         ->add_tab( __( 'CSS', 'wpfactory' ), array(
+				         Field::make( 'text', 'wpft_css_classes', 'CSS classes' )->set_help_text( 'Adds extra CSS classes to the module wrapper. Separate by space.' ),
+				         Field::make( 'text', 'wpft_template_vars_to_css', __( 'Template variables to CSS', 'wpfactory' ) )->set_help_text( 'Adds extra CSS classes from the Template variables to the module wrapper. Separate by comma. Use the variable Id.' )
 			         ) );
+		}
+
+		function get_post_id_from_request() {
+			if (
+				( isset( $_REQUEST['post'] ) && ! empty( $post_id = $_REQUEST['post'] ) ) ||
+				( isset( $_REQUEST['post_ID'] ) && ! empty( $post_id = $_REQUEST['post_ID'] ) )
+			) {
+				return $post_id;
+			}
+
+			return '';
 		}
 
 		function add_modules_cpt_as_wpft_submenu() {

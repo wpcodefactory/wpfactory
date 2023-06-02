@@ -28,7 +28,7 @@ var moduleTemplate = {
         indentWithTabs: true,
         matchBrackets: true,
         highlightMatches: true,
-        gutters: '20px'
+        gutters: 'test'
       });
     }
   }

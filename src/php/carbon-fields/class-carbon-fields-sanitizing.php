@@ -22,9 +22,13 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Carbon_Fields\Carbon_Fields_Sani
 	class Carbon_Fields_Sanitizing {
 		static function sanitize_field( \Carbon_Fields\Field\Field $field, $value ) {
 			switch ( $field->type ) {
+				case "text":
+					$value = sanitize_text_field( $value );
+					break;
 				default:
 					$value = wp_kses_post( $value );
 			}
+
 			return $value;
 		}
 	}
