@@ -46,7 +46,7 @@
 
 // Carbon field select type
 .cf-container {
-  .wp-core-ui select {
+  .wp-core-ui select , .cf-select__input{
     width: 100%;
     max-width: none;
   }

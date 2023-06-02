@@ -45,7 +45,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Home' ) ) {
 
 		function add_pagebuilder_container() {
 			$post_id = get_the_ID();
-			do_action( 'wpft_modules_wrapper', $post_id );
+			do_action( 'wpft_page_modules_wrapper', $post_id );
 		}
 	}
 }

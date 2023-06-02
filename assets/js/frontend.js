@@ -24,6 +24,14 @@ var map = {
 		"./src/js/modules/menus.js",
 		"src_js_modules_menus_js"
 	],
+	"./module-template": [
+		"./src/js/modules/module-template.js",
+		"src_js_modules_module-template_js"
+	],
+	"./module-template.js": [
+		"./src/js/modules/module-template.js",
+		"src_js_modules_module-template_js"
+	],
 	"./search": [
 		"./src/js/modules/search.js",
 		"src_js_modules_search_js"

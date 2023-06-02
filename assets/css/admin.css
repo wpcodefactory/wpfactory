@@ -36,7 +36,7 @@
   padding: 5px 10px;
 }
 
-.cf-container .wp-core-ui select {
+.cf-container .wp-core-ui select, .cf-container .cf-select__input {
   width: 100%;
   max-width: none;
 }

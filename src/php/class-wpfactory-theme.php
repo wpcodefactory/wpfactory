@@ -89,6 +89,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 				'\\WPFactory\\WPFactory_Theme\\Component\\Cart',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Sidebar',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Home',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Product',
 			);
 		}
 
@@ -138,6 +139,9 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 				case 'after_setup_theme':
 					// Translation.
 					load_theme_textdomain( 'wpfactory', get_template_directory() . '/languages' );
+					// Disable Gutenberg.
+					// Disable Gutenberg on the back end.
+					add_filter( 'use_block_editor_for_post', '__return_false' );
 					break;
 				case 'init':
 					// Remove global styles and front SVG.
