@@ -15,20 +15,21 @@ var moduleTemplate = {
   handleCodeMirror: function handleCodeMirror() {
     var myTextArea = document.querySelector(".cf-container-carbon_fields_container_template .cf-textarea__input");
     if (myTextArea) {
-      CodeMirror.fromTextArea(myTextArea, {
+      var editor = CodeMirror.fromTextArea(myTextArea, {
         mode: {
           name: 'twig',
           base: 'text/html'
         },
         theme: 'default',
         tabSize: 4,
+        indentUnit: 4,
         lineNumbers: true,
+        lineWrapping: true,
         styleActiveSelected: true,
         styleActiveLine: true,
         indentWithTabs: true,
         matchBrackets: true,
-        highlightMatches: true,
-        gutters: 'test'
+        highlightMatches: true
       });
     }
   }

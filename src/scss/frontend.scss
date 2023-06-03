@@ -18,7 +18,16 @@
 //"./node_modules/bulma/sass/layout/all";
  */
 @import
-"./node_modules/bulma/sass/utilities/all";
+"./node_modules/bulma/sass/utilities/all",
+"./node_modules/bulma/sass/helpers/spacing",
+"./node_modules/bulma/sass/helpers/visibility",
+"./node_modules/bulma/sass/grid/columns";
+
+// Storefront
+/*@import
+"../../../storefront/style.css",
+"../../../storefront/assets/css/woocommerce/woocommerce.css"
+;*/
 
 // WPFactory theme
 @import
@@ -30,5 +39,8 @@
 "modules/cart",
 "modules/footer",
 "modules/content",
+"modules/product",
 "modules/page-builder"
 ;
+
+

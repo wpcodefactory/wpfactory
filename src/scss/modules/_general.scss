@@ -7,6 +7,8 @@ $color1: #14243a;
 $color2: #0ea0dc;
 $color3: #727C89;
 $color4: #989898;
+$color5: #1A2DC9;
+
 
 // Container
 /*.wpf-container {
@@ -24,21 +26,6 @@ $color4: #989898;
   }
 }*/
 
-.col-full{
-  @include desktop {
-    max-width:$desktop;
-  }
-  @include widescreen {
-    max-width: $desktop;
-  }
-  @include fullhd {
-    max-width: $widescreen;
-  }
-}
-// Main wrapper
-#page {
-  padding: 16px 0 0 0;
-}
 
 // Links
 /*a {
@@ -48,7 +35,7 @@ $color4: #989898;
     color: $color2;
   }
 }*/
-a:focus{
+a:focus {
   outline-style: none;
   box-shadow: none;
   border-color: transparent;
@@ -57,16 +44,65 @@ a:focus{
 }
 
 // Hide menu item labels
-.wpft-hide-label{
-  .hide{
-    display:none !important;
+.wpft-hide-label {
+  .hide {
+    display: none !important;
   }
 }
 
 // Round white box
-.wpft-round-white-box{
+.wpft-round-white-box {
   background: #fff;
   z-index: 2;
   border-radius: 5px;
   box-shadow: 0px 11px 20px -12px rgba(0, 0, 0, 0.45);
+}
+
+// Circle background
+.main-bkg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  display: none;
+
+  svg {
+    position: relative;
+    top: -8%;
+    right: -3%;
+    width: 100%;
+    height: 100%;
+    @include mobile {
+      height: auto;
+      right: 35%;
+      top: 0;
+      width: auto;
+    }
+  }
+
+  @include mobile {
+    position: fixed;
+  }
+
+}
+
+.single-product, .home {
+  .main-bkg {
+    display: block;;
+  }
+}
+
+.img-align-right {
+  margin-left: auto;
+}
+
+.column {
+  @include mobile {
+    //margin-bottom: 30px;
+  }
+  &:last-child{
+    margin-bottom:0;
+  }
 }

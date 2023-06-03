@@ -7,7 +7,7 @@
   height: 0px;
   transition: height 0.3s ease-in-out;
   overflow: hidden;
-  font-size: 15px;
+  font-size: 18px;
 
   a {
     text-decoration: none;
@@ -17,7 +17,8 @@
 
   li {
     margin: 0px 0;
-    border-bottom: 1px solid #efefef;
+    text-align:center;
+    //border-bottom: 1px solid #efefef;
 
     &:last-child {
       border: none;
@@ -26,7 +27,11 @@
 
   .menu {
     margin: 50px 0 0px 0;
+    //border-bottom: 1px solid #efefef;
   }
+
+
+
 }
 
 // Hamburger Menu that should open the handheld menu

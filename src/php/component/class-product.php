@@ -24,16 +24,16 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Product' ) ) {
 		}
 
 		function setup_woocommerce_product() {
-			remove_all_actions('woocommerce_before_single_product');
-			remove_all_actions('woocommerce_before_single_product_summary');
-			remove_all_actions('woocommerce_single_product_summary');
-			remove_all_actions('woocommerce_after_single_product_summary');
-			remove_all_actions('woocommerce_after_single_product');
+			remove_all_actions( 'woocommerce_before_single_product' );
+			remove_all_actions( 'woocommerce_before_single_product_summary' );
+			remove_all_actions( 'woocommerce_single_product_summary' );
+			remove_all_actions( 'woocommerce_after_single_product_summary' );
+			remove_all_actions( 'woocommerce_after_single_product' );
 
 			add_action( 'woocommerce_single_product_summary', array( $this, 'setup_page_builder' ) );
 		}
 
-		function setup_page_builder(){
+		function setup_page_builder() {
 			/*global $product;
 			$test = get_the_ID();
 			error_log(print_r($test,true));*/

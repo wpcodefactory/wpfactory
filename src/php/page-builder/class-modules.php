@@ -123,8 +123,8 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Page_Builder\Modules' ) ) {
 			}
 			$template = sprintf(
 				'<section class="%s"><div class="%s">%s</div></section>',
-				implode( " ", $this->sanitize_css_classes_array( $module_wrapper_classes ) ),
-				implode( " ", $this->sanitize_css_classes_array( $module_classes ) ),
+				implode( " ", $this->sanitize_css_classes_array( apply_filters( 'wpft_module_wrapper_css_classes', $module_wrapper_classes ) ) ),
+				implode( " ", $this->sanitize_css_classes_array( apply_filters( 'wpft_module_css_classes', $module_classes ) ) ),
 				$template
 			);
 			$output   = \Timber::compile_string( $template, $template_vars );
@@ -331,13 +331,14 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Page_Builder\Modules' ) ) {
 						     Field::make( 'text', 'var_id', 'ID' )->set_width( '30%' ),
 						     Field::make( 'text', 'default_value', 'default_value' )->set_width( '30%' ),
 						     Field::make( 'select', 'var_type', 'Type' )->set_width( '50%' )
-						          ->add_options( array(
-							          'text'   => 'Text',
-							          'url'    => 'URL',
-							          'number' => 'Number',
-							          'select' => 'Select',
-							          'image'  => 'Image'
-						          ) ),
+							     ->add_options( array(
+								     'text'     => 'Text',
+								     'url'      => 'URL',
+								     'textarea' => 'Textarea',
+								     'number'   => 'Number',
+								     'select'   => 'Select',
+								     'image'    => 'Image'
+							     ) ),
 
 						     Field::make( 'complex', 'select_options', __( 'Select options' ) )
 						          ->set_collapsed( true )

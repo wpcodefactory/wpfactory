@@ -1,5 +1,70 @@
+// Main content wrappers
+.col-full{
+  @include desktop {
+    max-width:$desktop;
+  }
+  @include widescreen {
+    max-width: $desktop;
+  }
+  @include fullhd {
+    max-width: $widescreen;
+  }
+}
+#page {
+  padding: 16px 0 0 0;
+  position:relative;
+  z-index:2;
+}
+.page-template-template-homepage:not(.has-post-thumbnail) .site-main{
+  @include mobile{
+    padding-top:10px;
+  }
+}
+
+// Titles
 .entry-title{
   font-size:30px;
   font-weight: 800;
   color:$color1;
+
+  &.title-size-2{
+    font-size:33px;
+    @include mobile{
+      font-size:30px;
+    }
+  }
+
+  &.title-size-3{
+    font-size:55px;
+    @include mobile{
+      font-size:40px;
+    }
+  }
+}
+
+// Buttons
+.button{
+  padding:12px 28px;
+  font-size:14px;
+  border-radius: 36px;
+  color:#fff;
+  font-weight: 500;
+  &.size-2{
+    font-weight:700;
+    padding:15px 30px;
+    font-size:16px;
+    @include mobile{
+      padding:13px 23px;
+      font-size:14px;
+    }
+  }
+}
+.button1{
+  @extend .button;
+  background: $color5;
+}
+
+.button2{
+  @extend .button;
+  background: $color3;
 }

@@ -12,6 +12,7 @@
 .site-header{
   padding-top:12px;
   border:none;
+  background:none;
 }
 
 // Logo
@@ -34,6 +35,9 @@
 // Breadcrumb
 .storefront-breadcrumb{
   padding-top:35px;
+  @include mobile{
+    margin-bottom:50px;
+  }
 }
 .woocommerce-breadcrumb{
   a:first-of-type::before{
