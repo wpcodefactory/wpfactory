@@ -30,14 +30,11 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Product' ) ) {
 			remove_all_actions( 'woocommerce_after_single_product_summary' );
 			remove_all_actions( 'woocommerce_after_single_product' );
 
-			add_action( 'woocommerce_single_product_summary', array( $this, 'setup_page_builder' ) );
+			//add_action( 'woocommerce_single_product_summary', array( $this, 'setup_page_builder' ) );
 		}
 
-		function setup_page_builder() {
-			/*global $product;
-			$test = get_the_ID();
-			error_log(print_r($test,true));*/
+		/*function setup_page_builder() {
 			do_action( 'wpft_product_modules_wrapper' );
-		}
+		}*/
 	}
 }

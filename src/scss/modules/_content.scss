@@ -26,6 +26,7 @@
   font-size:30px;
   font-weight: 800;
   color:$color1;
+  letter-spacing: -1px;
 
   &.title-size-2{
     font-size:33px;
@@ -39,6 +40,10 @@
     @include mobile{
       font-size:40px;
     }
+  }
+
+  &.title-size-4{
+    font-size:45px;
   }
 }
 
@@ -68,3 +73,80 @@
   @extend .button;
   background: $color3;
 }
+
+.button.add_to_cart_button {
+  width:100%;
+  text-align:center;
+  padding:15px 28px;
+  font-size:16px;
+  font-weight:700;
+  &:before{
+    @include sprite($icon-cart-2);
+    content:"";
+    display: inline-block;
+    vertical-align: top;
+    margin:0 10px 0 0;
+  }
+}
+
+// Typography
+
+// Text Colors
+.txt-color-1{
+  color:$color1
+}
+.txt-color-2{
+  color:$color2
+}
+.txt-color-3{
+  color:$color3
+}
+.txt-color-4{
+  color:$color4
+}
+.txt-color-5{
+  color:$color5
+}
+.txt-color-6{
+  color:$color6
+}
+.txt-color-7{
+  background:$color7;
+  background-clip:text;
+  -webkit-text-fill-color: transparent;
+}
+.txt-color-8{
+  color:$color8;
+}
+.txt-color-white{
+  color:#fff;
+}
+.txt-size-1{
+  font-size:14px
+}
+.txt-size-2{
+  font-size:16px
+}
+.txt-size-3{
+  font-size:20px
+}
+.txt-size-4{
+  font-size:30px
+}
+.txt-size-5{
+  font-size:40px
+}
+.has-text-centered {
+  text-align: center;
+}
+.txt-weight-1{
+  font-weight:500;
+}
+.txt-weight-2{
+  font-weight:700;
+}
+.txt-weight-3{
+  font-weight:800;
+}
+
+

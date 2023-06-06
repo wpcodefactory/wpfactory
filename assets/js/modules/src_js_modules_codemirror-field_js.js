@@ -1,15 +1,15 @@
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["src_js_modules_module-template_js"],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([["src_js_modules_codemirror-field_js"],{
 
-/***/ "./src/js/modules/module-template.js":
-/*!*******************************************!*\
+/***/ "./src/js/modules/codemirror-field.js":
+/*!********************************************!*\
   !*** ./src/js/modules/codemirror-field.js ***!
-  \*******************************************/
+  \********************************************/
 /***/ ((module) => {
 
-var moduleTemplate = {
+var codeMirrorField = {
   init: function init() {
     setTimeout(function () {
-      moduleTemplate.handleCodeMirror();
+      codeMirrorField.handleCodeMirror();
     }, 1250);
   },
   handleCodeMirror: function handleCodeMirror() {
@@ -34,9 +34,9 @@ var moduleTemplate = {
     }
   }
 };
-module.exports = moduleTemplate;
+module.exports = codeMirrorField;
 
 /***/ })
 
 }]);
-//# sourceMappingURL=src_js_modules_module-template_js.js.map
+//# sourceMappingURL=src_js_modules_codemirror-field_js.js.map

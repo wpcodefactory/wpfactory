@@ -75,10 +75,68 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 			add_filter( 'timber/twig', array( $this, 'add_functions_to_twig' ) );
 		}
 
+		/**
+		 * wpft_get_prod_variation_by_attributes.
+		 *
+		 * @version 1.0.0
+		 * @since   1.0.0
+		 *
+		 * @param $twig
+		 *
+		 * @return mixed
+		 */
 		function add_functions_to_twig( $twig ) {
 			$twig->addFunction( new \Timber\Twig_Function( 'wpft_get_wc_url', array( $this, 'wpft_get_wc_url' ) ) );
+			$twig->addFunction( new \Timber\Twig_Function( 'sprintf', 'sprintf' ) );
+			$twig->addFunction( new \Timber\Twig_Function( 'wpft_add_to_cart_url', array( $this, 'wpft_add_to_cart_url' ) ) );
+			$twig->addFunction( new \Timber\Twig_Function( 'wpft_get_prod_variation_by_attributes', array(
+				$this,
+				'wpft_get_prod_variation_by_attributes'
+			) ) );
 
 			return $twig;
+		}
+
+		/**
+		 * add_to_cart_url.
+		 *
+		 * @version 1.0.0
+		 * @since   1.0.0
+		 *
+		 * @param $prod_id
+		 *
+		 * @return string
+		 */
+		function wpft_add_to_cart_url( $prod_id ) {
+			return do_shortcode( '[add_to_cart_url id="' . $prod_id . '"]' );
+		}
+
+		/**
+		 * wpft_get_prod_variation_by_attributes.
+		 *
+		 * @version 1.0.0
+		 * @since   1.0.0
+		 *
+		 * @param $product
+		 * @param $required_attributes
+		 *
+		 * @return mixed|string
+		 */
+		function wpft_get_prod_variation_by_attributes( $product, $required_attributes ) {
+			$returned_variation = '';
+			if ( 'variable' === $product->get_type() && ! empty( $variations = $product->get_available_variations() ) ) {
+				foreach ( $variations as $variation ) {
+					$formatted_attributes = call_user_func_array( 'array_merge', array_map( function ( $k, $v ) {
+						return array( preg_replace( '/^attribute_pa_/', '', $k ) => $v );
+					}, array_keys( $variation['attributes'] ), $variation['attributes'] ) );
+					if ( count( $required_attributes ) === count( array_intersect_assoc( $formatted_attributes, $required_attributes ) ) ) {
+						$returned_variation = $variation;
+						break;
+					}
+				}
+			}
+
+			return $returned_variation;
 		}
 
 		function wpft_get_wc_url( $wc_page_label = '' ) {
@@ -119,6 +177,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 				'\\WPFactory\\WPFactory_Theme\\Component\\Sidebar',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Home',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Product',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Websites',
 			);
 		}
 
@@ -177,7 +236,9 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 					load_theme_textdomain( 'wpfactory', get_template_directory() . '/languages' );
 					// Disable Gutenberg on the back end.
 					add_filter( 'use_block_editor_for_post', '__return_false' );
-					add_image_size( 'size-1', 104, 112 );
+					add_image_size( 'size-1', 104, 112 ); // Product icon
+					add_image_size( 'size-2', 384 ); // Product feature images
+					add_image_size( 'size-3', 160, 40 ); // Product feature images
 					break;
 				case 'init':
 					// Remove global styles and front SVG.

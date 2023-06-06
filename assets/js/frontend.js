@@ -8,6 +8,14 @@
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var map = {
+	"./codemirror-field": [
+		"./src/js/modules/codemirror-field.js",
+		"src_js_modules_codemirror-field_js"
+	],
+	"./codemirror-field.js": [
+		"./src/js/modules/codemirror-field.js",
+		"src_js_modules_codemirror-field_js"
+	],
 	"./general": [
 		"./src/js/modules/general.js",
 		"src_js_modules_general_js"
@@ -23,14 +31,6 @@ var map = {
 	"./menus.js": [
 		"./src/js/modules/menus.js",
 		"src_js_modules_menus_js"
-	],
-	"./module-template": [
-		"./src/js/modules/module-template.js",
-		"src_js_modules_module-template_js"
-	],
-	"./module-template.js": [
-		"./src/js/modules/module-template.js",
-		"src_js_modules_module-template_js"
 	],
 	"./search": [
 		"./src/js/modules/search.js",

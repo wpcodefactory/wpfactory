@@ -70,7 +70,7 @@ const devConfig = {
 
         new SpritesmithPlugin({
             src: {
-                cwd: path.resolve(__dirname, 'src/img/icons'),
+                cwd: path.resolve(__dirname, 'src/img/sprite'),
                 glob: '*.png'
             },
             target: {

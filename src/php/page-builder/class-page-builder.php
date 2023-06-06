@@ -26,8 +26,12 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Page_Builder\Page_Builder' ) ) {
 		 * @return void
 		 */
 		function init() {
+			// Modules
 			$modules = new Modules();
 			$modules->init();
+			// Codemirror field
+			$codemirror_field = new Codemirror_Field();
+			$codemirror_field->init();
 		}
 	}
 }

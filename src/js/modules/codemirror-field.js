@@ -1,22 +1,19 @@
-const moduleTemplate = {
+const codeMirrorField = {
     init: function () {
-
-
         setTimeout(function () {
-            moduleTemplate.handleCodeMirror()
-        }, 1000);
-
+            codeMirrorField.handleCodeMirror()
+        }, 1250);
     },
     handleCodeMirror: function () {
         let myTextArea = document.querySelector(".cf-container-carbon_fields_container_template .cf-textarea__input");
         if (myTextArea) {
-            var editor = CodeMirror.fromTextArea(myTextArea, {
+            let editor = CodeMirror.fromTextArea(myTextArea, {
                 mode: {name: 'twig', base: 'text/html'},
                 theme: 'default',
                 tabSize: 4,
                 indentUnit: 4,
                 lineNumbers: true,
-                lineWrapping:true,
+                lineWrapping: true,
                 styleActiveSelected: true,
                 styleActiveLine: true,
                 indentWithTabs: true,
@@ -24,8 +21,6 @@ const moduleTemplate = {
                 highlightMatches: true,
             });
         }
-
-
     }
 }
-module.exports = moduleTemplate;
+module.exports = codeMirrorField;

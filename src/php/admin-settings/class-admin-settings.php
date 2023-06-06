@@ -120,33 +120,6 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Admin_Settings\Admin_Settings' )
 			// Main admin style.
 			wp_enqueue_style( 'wpfactory-admin-style', get_theme_file_uri( '/assets/css/admin' . $suffix . '.css' ), '', $version );
 
-			// Codemirror.
-			wp_enqueue_style( 'wpfactory-codemirror', get_theme_file_uri( '/assets/css/vendor/codemirror.css' ), '', $version );
-			wp_enqueue_script( 'wpfactory-codemirror-js',
-				get_theme_file_uri( '/assets/js/vendor/codemirror.js' ),
-				array( 'jquery', 'carbon-fields-vendor' ),
-				$version,
-				false
-			);
-			wp_enqueue_script( 'wpfactory-codemirror-mode',
-				get_theme_file_uri( '/assets/js/vendor/codemirror-twig-mode.js' ),
-				array( 'jquery', 'carbon-fields-vendor' ),
-				$version,
-				false
-			);
-			wp_enqueue_script( 'wpfactory-codemirror-xml-mode',
-				get_theme_file_uri( '/assets/js/vendor/codemirror-xml-mode.js' ),
-				array( 'jquery', 'carbon-fields-vendor' ),
-				$version,
-				false
-			);
-			wp_enqueue_script( 'wpfactory-codemirror-multiplex-mode',
-				get_theme_file_uri( '/assets/js/vendor/codemirror-multiplex-mode.js' ),
-				array( 'jquery', 'carbon-fields-vendor' ),
-				$version,
-				false
-			);
-
 			// Main frontend script.
 			wp_enqueue_script( 'wpfactory-admin-js',
 				get_theme_file_uri( '/assets/js/admin' . $suffix . '.js' ),
@@ -154,9 +127,9 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Admin_Settings\Admin_Settings' )
 				$version,
 				false
 			);
-			wp_add_inline_script( 'wpfactory-admin-js', 'const WPFTAJS = ' . json_encode( apply_filters( 'wpft_frontend_js_info', array(
+			wp_add_inline_script( 'wpfactory-admin-js', 'const WPFTAJS = ' . json_encode( apply_filters( 'wpft_admin_js_info', array(
 					'themeURI'        => get_theme_file_uri(),
-					'modulesRequired' => apply_filters( 'wpft_admin_js_modules_required', array('module-template') )
+					'modulesRequired' => apply_filters( 'wpft_admin_js_modules_required', array() )
 				) ) ), 'before'
 			);
 
@@ -171,7 +144,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Admin_Settings\Admin_Settings' )
 		 */
 		function create_settings_page() {
 			$container = Container::make( 'theme_options', __( 'WPFactory settings', 'wpfactory' ) )
-				->set_datastore( new Carbon_Fields_Theme_Options_Datastore() )
+			                      ->set_datastore( new Carbon_Fields_Theme_Options_Datastore() )
 				//->set_page_parent( 'wpft' ) // reference to a top level container
 				                  ->set_page_menu_title( __( 'Theme settings', 'wpfactory' ) )
 			                      ->set_icon( get_theme_file_uri( '/src/img/wpfactory-logo.png' ) );

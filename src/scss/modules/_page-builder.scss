@@ -1,7 +1,26 @@
+// Default modules and sections
+.wpftpb-section {
+  padding-bottom: 60px;
+  padding-top: 60px;
+  background: #fff;
+
+  &.layout_reverse {
+    .columns {
+      flex-direction: row-reverse;
+
+      .mod-img-wrapper img {
+        margin-right: 0;
+        margin-left: 0;
+      }
+    }
+  }
+}
+
 .wpftpb-mod {
   .mod-img-wrapper {
-    padding-bottom: 35px;
-    padding-top:35px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+
     img {
       box-shadow: 0px 11px 20px -12px rgba(0, 0, 0, 0.45);
       margin-left: auto;
@@ -12,8 +31,41 @@
   }
 }
 
+// Product feature section
+.prod-feature-section {
+  padding-bottom: 0px;
+
+  .mod-img-wrapper {
+    background: center no-repeat url('/src/img/img-bkg.png');
+    width: 442px;
+    min-height: 500px;
+    //text-align:center;
+    position: relative;
+    display: grid;
+    place-content: center;
+
+    img {
+      margin: 0;
+    }
+
+    @include mobile {
+      width: auto;
+      background-size: contain;
+      background-repeat: no-repeat;
+      min-height: auto;
+    }
+  }
+
+  &:last-child {
+    padding-bottom: 60px;
+  }
+}
+
 // Intro section
 .intro-section {
+  padding-top: 0;
+  background: none;
+
   .wpft-mod-footer {
     @include mobile {
       justify-content: space-around;
@@ -22,7 +74,7 @@
 
   .wpft-mod-description {
     @include mobile {
-      p{
+      p {
         margin-bottom: 20px;
       }
     }
@@ -57,6 +109,59 @@
       color: #A1A7B1;
       display: inline-block;
       max-width: min-content;
+    }
+  }
+}
+
+.round-check-list-item{
+  font-size:14px;
+  &:before{
+    content:" ";
+    display:inline-block;
+    @include sprite($icon-ok);
+    vertical-align: text-top;
+    margin:0 10px 0 0;
+  }
+}
+
+// Pricing section
+.wpftpb-section {
+  &.pricing-section {
+    @extend .bkg-blue;
+
+    .box-license-type {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .box-license-title {
+      padding: 12px 25px;
+      background: #F2F5FA;
+      @extend .txt-color-5;
+      @extend .txt-size-3;
+      @extend .txt-weight-3;
+    }
+
+    .box-license-content {
+      padding: 12px 25px 26px;
+    }
+
+    .variation_features {
+      dt, dd {
+
+      }
+
+      dt {
+        @extend .round-check-list-item;
+        margin-right: 5px;
+        float: left;
+      }
+
+      dd {
+
+      }
+
     }
   }
 }
