@@ -1,7 +1,7 @@
 // Main content wrappers
-.col-full{
+.col-full {
   @include desktop {
-    max-width:$desktop;
+    max-width: $desktop;
   }
   @include widescreen {
     max-width: $desktop;
@@ -10,143 +10,198 @@
     max-width: $widescreen;
   }
 }
+
 #page {
   padding: 16px 0 0 0;
-  position:relative;
-  z-index:2;
+  position: relative;
+  z-index: 2;
 }
-.page-template-template-homepage:not(.has-post-thumbnail) .site-main{
-  @include mobile{
-    padding-top:10px;
+
+.page-template-template-homepage:not(.has-post-thumbnail) .site-main {
+  @include mobile {
+    padding-top: 10px;
+  }
+}
+
+.site-content {
+  padding-top: 48px;
+}
+
+.content-area{
+  width: 100%;
+  float: left;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.storefront-full-width-content {
+  .site-content {
+    padding-top: 0;
   }
 }
 
 // Titles
-.entry-title{
-  font-size:30px;
+.entry-title {
+  font-size: 30px;
   font-weight: 800;
-  color:$color1;
+  color: $color1;
   letter-spacing: -1px;
+  @include mobile{
+    font-size:24px;
+  }
 
-  &.title-size-2{
-    font-size:33px;
-    @include mobile{
-      font-size:30px;
+  &.title-size-2 {
+    font-size: 33px;
+    @include mobile {
+      font-size: 30px;
     }
   }
 
-  &.title-size-3{
-    font-size:55px;
-    @include mobile{
-      font-size:40px;
+  &.title-size-3 {
+    font-size: 55px;
+    @include mobile {
+      font-size: 40px;
     }
   }
 
-  &.title-size-4{
-    font-size:45px;
+  &.title-size-4 {
+    font-size: 45px;
   }
 }
 
 // Buttons
-.button{
-  padding:12px 28px;
-  font-size:14px;
-  border-radius: 36px;
-  color:#fff;
+.button, .submit {
+  padding: 12px 28px;
+  font-size: 14px;
+  border-radius: 36px !important;
+  color: #fff;
   font-weight: 500;
-  &.size-2{
-    font-weight:700;
-    padding:15px 30px;
-    font-size:16px;
-    @include mobile{
-      padding:13px 23px;
-      font-size:14px;
+
+  &.size-2, &.submit {
+    font-weight: 700;
+    padding: 15px 30px;
+    font-size: 16px;
+    @include mobile {
+      padding: 13px 23px;
+      font-size: 14px;
     }
   }
 }
-.button1{
+
+.button1 {
   @extend .button;
   background: $color5;
 }
 
-.button2{
+.button2 {
   @extend .button;
   background: $color3;
 }
 
 .button.add_to_cart_button {
-  width:100%;
-  text-align:center;
-  padding:15px 28px;
-  font-size:16px;
-  font-weight:700;
-  &:before{
+  width: 100%;
+  text-align: center;
+  padding: 15px 28px;
+  font-size: 16px;
+  font-weight: 700;
+
+  &:before {
     @include sprite($icon-cart-2);
-    content:"";
+    content: "";
     display: inline-block;
     vertical-align: top;
-    margin:0 10px 0 0;
+    margin: 0 10px 0 0;
   }
 }
 
 // Typography
 
 // Text Colors
-.txt-color-1{
-  color:$color1
+.txt-color-1 {
+  color: $color1
 }
-.txt-color-2{
-  color:$color2
+
+.txt-color-2 {
+  color: $color2
 }
-.txt-color-3{
-  color:$color3
+
+.txt-color-3 {
+  color: $color3
 }
-.txt-color-4{
-  color:$color4
+
+.txt-color-4 {
+  color: $color4
 }
-.txt-color-5{
-  color:$color5
+
+.txt-color-5 {
+  color: $color5
 }
-.txt-color-6{
-  color:$color6
+
+.txt-color-6 {
+  color: $color6
 }
-.txt-color-7{
-  background:$color7;
-  background-clip:text;
+
+.txt-color-7 {
+  background: $color7;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.txt-color-8{
-  color:$color8;
+
+.txt-color-8 {
+  color: $color8;
 }
-.txt-color-white{
-  color:#fff;
+
+.txt-color-white {
+  color: #fff;
 }
-.txt-size-1{
-  font-size:14px
+
+.txt-size-1 {
+  font-size: 14px
 }
-.txt-size-2{
-  font-size:16px
+
+.txt-size-2 {
+  font-size: 16px
 }
-.txt-size-3{
-  font-size:20px
+
+.txt-size-3 {
+  font-size: 20px
 }
-.txt-size-4{
-  font-size:30px
+
+.txt-size-4 {
+  font-size: 30px
 }
-.txt-size-5{
-  font-size:40px
+
+.txt-size-5 {
+  font-size: 40px
 }
+
 .has-text-centered {
   text-align: center;
 }
-.txt-weight-1{
-  font-weight:500;
-}
-.txt-weight-2{
-  font-weight:700;
-}
-.txt-weight-3{
-  font-weight:800;
+
+.txt-weight-1 {
+  font-weight: 500;
 }
 
+.txt-weight-2 {
+  font-weight: 700;
+}
 
+.txt-weight-3 {
+  font-weight: 800;
+}
+
+// Links
+/*a {
+  color: $color1;
+
+  &:link:hover {
+    color: $color2;
+  }
+}*/
+
+/*.wpft-article-container{
+  a{
+    color:$color2;
+  }
+}*/

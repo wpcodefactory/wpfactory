@@ -7,7 +7,7 @@
  * @author  WPFactory
  */
 
-namespace WPFactory\WPFactory_Theme\Page_Builder;
+namespace WPFactory\WPFactory_Theme\Component\Page_Builder;
 
 use Carbon_Fields\Container;
 use Carbon_Fields\Field;
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly
 
-if ( ! class_exists( 'WPFactory\WPFactory_Theme\Page_Builder\Codemirror_Field' ) ) {
+if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Codemirror_Field' ) ) {
 
 	class Codemirror_Field {
 		function init() {

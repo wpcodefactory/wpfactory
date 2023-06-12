@@ -28,24 +28,22 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Sidebar' ) ) {
 		 * @return void
 		 */
 		function init() {
-			// Leabe sidebar only on shop.
+			// Leave sidebar only on shop.
 			add_action( 'get_header', array( $this, 'leave_sidebar_on_shop_only' ) );
-			add_filter( 'body_class', array( $this, 'set_full_width_css_on_all_pages_but_shop' ) );
+			add_filter( 'body_class', array( $this, 'handle_sidebar_body_css' ), 90 );
 		}
 
-		/**
-		 * @version 1.0.0
-		 * @since   1.0.0
-		 *
-		 * @param $classes
-		 *
-		 * @return mixed
-		 */
-		function set_full_width_css_on_all_pages_but_shop( $classes ) {
+		function handle_sidebar_body_css( $classes ) {
+			$left_or_right = get_theme_mod( 'storefront_layout' );
+			$sidebar_class = $left_or_right . '-sidebar';
 			if (
-				wpft_is_current_page_full_width_content()
+				wpft_does_current_page_have_sidebar()
 			) {
-				$classes[] = 'storefront-full-width-content';
+				$classes[] = $sidebar_class;
+			} else {
+				if ( in_array( $sidebar_class, $classes ) ) {
+					unset( $classes[ array_search( $sidebar_class, $classes ) ] );
+				}
 			}
 
 			return $classes;
@@ -59,7 +57,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Sidebar' ) ) {
 		 */
 		function leave_sidebar_on_shop_only() {
 			if (
-				wpft_is_current_page_full_width_content()
+				! wpft_does_current_page_have_sidebar()
 			) {
 				remove_action( 'storefront_sidebar', 'storefront_get_sidebar', 10 );
 			}

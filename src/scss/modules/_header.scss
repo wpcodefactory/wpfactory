@@ -35,6 +35,8 @@
 // Breadcrumb
 .storefront-breadcrumb{
   padding-top:35px;
+  padding-bottom:0;
+  margin-bottom:45px;
   @include mobile{
     margin-bottom:50px;
   }

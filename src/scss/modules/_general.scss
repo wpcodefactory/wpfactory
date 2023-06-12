@@ -28,14 +28,7 @@ $color6: #A1A7B1;
 $color7: linear-gradient(180deg, #1A2DC9 calc(30% + 1px), #02F4A1 calc(75% + 1px)), linear-gradient(0deg, #FFFFFF, #FFFFFF);
 $color8: #435062;
 
-// Links
-/*a {
-  color: $color1;
 
-  &:link:hover {
-    color: $color2;
-  }
-}*/
 a:focus {
   outline-style: none;
   box-shadow: none;
@@ -133,4 +126,11 @@ a:focus {
 
 .is-justify-content-space-between {
   justify-content: space-between;
+}
+
+.only-mobile-flex-direction-col-reverse{
+  @include mobile{
+    display:flex;
+    flex-direction: column-reverse;
+  }
 }

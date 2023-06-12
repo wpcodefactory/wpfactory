@@ -10,8 +10,7 @@
 ?>
 
 <!--</div>--><!-- .col-full -->
-<?php if ( ! wpft_is_current_page_full_width_content() ) : ?>
-</div><?php endif; ?>
+<?php do_action( 'wpft_col_full_close' ); ?>
 </div><!-- #content -->
 
 <?php do_action( 'storefront_before_footer' ); ?>
@@ -55,6 +54,7 @@
         <circle opacity="0.12" cx="810" cy="392" r="809" stroke="#1A2DC9" stroke-opacity="0.06" stroke-width="2"/>
     </svg>
 </div>
+<div class="blog-bkg"></div>
 
 
 </body>

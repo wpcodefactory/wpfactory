@@ -1,0 +1,397 @@
+.wpft-article-container {
+  background: #fff;
+  padding: 55px;
+  margin-top: -9vw;
+
+  a {
+    color: $color1;
+
+    &:hover {
+      color: $color2;
+    }
+  }
+
+  @include mobile {
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+    margin-top: -20px;
+  }
+
+  /*@include fullhd{
+    margin-top:-14vw;
+  }*/
+  //margin-top:-10%;
+  z-index: 2;
+  position: relative;
+  border-radius: 12px;
+
+  h1.entry-title {
+    margin-bottom: 30px;
+  }
+}
+
+.post-info {
+  .entry-taxonomy {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .edit-link {
+    margin-bottom: 36px;
+  }
+
+  .author-blog-role {
+    float: left;
+    @extend .is-narrow;
+  }
+
+  @include mobile {
+    display: none;
+  }
+}
+
+.wptf-post-is-mobile {
+  display: none;
+  border-bottom:1px solid #E3E5E7;
+  padding:0 0 18px 0;
+  margin-bottom:25px;
+  @include mobile {
+    display: block;
+  }
+
+  .wpft-post-author-container {
+    margin: 0;
+
+    .column {
+      padding-top: 7px;
+    }
+  }
+
+  .wpft-possible-column {
+    @extend .column;
+    @extend .is-mobile;
+  }
+
+  .post-info {
+    @include mobile {
+      display: block;
+      .wpft-possible-column {
+
+      }
+    }
+  }
+
+  .edit-link {
+    display: none;
+  }
+}
+
+.wpft-post-date {
+  color: $color3;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0 0 0 25px;
+}
+
+.wpft-blog-author-bio {
+  color: $color1;
+  font-size: 16px;
+}
+
+.post .wpft-post-author-container {
+  //margin-top: 26px;
+}
+
+.wpft-post-author-container {
+  @extend .columns;
+  //margin-top: 26px;
+  font-size: 12px;
+  color: $color3;
+
+  img {
+    border-radius: 12px;
+  }
+
+  .author-title {
+    color: $color1;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 20px;
+    @extend .is-narrow;
+    //margin-top: -6px;
+
+    a {
+      color: $color1;
+
+      &:hover {
+        color: $color2;
+      }
+    }
+  }
+
+  &.is-vcentered {
+    p {
+      margin-bottom: 0;
+    }
+
+    .author-title {
+      margin-top: 0;
+    }
+  }
+
+  /*img.avatar {
+    margin-right: 11px;
+    border-radius: 12px;
+    margin-top:5px;
+    @extend .is-narrow;
+    height:auto;
+    max-height: 100%;
+    width:auto;
+  }*/
+}
+
+// Post featured image
+.wpft-post-thumb-container {
+  filter: drop-shadow(0px 12px 24px rgba(114, 124, 137, 0.24));
+  padding: 0 0 40px 0;
+  @include mobile {
+    padding-bottom: 0;
+    filter: none;
+  }
+
+  img {
+    width: 100%;
+  }
+}
+
+// First post
+.wpft-first-post {
+  padding: 24px;
+  background: linear-gradient(180deg, #FFFFFF 14.9%, #F2F5FA 37.72%);
+  border-radius: 12px;
+
+  .wpft-post-date {
+    padding: 0;
+  }
+
+  .wp-post-image {
+    margin: 0;
+  }
+
+  img {
+    filter: drop-shadow(0px 12px 24px rgba(114, 124, 137, 0.24));
+    border-radius: 12px;
+  }
+}
+
+// Comments
+#comments .comments-title {
+  letter-spacing: -1px;
+  font-size: 25px;
+}
+
+#comments .comment-list .comment-content {
+  margin-bottom: 0;
+}
+
+.blog, .single-post, .category, .archive, .author {
+  .entry-title {
+    margin-top: 15px;
+
+    a {
+      @extend .entry-title;
+
+      &:hover {
+        color: $color2;
+      }
+    }
+  }
+
+  .blog-bkg {
+    position: absolute;
+    width: 100%;
+    height: 350px;
+    background: linear-gradient(357.99deg, #F2F5FA 2.4%, #FFFFFF 99.01%);
+    top: 0;
+    z-index: -1;
+    @include mobile{
+      height:100%;
+    }
+  }
+
+  #content {
+    background: #fff;
+  }
+
+  .wpft-post-date {
+    margin-bottom: 19px;
+    //padding: 0;
+  }
+}
+
+body {
+  //background:linear-gradient(357.99deg, #F2F5FA 2.4%, #FFFFFF 99.01%) ;
+  //background-position: top;
+  //background-size: cover;
+}
+
+.wpft-post-categories {
+  font-size: 14px;
+  padding: 0 0 0 25px;
+
+  &:before {
+    background: #1a2dc9;
+    height: 10px;
+    width: 2px;
+    content: "";
+    position: relative;
+    left: -25px;
+    display: inline-block;
+    margin-right: -2px;
+    /*margin-right:20px;*/
+  }
+
+  a {
+    font-weight: 800;
+    color: $color1;
+
+    &:hover {
+      color: $color2;
+    }
+  }
+}
+
+.wpft-read-more {
+  position: relative;
+  font-size: 12px;
+  top: -5px;
+  font-weight: 700;
+
+  &:hover {
+    color: $color2;
+  }
+
+  &:after {
+    content: "\203A";
+    //font-size:25px;
+    transform: scale(2.1);
+    display: inline-block;
+    vertical-align: baseline;
+    margin: 0 0 0 10px;
+    position: relative;
+    top: -2px;
+  }
+}
+
+.wpft-page-header {
+  margin: 0px 0 40px 0;
+
+  h1, h2, h3, .entry-title {
+    margin-top: 0;
+  }
+}
+
+.wpft-author-header {
+  padding: 24px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F2F5FA 100%);
+  border-radius: 12px;
+  margin-bottom: 58px;
+
+  .author-title {
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+
+  .author-blog-role {
+    font-size: 14px;
+  }
+
+  .wpft-author-info {
+    position: relative;
+    color: $color6;
+    padding-left: 20px;
+
+    &:before {
+      background-color: #1a2dc9;
+      width: 3px;
+      position: absolute;
+      height: 100%;
+      content: "";
+      display: inline-block;
+      font-weight: 700;
+      left: 0;
+    }
+  }
+}
+
+// After first post
+.wpft-common-blog-post {
+  @include mobile {
+    border: 1px solid #F2F5FA;
+    border-radius: 12px;
+    padding: 24px;
+    img{
+      width:100%;
+    }
+    /*.wpft-term-and-date{
+      display:inline-block;
+    }
+    .wpft-post-author-container{
+      display:inline-block;
+    }*/
+  }
+  > .columns {
+    justify-content: space-between;
+    @extend .only-mobile-flex-direction-col-reverse;
+  }
+
+  .entry-title {
+    margin-top: 0;
+  }
+
+  img {
+    filter: drop-shadow(0px 12px 24px rgba(114, 124, 137, 0.24));
+    border-radius: 12px;
+  }
+}
+
+.wpft-author-cat-term {
+  font-size: 12px;
+  color: $color3;
+  padding: 6px;
+  border-radius: 6px;
+  background: #E3E5E7;
+  margin: 0 5px 10px 0;
+  font-weight: 600;
+  display: inline-block;
+
+  a {
+    color: $color3;
+
+    &:hover {
+      color: $color2;
+    }
+  }
+}
+
+.hentry{
+  @include mobile{
+    margin-bottom:24px;
+    .wp-post-image{
+
+    }
+  }
+}
+
+/*.single-post{
+  .hentry{
+    @include mobile{
+      .wp-post-image{
+        margin-bottom:15px;
+      }
+    }
+  }
+}*/

@@ -67,12 +67,33 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 			// Admin settings.
 			$admin_settings = new Admin_Settings();
 			$admin_settings->init();
-			// Page builder
-			$page_builder = new Page_Builder();
-			$page_builder->init();
-			add_filter( 'wpft_module_css_classes', array( $this, 'add_css_classes_to_page_builder_module' ) );
 			// Timber
 			add_filter( 'timber/twig', array( $this, 'add_functions_to_twig' ) );
+		}
+
+		/**
+		 * get_theme_component_classes.
+		 *
+		 * @version 1.0.0
+		 * @since   1.0.0
+		 *
+		 * @return string[]
+		 */
+		function get_theme_component_classes() {
+			return array(
+				'\\WPFactory\\WPFactory_Theme\\Component\\Menus',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Logo',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Credit',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Search',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Cart',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Sidebar',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Home',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Products',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Websites',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Blog',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Content_Header',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Page_Builder\\Page_Builder',
+			);
 		}
 
 		/**
@@ -88,7 +109,10 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 		function add_functions_to_twig( $twig ) {
 			$twig->addFunction( new \Timber\Twig_Function( 'wpft_get_wc_url', array( $this, 'wpft_get_wc_url' ) ) );
 			$twig->addFunction( new \Timber\Twig_Function( 'sprintf', 'sprintf' ) );
-			$twig->addFunction( new \Timber\Twig_Function( 'wpft_add_to_cart_url', array( $this, 'wpft_add_to_cart_url' ) ) );
+			$twig->addFunction( new \Timber\Twig_Function( 'wpft_add_to_cart_url', array(
+				$this,
+				'wpft_add_to_cart_url'
+			) ) );
 			$twig->addFunction( new \Timber\Twig_Function( 'wpft_get_prod_variation_by_attributes', array(
 				$this,
 				'wpft_get_prod_variation_by_attributes'
@@ -141,44 +165,6 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 
 		function wpft_get_wc_url( $wc_page_label = '' ) {
 			return get_permalink( wc_get_page_id( $wc_page_label ) );
-		}
-
-		/**
-		 * add_css_classes_to_page_builder_module.
-		 *
-		 * @version 1.0.0
-		 * @since   1.0.0
-		 *
-		 * @param $classes
-		 *
-		 * @return mixed
-		 */
-		function add_css_classes_to_page_builder_module( $classes ) {
-			$classes[] = 'col-full';
-
-			return $classes;
-		}
-
-		/**
-		 * get_theme_component_classes.
-		 *
-		 * @version 1.0.0
-		 * @since   1.0.0
-		 *
-		 * @return string[]
-		 */
-		function get_theme_component_classes() {
-			return array(
-				'\\WPFactory\\WPFactory_Theme\\Component\\Menus',
-				'\\WPFactory\\WPFactory_Theme\\Component\\Logo',
-				'\\WPFactory\\WPFactory_Theme\\Component\\Credit',
-				'\\WPFactory\\WPFactory_Theme\\Component\\Search',
-				'\\WPFactory\\WPFactory_Theme\\Component\\Cart',
-				'\\WPFactory\\WPFactory_Theme\\Component\\Sidebar',
-				'\\WPFactory\\WPFactory_Theme\\Component\\Home',
-				'\\WPFactory\\WPFactory_Theme\\Component\\Product',
-				'\\WPFactory\\WPFactory_Theme\\Component\\Websites',
-			);
 		}
 
 		/**
@@ -239,6 +225,14 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 					add_image_size( 'size-1', 104, 112 ); // Product icon
 					add_image_size( 'size-2', 384 ); // Product feature images
 					add_image_size( 'size-3', 160, 40 ); // Product feature images
+					add_image_size( 'size-4', 1920, 546, array( 'center', 'top' ) ); // Post featured images
+					add_image_size( 'size-5', 382, 186, array( 'center', 'top' ) ); // Blog thumbnail images
+					// Body classes.
+					add_filter( 'body_class', array( $this, 'set_full_width_css' ) );
+					add_action( 'wpft_col_full_start', array( $this, 'open_main_col_full' ) );
+					add_action( 'wpft_col_full_close', array( $this, 'close_main_col_full' ) );
+					// Content header
+					add_action( 'storefront_loop_before', array( $this, 'handle_content_header' ) );
 					break;
 				case 'init':
 					// Remove global styles and front SVG.
@@ -248,6 +242,60 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 					$this->disable_emojis();
 					break;
 			}
+		}
+
+		function handle_content_header() {
+			//<h2 class="entry-title"><?php wp_title( '' ) </h2>
+			?>
+            <header class="wpft-page-header">
+				<?php
+				if ( is_archive() ) {
+					if ( is_author() ) {
+						echo '<h1 class="entry-title">' . __( 'Author', 'wpfactory' ) . '</h1>';
+					} else {
+						the_archive_title( '<h1 class="entry-title">', '</h1>' );
+					}
+
+					//the_archive_description( '<div class="taxonomy-description">', '</div>' );
+				} else {
+					echo '<h1 class="entry-title">' . wp_title( '', false ) . '</h1>';
+				}
+				?>
+            </header><!-- .page-header -->
+			<?php
+		}
+
+		function open_main_col_full() {
+			if ( ! wpft_is_current_page_full_width_content() ) {
+				echo '<div class="col-full">';
+			}
+		}
+
+		function close_main_col_full() {
+			if ( ! wpft_is_current_page_full_width_content() ) {
+				echo '</div>';
+			}
+		}
+
+		/**
+		 * Sets full width in all pages but shop and product.
+		 *
+		 * @version 1.0.0
+		 * @since   1.0.0
+		 *
+		 * @param $classes
+		 *
+		 * @return mixed
+		 */
+		function set_full_width_css( $classes ) {
+			if (
+				wpft_is_current_page_full_width_content()
+				//!wpft_does_current_page_have_sidebar()
+			) {
+				$classes[] = 'storefront-full-width-content';
+			}
+
+			return $classes;
 		}
 
 		/**
