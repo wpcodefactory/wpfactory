@@ -8,6 +8,14 @@
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var map = {
+	"./bundle": [
+		"./src/js/modules/bundle.js",
+		"src_js_modules_bundle_js"
+	],
+	"./bundle.js": [
+		"./src/js/modules/bundle.js",
+		"src_js_modules_bundle_js"
+	],
 	"./codemirror-field": [
 		"./src/js/modules/codemirror-field.js",
 		"src_js_modules_codemirror-field_js"
@@ -39,6 +47,14 @@ var map = {
 	"./search.js": [
 		"./src/js/modules/search.js",
 		"src_js_modules_search_js"
+	],
+	"./smooth-scroll": [
+		"./src/js/modules/smooth-scroll.js",
+		"src_js_modules_smooth-scroll_js"
+	],
+	"./smooth-scroll.js": [
+		"./src/js/modules/smooth-scroll.js",
+		"src_js_modules_smooth-scroll_js"
 	]
 };
 function webpackAsyncContext(req) {

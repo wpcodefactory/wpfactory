@@ -2629,6 +2629,14 @@ a:focus {
   }
 }
 
+.select2-container {
+  font-size: 14px;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected], .select2-container--default .select2-results__option--highlighted[data-selected] {
+  background-color: #1A2DC9;
+}
+
 .wpft-icon-account > a::before {
   background-image: url(..//img/214283a33011b5a2a7d3.png);
   background-position: -65px 0px;
@@ -3637,6 +3645,25 @@ a:focus {
   margin: 0 10px 0 0;
 }
 
+.wpftpb-section.pricing-section .wpft-bundle-select {
+  width: 100%;
+  font-size: 14px;
+}
+.wpftpb-section.pricing-section .select2-container {
+  font-size: 14px;
+}
+.wpftpb-section.pricing-section .select2-container--default.select2-container--focus .select2-selection--multiple {
+  border-color: #aaa;
+}
+.wpftpb-section.pricing-section .wpft-bundle-intro {
+  font-weight: 500;
+  font-size: 14px;
+  color: #14243B;
+  margin-bottom: 15px;
+}
+.wpftpb-section.pricing-section hr {
+  background-color: #E3E5E7;
+}
 .wpftpb-section.pricing-section .box-license-type {
   background: #fff;
   border-radius: 12px;
@@ -3652,7 +3679,49 @@ a:focus {
 .wpftpb-section.pricing-section .variation_features dt {
   margin-right: 5px;
   float: left;
+  color: #14243B;
 }
+.wpftpb-section.pricing-section .prod-thumb {
+  width: 60px;
+  height: 60px;
+  display: block;
+  box-shadow: 0px 12px 24px rgba(114, 124, 137, 0.24);
+  border-radius: 12px;
+  text-align: center;
+}
+.wpftpb-section.pricing-section .prod-thumb img {
+  width: 40px;
+  height: auto;
+  margin: 0 auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.wpftpb-section.pricing-section .prod-title {
+  color: #14243B;
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 18px;
+  /*vertical-align: middle;
+  display: inline-block;*/
+}
+.wpftpb-section.pricing-section .bundle-price {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 10px 0 0;
+}
+.wpftpb-section.pricing-section .savings {
+  background: #B25E47;
+  border-radius: 18px;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 4px 8px;
+  color: #fff;
+  display: inline-block;
+  vertical-align: sub;
+  margin: 0 0 15px 0;
+}
+
 .wpft-article-container {
   background: #fff;
   padding: 55px;

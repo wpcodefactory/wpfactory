@@ -127,6 +127,11 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 				implode( " ", $this->sanitize_css_classes_array( apply_filters( 'wpft_module_css_classes', $module_classes ) ) ),
 				$template
 			);
+			$template_vars = apply_filters( 'wpft_page_builder_template_vars', $template_vars, $args );
+			if ( ! empty( $extra_template_variables_filter = carbon_get_post_meta( $module_id, 'wpft_template_variables_filter' ) ) ) {
+				$template_vars = apply_filters( $extra_template_variables_filter, $template_vars, $module_id );
+			}
+
 			$output   = \Timber::compile_string( $template, $template_vars );
 			echo $output;
 		}
@@ -140,14 +145,22 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 			$context         = Timber::context();
 			$context['post'] = new \Timber\Post( $post_id );
 			if ( 'product' === get_post_type( $post_id ) ) {
-				$product = wc_get_product( $context['post']->ID );
+				$product            = wc_get_product( $context['post']->ID );
 				$context['product'] = $product;
-				//$variations = $product->get_available_variations();
-				//$test = $product->get_children();
-				//error_log(print_r($test,true));
-				//$test = wc_get_formatted_variation
 			}
+
 			return $context;
+		}
+
+		function get_template_vars_from_module( $module_id ) {
+			$template_vars = wp_list_pluck( carbon_get_post_meta( $module_id, 'wpft_template_variables' ), 'default_value', 'var_id' );
+			if ( ! empty( $inherited_modules = carbon_get_post_meta( $module_id, 'wpft_inherited_modules' ) ) ) {
+				foreach ( $inherited_modules as $inherited_module_id ) {
+					$template_vars = array_merge( $template_vars, wp_list_pluck( carbon_get_post_meta( $inherited_module_id, 'wpft_template_variables' ), 'default_value', 'var_id' ) );
+				}
+			}
+
+			return $template_vars;
 		}
 
 		function display_modules( $current_area_info, $post_id = null ) {
@@ -156,12 +169,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 			if ( empty( $modules_from_post ) && ! empty( $default_modules = $current_area_info['default_modules'] ) ) {
 				$context = $this->init_timber_and_get_initial_context( $post_id );
 				foreach ( $default_modules as $module ) {
-					$template_vars = wp_list_pluck( carbon_get_post_meta( $module['id'], 'wpft_template_variables' ), 'default_value', 'var_id' );
-					if ( ! empty( $inherited_modules = carbon_get_post_meta( $module['id'], 'wpft_inherited_modules' ) ) ) {
-						foreach ( $inherited_modules as $inherited_module_id ) {
-							$template_vars = array_merge( $template_vars, wp_list_pluck( carbon_get_post_meta( $inherited_module_id, 'wpft_template_variables' ), 'default_value', 'var_id' ) );
-						}
-					}
+					$template_vars = $this->get_template_vars_from_module( $module['id'] );
 					$this->display_module( array(
 						'module_id'     => $module['id'],
 						'template_vars' => array_merge( $context, $template_vars ),
@@ -174,6 +182,8 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 					if ( false !== ( $timber_posts = $this->maybe_get_timber_posts( $template_vars ) ) ) {
 						$template_vars[ array_keys( $timber_posts )[0] ] = array_values( $timber_posts )[0];
 					}
+					$original_template_vars = $this->get_template_vars_from_module( $module['module'] );
+					$template_vars = array_replace( $original_template_vars, $template_vars );
 					$this->display_module( array(
 						'module_id'     => $module['module'],
 						'template_vars' => array_merge( $context, $template_vars ),
@@ -319,7 +329,8 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 				foreach ( $template_variables as $variable ) {
 					$field_id = $variable['var_id'];
 					if (
-						empty( $field_id )
+						empty( $field_id ) ||
+						false === $variable['editable']
 					) {
 						continue;
 					}
@@ -392,7 +403,8 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 					     ->add_fields( array(
 						     Field::make( 'text', 'var_label', 'Label' )->set_width( '30%' ),
 						     Field::make( 'text', 'var_id', 'ID' )->set_width( '30%' ),
-						     Field::make( 'text', 'default_value', 'default_value' )->set_width( '30%' ),
+						     Field::make( 'text', 'default_value', 'Default value' )->set_width( '30%' ),
+						     Field::make( 'checkbox', 'editable', 'Editable' )->set_width( '50%' )->set_default_value( true ),
 						     Field::make( 'select', 'var_type', 'Type' )->set_width( '50%' )
 						          ->add_options( array(
 							          'text'      => 'Text',
@@ -454,6 +466,9 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 			         ->add_tab( __( 'CSS', 'wpfactory' ), array(
 				         Field::make( 'text', 'wpft_css_classes', 'CSS classes' )->set_help_text( 'Adds extra CSS classes to the module wrapper. Separate by space.' ),
 				         Field::make( 'text', 'wpft_template_vars_to_css', __( 'Template variables to CSS', 'wpfactory' ) )->set_help_text( 'Adds extra CSS classes from the Template variables to the module wrapper. Separate by comma. Use the variable Id.' )
+			         ) )
+			         ->add_tab( __( 'PHP', 'wpfactory' ), array(
+				         Field::make( 'text', 'wpft_template_variables_filter', 'Template variables filter' )->set_help_text( 'Custom hook filter used to send info to template as an associative array. ' ),
 			         ) );
 		}
 

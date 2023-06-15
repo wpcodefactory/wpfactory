@@ -134,3 +134,11 @@ a:focus {
     flex-direction: column-reverse;
   }
 }
+
+// Select 2
+.select2-container{
+  font-size:14px;
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected], .select2-container--default .select2-results__option--highlighted[data-selected]{
+  background-color:$color5;
+}

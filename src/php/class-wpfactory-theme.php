@@ -68,7 +68,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 			$admin_settings = new Admin_Settings();
 			$admin_settings->init();
 			// Timber
-			add_filter( 'timber/twig', array( $this, 'add_functions_to_twig' ) );
+			add_filter( 'timber/twig', array( $this, 'add_functions_to_twig' ), 9 );
 		}
 
 		/**
@@ -92,12 +92,14 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 				'\\WPFactory\\WPFactory_Theme\\Component\\Websites',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Blog',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Content_Header',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Bundles',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Pricing_Module',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Page_Builder\\Page_Builder',
 			);
 		}
 
 		/**
-		 * wpft_get_prod_variation_by_attributes.
+		 * add_functions_to_twig.
 		 *
 		 * @version 1.0.0
 		 * @since   1.0.0
@@ -113,13 +115,13 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 				$this,
 				'wpft_add_to_cart_url'
 			) ) );
-			$twig->addFunction( new \Timber\Twig_Function( 'wpft_get_prod_variation_by_attributes', array(
-				$this,
-				'wpft_get_prod_variation_by_attributes'
-			) ) );
-
+			$twig->addFunction( new \Timber\Twig_Function( 'wpft_exit', array( $this, 'wpft_exit' ) ) );
 			return $twig;
 		}
+
+        function wpft_exit(){
+            die();
+        }
 
 		/**
 		 * add_to_cart_url.
@@ -133,34 +135,6 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 		 */
 		function wpft_add_to_cart_url( $prod_id ) {
 			return do_shortcode( '[add_to_cart_url id="' . $prod_id . '"]' );
-		}
-
-		/**
-		 * wpft_get_prod_variation_by_attributes.
-		 *
-		 * @version 1.0.0
-		 * @since   1.0.0
-		 *
-		 * @param $product
-		 * @param $required_attributes
-		 *
-		 * @return mixed|string
-		 */
-		function wpft_get_prod_variation_by_attributes( $product, $required_attributes ) {
-			$returned_variation = '';
-			if ( 'variable' === $product->get_type() && ! empty( $variations = $product->get_available_variations() ) ) {
-				foreach ( $variations as $variation ) {
-					$formatted_attributes = call_user_func_array( 'array_merge', array_map( function ( $k, $v ) {
-						return array( preg_replace( '/^attribute_pa_/', '', $k ) => $v );
-					}, array_keys( $variation['attributes'] ), $variation['attributes'] ) );
-					if ( count( $required_attributes ) === count( array_intersect_assoc( $formatted_attributes, $required_attributes ) ) ) {
-						$returned_variation = $variation;
-						break;
-					}
-				}
-			}
-
-			return $returned_variation;
 		}
 
 		function wpft_get_wc_url( $wc_page_label = '' ) {
@@ -185,7 +159,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 
 			// Main frontend style.
 			//wp_enqueue_style( 'wpfactory-style', get_theme_file_uri( '/assets/css/frontend' . $suffix . '.css' ), array(), $version );
-			wp_enqueue_style( 'wpfactory-style', get_theme_file_uri( '/assets/css/frontend' . $suffix . '.css' ), array( 'storefront-woocommerce-style' ), $version );
+			wp_enqueue_style( 'wpfactory-style', get_theme_file_uri( '/assets/css/frontend' . $suffix . '.css' ), apply_filters( 'wpft_frontend_css_deps', array( 'storefront-woocommerce-style' ) ), $version );
 			//wp_style_add_data( 'wpfactory-style', 'rtl', 'replace' );
 			//wp_enqueue_style( 'wpfactory-style', get_theme_file_uri( '/assets/css/frontend' . $suffix . '.css' ), array('storefront-woocommerce-style'), $version );
 			//wp_enqueue_style( 'wpfactory-style', get_theme_file_uri( '/assets/css/frontend' . $suffix . '.css' ), '', $version );
@@ -193,13 +167,13 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 			// Main frontend script.
 			wp_enqueue_script( 'wpfactory-frontend-js',
 				get_theme_file_uri( '/assets/js/frontend' . $suffix . '.js' ),
-				array( 'jquery' ),
+				apply_filters( 'wpft_frontend_js_deps', array( 'jquery' ) ),
 				$version,
 				false
 			);
 			wp_add_inline_script( 'wpfactory-frontend-js', 'const WPFTFEJS = ' . json_encode( apply_filters( 'wpft_frontend_js_info', array(
 					'themeURI'        => get_theme_file_uri(),
-					'modulesRequired' => apply_filters( 'wpft_js_modules_required', array() )
+					'modulesRequired' => apply_filters( 'wpft_js_modules_required', array('smooth-scroll') )
 				) ) ), 'before'
 			);
 
@@ -231,8 +205,10 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 					add_filter( 'body_class', array( $this, 'set_full_width_css' ) );
 					add_action( 'wpft_col_full_start', array( $this, 'open_main_col_full' ) );
 					add_action( 'wpft_col_full_close', array( $this, 'close_main_col_full' ) );
-					// Content header
+					// Content header.
 					add_action( 'storefront_loop_before', array( $this, 'handle_content_header' ) );
+                    // Footer.
+					remove_action( 'storefront_after_footer', 'storefront_sticky_single_add_to_cart', 999 );
 					break;
 				case 'init':
 					// Remove global styles and front SVG.
