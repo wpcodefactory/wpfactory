@@ -76,39 +76,40 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Pricing_Module' ) ) {
 		}
 
 		function add_extra_template_vars( $vars, $module_id ) {
-			if ( ! $this->are_required_keys_present( $vars, array(
-				'attr_slug_a',
-				'attr_val_a',
-				'attr_slug_b',
-				'attr_val_b',
-				'product'
-			) ) ) {
+			if (
+				! isset( $vars['product'] ) ||
+				empty( $attributes = carbon_get_theme_option( 'wpft_wc_attributes' ) )
+			) {
 				return $vars;
 			}
+
 			// Gets single price variation.
-			$variation         = $this->wpft_get_prod_variation_by_attributes( $vars['product'], array(
-				$vars['attr_slug_a'] => $vars['attr_val_a'],
-				$vars['attr_slug_b'] => $vars['attr_val_b'],
-			) );
-			$vars['variation'] = $variation;
+			$variation = $this->wpft_get_prod_variation_by_attributes( $vars['product'], wp_list_pluck( $attributes, 'attribute_term', 'attribute' ) );
+			if ( ! empty( $variation ) ) {
+				$vars['variation'] = $variation;
+			}
+			if (
+				! empty( $variation ) &&
+				true === filter_var( carbon_get_theme_option( 'wpft_bundles_enabled' ), FILTER_VALIDATE_BOOLEAN )
+			) {
+				$vars['bundles_enabled'] = true;
 
-			// Gets bundle products.
-			$bundles_class           = wpft_get_theme()->get_component( 'Bundles' );
-			$bundle_products         = $bundles_class->wpft_get_bundle_products( $variation );
-			$vars['bundle_products'] = $bundle_products;
+				// Gets bundle products.
+				$bundles_class           = wpft_get_theme()->get_component( 'Bundles' );
+				$bundle_products         = $bundles_class->wpft_get_bundle_products( $variation );
+				$vars['bundle_products'] = $bundle_products;
 
-			// Bundle price.
-			$bundle_price_info         = $bundles_class->wpft_calculate_bundle_price( array(
-				'bundle_products' => $bundle_products,
-				'variation_info'  => $variation,
-			) );
-			$vars['bundle_price_info'] = $bundle_price_info;
+				// Bundle price.
+				$bundle_price_info         = $bundles_class->wpft_calculate_bundle_price( array(
+					'bundle_products' => $bundle_products,
+					'variation_info'  => $variation,
+				) );
+				$vars['bundle_price_info'] = $bundle_price_info;
 
-			$url = $bundles_class->generate_bundle_add_to_cart_url( $variation, $bundle_products );
-
-
-			// Bundle add to cart url.
-			$vars['bundle_add_to_cart_url'] = $url;
+				// Bundle add to cart url.
+				$url                            = $bundles_class->generate_bundle_add_to_cart_url( $variation, $bundle_products );
+				$vars['bundle_add_to_cart_url'] = $url;
+			}
 
 			return $vars;
 		}

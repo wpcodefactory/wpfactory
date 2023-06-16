@@ -30,6 +30,41 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Admin_Settings\General_Tab' ) ) 
 		 */
 		function init() {
 			$container = $this->get_container()->add_tab( __( 'General', 'wpfactory' ), array(
+				Field::make( 'separator', 'wpft_wc_separator_attributes', __( 'WooCommerce attributes', 'wpfactory' ) )->set_help_text('Attributes used for single pricing and bundle products.'),
+				Field::make( 'complex', 'wpft_wc_attributes', '' )
+				     ->set_collapsed( true )
+				     ->add_fields(
+					     array(
+						     Field::make( 'text', 'attribute', __( 'Attribute', 'wpfactory' ) )->set_width( '50%' ),
+						     Field::make( 'text', 'attribute_term', __( 'Attribute term', 'wpfactory' ) )->set_width( '50%' )
+					     )
+				     )
+				     ->set_header_template( function () {
+					     return '
+						    <% if (attribute) { %>
+						        <%- attribute %>
+						    <% } %>
+						    <% if (attribute_term) { %>
+						        (<%- attribute_term %>)
+						    <% } %>
+				          ';
+				     } )
+				     ->setup_labels( array(
+					     'plural_name'   => 'Attributes',
+					     'singular_name' => 'Attribute',
+				     ) ),
+				Field::make( 'separator', 'wpft_separator_bundles', __( 'Bundles', 'wpfactory' ) ),
+				Field::make( 'checkbox', 'wpft_bundles_enabled', __( 'Enable Bundles', 'wpfactory' ) )->set_default_value( true ),
+				Field::make( 'text', 'wpft_bundles_discount', __( 'Discount', 'wpfactory' ) )->set_default_value( 0.8 )->set_attribute( 'type', 'number' )->set_attribute( 'step', '0.01' )->set_attribute( 'max', 1 )->set_attribute( 'min', 0 ),
+				Field::make( 'text', 'wpft_bundle_products_min', __( 'Bundle products minimum', 'wpfactory' ) )->set_default_value( 3 )->set_attribute( 'type', 'number' )->set_attribute( 'step', '1' )->set_attribute( 'min', 0 ),
+				Field::make( 'separator', 'wpft_separator_all_plugins', __( 'All plugins access', 'wpfactory' ) )->set_help_text('Special product that gives access to all plugins.'),
+				Field::make( 'association', 'wpft_all_plugins_access_product', '' )->set_types( array(
+					array(
+						'type'      => 'post',
+						'post_type' => 'product',
+					)
+				) )
+				->set_max( 1 ),
 				Field::make( 'separator', 'wpft_separator', __( 'Menu', 'wpfactory' ) ),
 				Field::make( 'checkbox', 'wpft_add_menu_icons', __( 'Add menu option to choose icons', 'wpfactory' ) )
 				     ->set_default_value( true )
