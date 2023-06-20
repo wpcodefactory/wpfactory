@@ -40,6 +40,14 @@ var map = {
 		"./src/js/modules/menus.js",
 		"src_js_modules_menus_js"
 	],
+	"./modal": [
+		"./src/js/modules/modal.js",
+		"src_js_modules_modal_js"
+	],
+	"./modal.js": [
+		"./src/js/modules/modal.js",
+		"src_js_modules_modal_js"
+	],
 	"./search": [
 		"./src/js/modules/search.js",
 		"src_js_modules_search_js"
@@ -47,6 +55,14 @@ var map = {
 	"./search.js": [
 		"./src/js/modules/search.js",
 		"src_js_modules_search_js"
+	],
+	"./slider": [
+		"./src/js/modules/slider.js",
+		"src_js_modules_slider_js"
+	],
+	"./slider.js": [
+		"./src/js/modules/slider.js",
+		"src_js_modules_slider_js"
 	],
 	"./smooth-scroll": [
 		"./src/js/modules/smooth-scroll.js",

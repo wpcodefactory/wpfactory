@@ -121,7 +121,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 				$result                 = array_map( 'sanitize_title_with_dashes', $result );
 				$module_wrapper_classes = array_merge( $module_wrapper_classes, $result );
 			}
-			$template = sprintf(
+			$template      = sprintf(
 				'<section class="%s"><div class="%s">%s</div></section>',
 				implode( " ", $this->sanitize_css_classes_array( apply_filters( 'wpft_module_wrapper_css_classes', $module_wrapper_classes ) ) ),
 				implode( " ", $this->sanitize_css_classes_array( apply_filters( 'wpft_module_css_classes', $module_classes ) ) ),
@@ -132,8 +132,10 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 				$template_vars = apply_filters( $extra_template_variables_filter, $template_vars, $module_id );
 			}
 
-			$output   = \Timber::compile_string( $template, $template_vars );
-			echo $output;
+			$output = \Timber::compile_string( $template, $template_vars );
+			if ( ! empty( $output ) ) {
+				echo $output;
+			}
 		}
 
 		function sanitize_css_classes_array( $classes ) {
@@ -179,11 +181,16 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 				$context = $this->init_timber_and_get_initial_context( $post_id );
 				foreach ( $modules_from_post as $module ) {
 					$template_vars = $this->sanitize_module_info( $module );
-					if ( false !== ( $timber_posts = $this->maybe_get_timber_posts( $template_vars ) ) ) {
+					//error_log(print_r($template_vars,true));
+					/*if ( false !== ( $timber_posts = $this->maybe_get_timber_posts( $template_vars ) ) ) {
 						$template_vars[ array_keys( $timber_posts )[0] ] = array_values( $timber_posts )[0];
-					}
+					}*/
 					$original_template_vars = $this->get_template_vars_from_module( $module['module'] );
-					$template_vars = array_replace( $original_template_vars, $template_vars );
+					$template_vars          = array_replace( $original_template_vars, $template_vars );
+					$template_vars          = $this->maybe_convert_template_vars_to_timber_posts( $template_vars );
+					//error_log(print_r($original_template_vars,true));
+					//error_log(print_r($template_vars,true));
+
 					$this->display_module( array(
 						'module_id'     => $module['module'],
 						'template_vars' => array_merge( $context, $template_vars ),
@@ -192,9 +199,56 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 			}
 		}
 
-		function maybe_get_timber_posts( $module ) {
-			foreach ( $module as $k => $v ) {
+		function maybe_convert_template_vars_to_timber_posts( $template_vars ) {
+			$module_id              = $template_vars['module'];
+			$original_template_vars = carbon_get_post_meta( $module_id, 'wpft_template_variables' );
+			$post_type_vars         = wp_list_filter( $original_template_vars, array( 'var_type' => 'post_type' ) );
+			foreach ( $post_type_vars as $post_type_var ) {
+				if ( isset( $template_vars[ $post_type_var['var_id'] ] ) ) {
+					switch ( $post_type_var['post_type_mode'] ) {
+						case 'select_posts_manually':
+							if ( ! empty( $var = $template_vars[ $post_type_var['var_id'] ] ) ) {
+								$template_vars[ $post_type_var['var_id'] ] = Timber::get_posts( array(
+									'post_type'      => $var[0]['subtype'],
+									'orderby'        => 'post__in',
+									'post__in'       => wp_list_pluck( $var, 'id' ),
+									'posts_per_page' => - 1
+								) );
+							}
+							break;
+						case 'get_posts_automatically':
+							$get_posts_args = array(
+								'post_type'      => $post_type_var['post_type_slug'],
+								'posts_per_page' => - 1
+							);
+							$tax_query      = array();
+							if ( ! empty( $taxes = $template_vars[ $post_type_var['var_id'] . '_post_type_taxonomies' ] ) && is_array( $taxes ) ) {
+								foreach ( $taxes as $chosen_tax_info ) {
+									$tax_query[] = array(
+										'taxonomy' => $chosen_tax_info['subtype'],
+										'field'    => 'id',
+										'terms'    => $chosen_tax_info['id'],
+									);
+								}
+								if ( ! empty( $tax_query ) ) {
+									$get_posts_args['tax_query'] = $tax_query;
+								}
+							}
+							//error_log(print_r($get_posts_args,true));
+							$posts                                     = Timber::get_posts( $get_posts_args );
+							$template_vars[ $post_type_var['var_id'] ] = $posts;
+							break;
+					}
+				}
+			}
+
+			return $template_vars;
+		}
+
+		/*function maybe_get_timber_posts( $template_vars ) {
+			foreach ( $template_vars as $k => $v ) {
 				if ( is_array( $v ) && ! empty( $v ) && 'post' === $v[0]['type'] ) {
+					//error_log(print_r($v,true));
 					return array(
 						$k => Timber::get_posts( array(
 							'post_type'      => $v[0]['subtype'],
@@ -207,7 +261,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 			}
 
 			return false;
-		}
+		}*/
 
 		function get_modules_posts( $args = null ) {
 			$args            = wp_parse_args( $args, array(
@@ -248,49 +302,49 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 			//$fields = array_merge( $fields, $this->get_dynamic_fields( array_keys( $this->get_modules_posts_formatted() ) ) );
 			foreach ( $page_builder_settings as $key => $cpt_info ) {
 				foreach ( $cpt_info['display_areas'] as $area_key => $area ) {
-					Container::make( 'post_meta', $area['area_name'] )
-					         ->set_datastore( new Carbon_Fields_Post_Meta_Datastore() )
-					         ->where( 'post_type', 'CUSTOM', function ( $post_type ) use ( $key, $cpt_info ) {
-						         $post_types = carbon_get_theme_option( 'wpft_page_builder_settings' );
+					$container = Container::make( 'post_meta', $area['area_name'] )
+					                      ->set_datastore( new Carbon_Fields_Post_Meta_Datastore() )
+					                      ->where( 'post_type', 'CUSTOM', function ( $post_type ) use ( $key, $cpt_info ) {
+						                      $post_types = carbon_get_theme_option( 'wpft_page_builder_settings' );
 
-						         return $post_types[ $key ]['cpt_relation'] === $post_type;
-						         //return in_array( $post_type, array('product') );
-					         } )
-					         ->add_fields( array(
-						         //Field::make( 'text', 'test_'.$key.'_'.$area_key, __( 'Test' ) )
-						         Field::make( 'complex', 'wpft_modules_' . $key . '_' . $area_key, '' )
-						              ->set_collapsed( true )
-						              ->add_fields( array_merge(
-							              array(
-								              Field::make( 'select', 'module', __( 'Module', 'wpfactory' ) )
-								                   ->set_width( '50%' )
-								                   ->set_options( function () {
-									                   return $this->get_modules_posts_formatted();
-								                   } ),
-								              Field::make( 'text', 'module_label', __( 'Module label', 'wpfactory' ) )
-								                   ->set_width( '50%' )
-							              ),
-							              $this->get_dynamic_fields( array_keys( $this->get_modules_posts_formatted() ) )
-						              ) )
-						              ->set_header_template( function () {
-							              $modules_formatted_json = json_encode( $this->get_modules_posts_formatted() );
+						                      return $post_types[ $key ]['cpt_relation'] === $post_type;
+						                      //return in_array( $post_type, array('product') );
+					                      } );
+					$container->add_fields( array(
+						//Field::make( 'text', 'test_'.$key.'_'.$area_key, __( 'Test' ) )
+						Field::make( 'complex', 'wpft_modules_' . $key . '_' . $area_key, '' )
+						     ->set_collapsed( true )
+						     ->add_fields( array_merge(
+							     array(
+								     Field::make( 'select', 'module', __( 'Module', 'wpfactory' ) )
+								          ->set_width( '50%' )
+								          ->set_options( function () {
+									          return $this->get_modules_posts_formatted();
+								          } ),
+								     Field::make( 'text', 'module_label', __( 'Module label', 'wpfactory' ) )
+								          ->set_width( '50%' )
+							     ),
+							     $this->get_dynamic_fields( array_keys( $this->get_modules_posts_formatted() ), 'wpft_modules_' . $key . '_' . $area_key )
+						     ) )
+						     ->set_header_template( function () {
+							     $modules_formatted_json = json_encode( $this->get_modules_posts_formatted() );
 
-							              return '<%-' . $modules_formatted_json . '[module] %>  <%- module_label ? "- " + module_label : "" %>';
-						              } )
-						              ->setup_labels( array(
-							              'plural_name'   => 'Modules',
-							              'singular_name' => 'Module',
-						              ) )
+							     return '<%-' . $modules_formatted_json . '[module] %>  <%- module_label ? "- " + module_label : "" %>';
+						     } )
+						     ->setup_labels( array(
+							     'plural_name'   => 'Modules',
+							     'singular_name' => 'Module',
+						     ) )
 
-						         /*Field::make( 'complex', 'wpft_modules_'.$key.'_'.$area_key, __( 'Modules' ) )
-						              ->set_collapsed( true )
-						              ->add_fields( $fields )
-						              ->set_header_template( function () {
-							              $modules_formatted_json = json_encode( $this->get_modules_posts_formatted() );
+						/*Field::make( 'complex', 'wpft_modules_'.$key.'_'.$area_key, __( 'Modules' ) )
+							 ->set_collapsed( true )
+							 ->add_fields( $fields )
+							 ->set_header_template( function () {
+								 $modules_formatted_json = json_encode( $this->get_modules_posts_formatted() );
 
-							              return '<%-' . $modules_formatted_json . '[module] %>';
-						              } )*/
-					         ) );
+								 return '<%-' . $modules_formatted_json . '[module] %>';
+							 } )*/
+					) );
 				}
 			}
 		}
@@ -316,7 +370,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 			return $type;
 		}
 
-		function get_dynamic_fields( $modules_ids ) {
+		function get_dynamic_fields( $modules_ids, $complex_field_id = null ) {
 			$fields   = array();
 			$ids_used = array();
 			foreach ( $modules_ids as $module_id ) {
@@ -327,7 +381,8 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 					}
 				}
 				foreach ( $template_variables as $variable ) {
-					$field_id = $variable['var_id'];
+					$can_add_field = true;
+					$field_id      = $variable['var_id'];
 					if (
 						empty( $field_id ) ||
 						false === $variable['editable']
@@ -363,7 +418,71 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 										'post_type' => $variable['post_type_slug']
 									)
 								) );
+								if ( ! empty( $variable['post_type_mode'] ) && 'get_posts_automatically' === $variable['post_type_mode'] ) {
+									//$can_add_field = false;
+								}
+								if ( isset( $variable['post_type_taxonomies'] ) && ! empty( $variable['post_type_taxonomies'] ) ) {
+									add_filter( 'carbon_fields_association_field_options_' . $field_id . '_' . 'post' . '_' . $variable['post_type_slug'], function ( $args ) use ( $complex_field_id, $field_id ) {
+										$post_id = $_REQUEST['post'] ?? $_REQUEST['id'] ?? $_REQUEST['post_ID'];
+										if ( ! empty( $post_id ) ) {
+											$fields = carbon_get_post_meta( $post_id, $complex_field_id );
+											foreach ( $fields as $field ) {
+												if ( isset( $field[ $field_id . '_post_type_taxonomies' ] ) && ! empty( $tax_values = $field[ $field_id . '_post_type_taxonomies' ] ) ) {
+													$tax_query = array();
+													foreach ( $tax_values as $chosen_tax_info ) {
+														$tax_query[] = array(
+															'taxonomy' => $chosen_tax_info['subtype'],
+															'field'    => 'id',
+															'terms'    => $chosen_tax_info['id'],
+														);
+													}
+													if ( ! empty( $tax_query ) ) {
+														$args['tax_query'] = $tax_query;
+													}
+												}
+											}
+										}
+
+										return $args;
+									} );
+									add_filter( 'carbon_fields_association_field_options_' . $field_id . '_' . 'post_type_taxonomies_term_product_cat', function ( $args ) use ( $complex_field_id ) {
+										$args['orderby'] = '';
+
+										return $args;
+									} );
+									foreach ( $variable['post_type_taxonomies'] as $tax_info ) {
+
+										$field_tax_terms =
+											//Field::make( 'association', $field_id . '_'.'post_type_taxonomy_' . $tax_info['tax'], sprintf( 'Taxonomy (%s)', $tax_info['tax'] ) )
+											//carbon_fields_association_field_options_mod_347_faq_posts_post_type_taxonomies_term_wpft_faq_category
+											Field::make( 'association', $field_id . '_' . 'post_type_taxonomies', sprintf( 'Taxonomy (%s)', $tax_info['tax'] ) )
+											     ->set_types( array(
+												     array(
+													     'type'     => 'term',
+													     'taxonomy' => $tax_info['tax'],
+												     )
+											     ) )
+											     ->set_conditional_logic( array(
+												     array(
+													     'field'   => 'module',
+													     'value'   => $module_id,
+													     'compare' => '=',
+												     )
+											     ) );
+										if ( ! empty( $default_tax_term = $tax_info['default_tax_term'] ) ) {
+											/*if ( ! is_numeric( $default_tax_term ) ) {
+												$term = $this->get_term_by_slug_via_db( $tax_info['tax'], $default_tax_term );
+												if ( false !== $term ) {
+													$default_tax_term = $term->term_id;
+												}
+											}
+											$field_tax_terms->set_default_value( array( 'term:' . $tax_info['tax'] . ':' . $default_tax_term ) );*/
+										}
+										$fields[] = $field_tax_terms;
+									}
+								}
 								$field->set_width( '100%' );
+
 							}
 							//$field->set_types( array( 'type', 'post', 'post_type' => $variable['post_type_slug'] ) );
 							break;
@@ -375,11 +494,34 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 							'compare' => '=',
 						)
 					) );
-					$fields[] = $field;
+					if ( $can_add_field ) {
+						$fields[] = $field;
+					}
 				}
 			}
 
 			return $fields;
+		}
+
+		function get_term_by_slug_via_db( $taxonomy, $term_slug ) {
+			global $wpdb;
+			$query = $wpdb->prepare(
+				"SELECT t.*
+			    FROM {$wpdb->terms} AS t
+			    INNER JOIN {$wpdb->term_taxonomy} AS tt ON t.term_id = tt.term_id
+			    WHERE tt.taxonomy = %s
+			    AND t.slug = %s
+			    LIMIT 1",
+				$taxonomy,
+				$term_slug
+			);
+
+			$term = $wpdb->get_results( $query );
+			if ( $term && ! empty( $term ) ) {
+				return $term[0];
+			} else {
+				return false;
+			}
 		}
 
 		function get_var_type_conditional( $type = 'select' ) {
@@ -429,8 +571,41 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 									        <%- option_label %>
 									    <% } %>
 							          ' ),
+						     Field::make( 'select', 'post_type_mode', 'Mode' )
+						          ->set_options( function () {
+							          return array(
+								          'select_posts_manually'   => 'Select posts manually',
+								          'get_posts_automatically' => 'Get posts automatically',
+							          );
+						          } )
+						          ->set_conditional_logic( $this->get_var_type_conditional( 'post_type' ) ),
 						     Field::make( 'text', 'post_type_slug', 'Post type slug' )
 						          ->set_conditional_logic( $this->get_var_type_conditional( 'post_type' ) ),
+						     Field::make( 'complex', 'post_type_taxonomies', 'Taxonomies' )
+						          ->set_collapsed( true )
+						          ->add_fields( array(
+								          Field::make( 'text', 'tax', 'Taxonomy' )->set_width( '50%' ),
+								          Field::make( 'text', 'default_tax_term', 'Default taxonomy term' )->set_width( '50%' ),
+							          )
+						          )
+						          ->set_conditional_logic( $this->get_var_type_conditional( 'select' ) )
+						          ->set_header_template( '
+									    <% if (tax) { %>
+									        <%- tax %>
+									    <% } %>
+							          ' )
+						          ->set_conditional_logic( array(
+							          array(
+								          'field'   => 'var_type',
+								          'value'   => 'post_type',
+								          'compare' => '=',
+							          ),
+							          array(
+								          'field'   => 'post_type_mode',
+								          'value'   => 'get_posts_automatically',
+								          'compare' => '=',
+							          )
+						          ) ),
 					     ) )
 					     ->set_header_template( '
 							    <% if (var_label) { %>

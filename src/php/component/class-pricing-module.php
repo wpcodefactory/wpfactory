@@ -52,7 +52,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Pricing_Module' ) ) {
 		 * @param $product
 		 * @param $required_attributes
 		 *
-		 * @return mixed|string
+		 * @return array|string
 		 */
 		function wpft_get_prod_variation_by_attributes( $product, $required_attributes ) {
 			$returned_variation = '';
@@ -61,12 +61,22 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Pricing_Module' ) ) {
 					$formatted_attributes = call_user_func_array( 'array_merge', array_map( function ( $k, $v ) {
 						return array( preg_replace( '/^attribute_pa_/', '', $k ) => $v );
 					}, array_keys( $variation['attributes'] ), $variation['attributes'] ) );
+
 					if ( count( $required_attributes ) === count( array_intersect_assoc( $formatted_attributes, $required_attributes ) ) ) {
 						$returned_variation = $variation;
 						break;
 					}
 				}
 			}
+
+			//error_log('----------');
+			//error_log(print_r($returned_variation,true));
+
+			//if ( 333 === (int) $product->get_id() ) {
+			//error_log(print_r($returned_variation,true));
+			//error_log(print_r($required_attributes,true));
+			//error_log(print_r(array_intersect_assoc( $formatted_attributes, $required_attributes ),true));
+			//}
 
 			return $returned_variation;
 		}
@@ -83,11 +93,29 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Pricing_Module' ) ) {
 				return $vars;
 			}
 
+			// All plugins access.
+			$all_plugins_variation = array();
+			if (
+				true === filter_var( carbon_get_theme_option( 'wpft_all_plugins_access_enabled' ), FILTER_VALIDATE_BOOLEAN ) &&
+				! empty( $all_plugins_product_info = carbon_get_theme_option( 'wpft_all_plugins_access_product' ) )
+			) {
+				$vars['all_plugins_access_enabled'] = true;
+				$all_plugins_product                = wc_get_product( $all_plugins_product_info[0]['id'] );
+				$all_plugins_attributes             = carbon_get_theme_option( 'wpft_wc_attributes_all_plugins_access' );
+				$all_plugins_variation              = $this->wpft_get_prod_variation_by_attributes( $all_plugins_product, wp_list_pluck( $all_plugins_attributes, 'attribute_term', 'attribute' ) );
+				$vars['all_plugins_variation']      = $all_plugins_variation;
+				if ( (int) $vars['product']->get_id() === $all_plugins_product->get_id() ) {
+					return $vars;
+				}
+			}
+
 			// Gets single price variation.
 			$variation = $this->wpft_get_prod_variation_by_attributes( $vars['product'], wp_list_pluck( $attributes, 'attribute_term', 'attribute' ) );
 			if ( ! empty( $variation ) ) {
 				$vars['variation'] = $variation;
 			}
+
+			// Handle bundle.
 			if (
 				! empty( $variation ) &&
 				true === filter_var( carbon_get_theme_option( 'wpft_bundles_enabled' ), FILTER_VALIDATE_BOOLEAN )
@@ -96,7 +124,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Pricing_Module' ) ) {
 
 				// Gets bundle products.
 				$bundles_class           = wpft_get_theme()->get_component( 'Bundles' );
-				$bundle_products         = $bundles_class->wpft_get_bundle_products( $variation );
+				$bundle_products         = $bundles_class->wpft_get_bundle_products( $variation, $all_plugins_variation );
 				$vars['bundle_products'] = $bundle_products;
 
 				// Bundle price.

@@ -31,8 +31,15 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Bundles' ) ) {
 				'find_variation_by_attributes'
 			), 10, 2 );
 
+			// Add bundle to cart.
+			add_action( 'wp_loaded', array( $this, 'woocommerce_maybe_add_multiple_products_to_cart' ), 15 );
+			add_action( 'template_redirect', array( $this, 'redirect_to_cart_on_bundle_add_to_cart' ) );
+
+			// Apply bundle coupon discount programmatically
+			add_action( 'woocommerce_before_calculate_totals', array( $this, 'apply_bundle_coupon_dynamically' ) );
+
 			// Bundle discount.
-			add_action( 'woocommerce_before_calculate_totals', array(
+			/*add_action( 'woocommerce_before_calculate_totals', array(
 				$this,
 				'change_bundle_products_price_on_cart'
 			), 9999 );
@@ -40,11 +47,6 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Bundles' ) ) {
 				$this,
 				'change_bunde_products_price_html_on_cart'
 			), 10, 3 );
-
-			// Add bundle to cart.
-			add_action( 'wp_loaded', array( $this, 'woocommerce_maybe_add_multiple_products_to_cart' ), 15 );
-			add_action( 'template_redirect', array( $this, 'redirect_to_cart_on_bundle_add_to_cart' ) );
-
 			add_action( 'woocommerce_cart_totals_before_order_total', array(
 				$this,
 				'add_fake_bundle_discount_info_on_cart_totals'
@@ -52,7 +54,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Bundles' ) ) {
 			add_action( 'woocommerce_review_order_before_order_total', array(
 				$this,
 				'add_fake_bundle_discount_info_on_cart_totals'
-			) );
+			) );*/
 
 			// JS.
 			/*add_filter( 'wpft_js_modules_required', array( $this, 'load_bundle_js' ) );
@@ -67,32 +69,23 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Bundles' ) ) {
 			*/
 		}
 
-		function add_fake_bundle_discount_info_on_cart_totals() {
-			if ( $this->bundle_savings_totals_in_cart == 0 ) {
-				return;
-			}
-			?>
-            <tr class="tax-total">
-                <th><?php echo __( 'Bundle discount', 'wpfactory' ) ?></th>
-                <td>
-					<?php
-					echo '- ' . wc_price( $this->bundle_savings_totals_in_cart );
-					?>
-                </td>
-            </tr>
-			<?php
-		}
-
-		function change_bundle_products_price_on_cart( $cart ) {
-			if (
-				( is_admin() && ! defined( 'DOING_AJAX' ) ) ||
-				did_action( 'woocommerce_before_calculate_totals' ) >= 2 ||
-				true !== filter_var( carbon_get_theme_option( 'wpft_bundles_enabled' ), FILTER_VALIDATE_BOOLEAN )
-			) {
+		function apply_bundle_coupon_dynamically( $cart ) {
+			if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
 				return;
 			}
 
-            // Minimum bundle products necessary to give discount.
+			if ( did_action( 'woocommerce_before_calculate_totals' ) >= 2 ) {
+				return;
+			}
+
+			// Your settings
+			$coupon_code = $this->get_bundle_discount_coupon()->get_code();
+
+			// Initializing variables
+			$applied_coupons = $cart->get_applied_coupons();
+			$coupon_code     = sanitize_text_field( $coupon_code );
+
+			// Minimum bundle products necessary to give discount.
 			$bundle_products_min = carbon_get_theme_option( 'wpft_bundle_products_min' );
 
 			// Need to compare cart products with all plugins access product?
@@ -100,6 +93,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Bundles' ) ) {
 			$need_to_compare_products = false;
 			$all_plugins_product_id   = 0;
 			if (
+				true === filter_var( carbon_get_theme_option( 'wpft_all_plugins_access_enabled' ), FILTER_VALIDATE_BOOLEAN ) &&
 				! empty( $all_plugins_product_info ) &&
 				isset( $all_plugins_product_info[0]['id'] ) &&
 				is_a( $all_plugins_product = wc_get_product( $all_plugins_product_info[0]['id'] ), 'WC_Product' ) ) {
@@ -121,45 +115,18 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Bundles' ) ) {
 			}
 
 			// Gives discount to all products but "All access products".
-			if ( count( $cart->get_cart() ) - $all_plugins_products_in_cart_total >= $bundle_products_min ) {
-				$discount = carbon_get_theme_option( 'wpft_bundles_discount' );
-				foreach ( $cart->get_cart() as $cart_item_key => $cart_item ) {
-					if (
-						$need_to_compare_products &&
-						$this->do_products_match_id( $all_plugins_product_id, $cart_item['data'] )
-					) {
-						continue;
-					}
-					$product = $cart_item['data'];
-					$price   = $product->get_price();
-					$cart_item['data']->set_price( $price * ( 1 - $discount ) );
-					$this->bundle_savings_totals_in_cart        += $price * $discount;
-					$cart_item['wpft_bundle_discount']          = true;
-					WC()->cart->cart_contents[ $cart_item_key ] = $cart_item;
-				}
-				WC()->cart->set_session();
+			if (
+				count( $cart->get_cart() ) - $all_plugins_products_in_cart_total >= $bundle_products_min &&
+				! in_array( $coupon_code, $applied_coupons )
+			) {
+				$cart->add_discount( $coupon_code );
+			} elseif ( count( $cart->get_cart() ) - $all_plugins_products_in_cart_total < $bundle_products_min ) {
+				$cart->remove_coupon( $coupon_code );
 			}
-
 		}
 
 		function do_products_match_id( $product_id, $product ) {
 			return (int) $product_id === (int) ( empty( $parent_id = $product->get_parent_id() ) ? $product->get_id() : $parent_id );
-		}
-
-		function change_bunde_products_price_html_on_cart( $price_html, $cart_item, $cart_item_key ) {
-			if ( isset( $cart_item['wpft_bundle_discount'] ) && true === $cart_item['wpft_bundle_discount'] ) {
-				$args = array();
-				if ( WC()->cart->display_prices_including_tax() ) {
-					$product_price = wc_get_price_including_tax( $cart_item['data'], $args );
-				} else {
-					$product_price = wc_get_price_excluding_tax( $cart_item['data'], $args );
-				}
-				$original_price = wc_price( $cart_item['data']->get_data()['price'] );
-
-				return '<del>' . $original_price . '</del>' . ' ' . wc_price( $product_price );
-			}
-
-			return $price_html;
 		}
 
 		function redirect_to_cart_on_bundle_add_to_cart() {
@@ -217,12 +184,27 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Bundles' ) ) {
 			return $twig;
 		}
 
+		function get_bundle_discount_coupon() {
+			$coupon_info = carbon_get_theme_option( 'wpft_bundles_discount_coupon' );
+			if (
+				! empty( $coupon_info ) && isset( $coupon_info[0] ) &&
+				! empty( $coupon = new \WC_Coupon( wc_get_coupon_code_by_id( $coupon_info[0]['id'] ) ) ) &&
+				'percent' === $coupon->get_discount_type( '' )
+			) {
+				return $coupon;
+			} else {
+				return false;
+			}
+		}
+
 		function wpft_calculate_bundle_price( $args = null ) {
-			$args           = wp_parse_args( $args, array(
+			$args = wp_parse_args( $args, array(
 				'bundle_products' => array(),
 				'variation_info'  => array(),
-				'discount'        => carbon_get_theme_option( 'wpft_bundles_discount' )
+				//'discount'        => carbon_get_theme_option( 'wpft_bundles_discount' )
+				'discount'        => $this->get_bundle_discount_coupon()->get_amount() / 100
 			) );
+
 			$discount       = $args['discount'];
 			$variation_info = $args['variation_info'];
 			if ( empty( $variation_info ) ) {
@@ -259,16 +241,33 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Bundles' ) ) {
 			), wc_get_cart_url() ) );
 		}
 
-		function wpft_get_bundle_products( $variation = null ) {
-			$exclude_ids   = ! empty( $variation ) ? array( $variation['variation_id'] ) : array();
-			$products_args = array(
+		function get_all_variations_from_parents( $variation_ids ) {
+			$variations_ids = array();
+			foreach ( $variation_ids as $variations_id ) {
+				$variation = wc_get_product( $variations_id );
+				if ( is_a( $parent_product = wc_get_product( $variation->get_parent_id() ), 'WC_Product' ) ) {
+					$available_variations = $parent_product->get_available_variations();
+					$variations_ids       = array_merge( $variations_ids, wp_list_pluck( $available_variations, 'variation_id' ) );
+				}
+			}
+
+			return $variations_ids;
+		}
+
+		function wpft_get_bundle_products( $variation = null, $all_plugins_access_variation = null ) {
+			$exclude_ids = ! empty( $variation ) ? array( $variation['variation_id'] ) : array();
+			if ( ! empty( $all_plugins_access_variation ) ) {
+				$exclude_ids[] = $all_plugins_access_variation['variation_id'];
+			}
+			$exclude_ids                 = $this->get_all_variations_from_parents( $exclude_ids );
+			$products_args               = array(
 				'limit'   => 1,
 				'type'    => 'variation',
 				'exclude' => $exclude_ids,
 				'orderby' => 'rand',
 			);
-			$variation     = wc_get_product( $variation['variation_id'] );
-			//$products_args['attributes'] = $variation->get_variation_attributes();
+			$variation                   = wc_get_product( $variation['variation_id'] );
+			$products_args['attributes'] = $variation->get_variation_attributes();
 			// Get products.
 			$products                 = wc_get_products( $products_args );
 			$products_args['exclude'] = array_merge( $exclude_ids, array( $products[0]->get_id() ) );
@@ -430,6 +429,98 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Bundles' ) ) {
 				}
 			}
 		}
+
+		/*function change_bunde_products_price_html_on_cart( $price_html, $cart_item, $cart_item_key ) {
+			if ( isset( $cart_item['wpft_bundle_discount'] ) && true === $cart_item['wpft_bundle_discount'] ) {
+				$args = array();
+				if ( WC()->cart->display_prices_including_tax() ) {
+					$product_price = wc_get_price_including_tax( $cart_item['data'], $args );
+				} else {
+					$product_price = wc_get_price_excluding_tax( $cart_item['data'], $args );
+				}
+				$original_price = wc_price( $cart_item['data']->get_data()['price'] );
+
+				return '<del>' . $original_price . '</del>' . ' ' . wc_price( $product_price );
+			}
+
+			return $price_html;
+		}*/
+
+		/*function add_fake_bundle_discount_info_on_cart_totals() {
+			if ( $this->bundle_savings_totals_in_cart == 0 ) {
+				return;
+			}
+			?>
+			<tr class="tax-total">
+				<th><?php echo __( 'Bundle discount', 'wpfactory' ) ?></th>
+				<td>
+					<?php
+					echo '- ' . wc_price( $this->bundle_savings_totals_in_cart );
+					?>
+				</td>
+			</tr>
+			<?php
+		}*/
+
+		/*function change_bundle_products_price_on_cart( $cart ) {
+			if (
+				( is_admin() && ! defined( 'DOING_AJAX' ) ) ||
+				did_action( 'woocommerce_before_calculate_totals' ) >= 2 ||
+				true !== filter_var( carbon_get_theme_option( 'wpft_bundles_enabled' ), FILTER_VALIDATE_BOOLEAN )
+			) {
+				return;
+			}
+
+			// Minimum bundle products necessary to give discount.
+			$bundle_products_min = carbon_get_theme_option( 'wpft_bundle_products_min' );
+
+			// Need to compare cart products with all plugins access product?
+			$all_plugins_product_info = carbon_get_theme_option( 'wpft_all_plugins_access_product' );
+			$need_to_compare_products = false;
+			$all_plugins_product_id   = 0;
+			if (
+				true === filter_var( carbon_get_theme_option( 'wpft_all_plugins_access_enabled' ), FILTER_VALIDATE_BOOLEAN ) &&
+				! empty( $all_plugins_product_info ) &&
+				isset( $all_plugins_product_info[0]['id'] ) &&
+				is_a( $all_plugins_product = wc_get_product( $all_plugins_product_info[0]['id'] ), 'WC_Product' ) ) {
+				$all_plugins_product_id   = empty( $parent_id = $all_plugins_product->get_parent_id() ) ? $all_plugins_product->get_id() : $parent_id;
+				$need_to_compare_products = true;
+			}
+
+			// Checks how many "All access products" are in cart.
+			$all_plugins_products_in_cart_total = 0;
+			foreach ( $cart->get_cart() as $cart_item_key => $cart_item ) {
+				if (
+					$need_to_compare_products &&
+					$this->do_products_match_id( $all_plugins_product_id, $cart_item['data'] )
+				) {
+					$all_plugins_products_in_cart_total ++;
+				}
+				$cart_item['wpft_bundle_discount']          = false;
+				WC()->cart->cart_contents[ $cart_item_key ] = $cart_item;
+			}
+
+			// Gives discount to all products but "All access products".
+			if ( count( $cart->get_cart() ) - $all_plugins_products_in_cart_total >= $bundle_products_min ) {
+				$discount = carbon_get_theme_option( 'wpft_bundles_discount' );
+				foreach ( $cart->get_cart() as $cart_item_key => $cart_item ) {
+					if (
+						$need_to_compare_products &&
+						$this->do_products_match_id( $all_plugins_product_id, $cart_item['data'] )
+					) {
+						continue;
+					}
+					$product = $cart_item['data'];
+					$price   = $product->get_price();
+					$cart_item['data']->set_price( $price * ( 1 - $discount ) );
+					$this->bundle_savings_totals_in_cart        += $price * $discount;
+					$cart_item['wpft_bundle_discount']          = true;
+					WC()->cart->cart_contents[ $cart_item_key ] = $cart_item;
+				}
+				WC()->cart->set_session();
+			}
+
+		}*/
 
 		/*function bundle_select_callback() {
 			check_ajax_referer( 'selectwoo_get_bundle_products', 'security' );

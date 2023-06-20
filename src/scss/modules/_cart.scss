@@ -1,0 +1,33 @@
+// Mini cart
+.woocommerce-mini-cart-item.mini_cart_item {
+  a:not(.remove) {
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: -1px;
+    line-height: 22px;
+    color:$color7;
+  }
+
+  a.remove {
+    height: 18px;
+  }
+}
+
+// Variations on Mini cart and Cart
+.woocommerce-mini-cart-item.mini_cart_item, .woocommerce-cart-form__cart-item.cart_item {
+  .variation {
+    dt, dd {
+      margin: 0;
+      padding: 0;
+    }
+
+    dt {
+      float: left;
+      margin: 0 5px 0 0;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+}

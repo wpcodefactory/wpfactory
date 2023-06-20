@@ -36,7 +36,18 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Page_Buil
 			$codemirror_field->init();
 			// Adds css classes to page builder modules.
 			add_filter( 'wpft_module_css_classes', array( $this, 'add_css_classes_to_page_builder_module' ) );
+
+			add_filter('terms_clauses',array($this,'test'));
 		}
+
+		function test($args){
+			if(!isset($args['orderby']) || empty($args['orderby'])){
+				$args['orderby']='';
+			}
+			//error_log(print_r($args,true));
+			return $args;
+		}
+
 
 		/**
 		 * add_css_classes_to_page_builder_module.

@@ -181,7 +181,7 @@
         @extend .round-check-list-item;
         margin-right: 5px;
         float: left;
-        color:#14243B;
+        color: #14243B;
       }
 
       dd {
@@ -235,5 +235,112 @@
       margin: 0 0 15px 0;
     }
 
+  }
+}
+
+// FAQ
+.wpftpb-section.faq-section {
+  .question-wrapper {
+    background: #FFFFFF;
+    border: 1px solid #F2F5FA;
+    border-radius: 12px;
+    padding: 30px;
+    font-size: 24px;
+    font-weight: 600;
+    line-hieght: 36px;
+    color: #14243B;
+    position: relative;
+
+    &.is-active {
+      border-width: 1px;
+      border-color: #F2F5FA;
+    }
+
+    &:hover {
+      background: linear-gradient(107.56deg, rgba(39, 33, 103, 0.24) 0%, rgba(144, 104, 252, 0.24) 100%);
+      border-radius: 12px;
+      color: #fff;
+      cursor: pointer;
+
+      .open-question-btn {
+        background: #007DFC;
+      }
+
+      > * {
+        color: #fff
+      }
+    }
+
+    > * {
+      font-size: 24px;
+      font-weight: 600
+    }
+
+    .open-question-btn {
+      width: 36px;
+      height: 36px;
+      background: #14243B;;
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      border-radius: 50px;
+      padding: 0;
+      text-align: center;
+
+      &:hover {
+        background: #007DFC;
+      }
+
+      &:after {
+        @include sprite($icon-open-popup);
+        content: "";
+        position: absolute;
+        display: inline-block;
+        left: 0;
+        right: 0;
+        margin: auto auto;
+        top: 0;
+        bottom: 0;
+      }
+    }
+  }
+}
+
+.modal-answers {
+
+  .splide__arrow--prev {
+    left:15px;
+  }
+  .splide__arrow--next {
+    right:15px;
+  }
+
+  .answer-label {
+    color: #727C89;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+
+  .question-and-answer {
+    text-align: left;
+
+    h3 {
+      font-weight: 800;
+      font-size: 30px;
+      line-height: 42px;
+      color: #14243B;
+      margin-bottom: 40px;
+    }
+
+    .answer {
+      color: #14243B;
+    }
+  }
+
+  @include mobile {
+
+    .splide__arrows {
+      display: none;
+    }
   }
 }

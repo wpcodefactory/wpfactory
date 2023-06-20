@@ -94,6 +94,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 				'\\WPFactory\\WPFactory_Theme\\Component\\Content_Header',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Bundles',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Pricing_Module',
+				'\\WPFactory\\WPFactory_Theme\\Component\\FAQ',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Page_Builder\\Page_Builder',
 			);
 		}
@@ -116,12 +117,13 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 				'wpft_add_to_cart_url'
 			) ) );
 			$twig->addFunction( new \Timber\Twig_Function( 'wpft_exit', array( $this, 'wpft_exit' ) ) );
+
 			return $twig;
 		}
 
-        function wpft_exit(){
-            die();
-        }
+		function wpft_exit() {
+			die();
+		}
 
 		/**
 		 * add_to_cart_url.
@@ -157,6 +159,17 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 			//wp_deregister_style('storefront-woocommerce-style');
 			//wp_dequeue_style('storefront-style');
 
+			// Splide
+			wp_enqueue_style( 'wpft-splide-css', 'https://cdnjs.cloudflare.com/ajax/libs/splidejs/4.1.4/css/splide.min.css', array(), false );
+			wp_enqueue_script( 'wpft-splide-js',
+				'https://cdnjs.cloudflare.com/ajax/libs/splidejs/4.1.4/js/splide.js',
+				array(),
+				false,
+				false
+			);
+
+			//<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/splidejs/4.1.4/css/splide.min.css" integrity="sha512-KhFXpe+VJEu5HYbJyKQs9VvwGB+jQepqb4ZnlhUF/jQGxYJcjdxOTf6cr445hOc791FFLs18DKVpfrQnONOB1g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 			// Main frontend style.
 			//wp_enqueue_style( 'wpfactory-style', get_theme_file_uri( '/assets/css/frontend' . $suffix . '.css' ), array(), $version );
 			wp_enqueue_style( 'wpfactory-style', get_theme_file_uri( '/assets/css/frontend' . $suffix . '.css' ), apply_filters( 'wpft_frontend_css_deps', array( 'storefront-woocommerce-style' ) ), $version );
@@ -167,13 +180,17 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 			// Main frontend script.
 			wp_enqueue_script( 'wpfactory-frontend-js',
 				get_theme_file_uri( '/assets/js/frontend' . $suffix . '.js' ),
-				apply_filters( 'wpft_frontend_js_deps', array( 'jquery' ) ),
+				apply_filters( 'wpft_frontend_js_deps', array( 'jquery','wpft-splide-js' ) ),
 				$version,
-				false
+				true
 			);
 			wp_add_inline_script( 'wpfactory-frontend-js', 'const WPFTFEJS = ' . json_encode( apply_filters( 'wpft_frontend_js_info', array(
 					'themeURI'        => get_theme_file_uri(),
-					'modulesRequired' => apply_filters( 'wpft_js_modules_required', array('smooth-scroll') )
+					'modulesRequired' => apply_filters( 'wpft_js_modules_required', array(
+						'smooth-scroll',
+						'slider',
+						'modal'
+					) )
 				) ) ), 'before'
 			);
 
@@ -207,7 +224,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 					add_action( 'wpft_col_full_close', array( $this, 'close_main_col_full' ) );
 					// Content header.
 					add_action( 'storefront_loop_before', array( $this, 'handle_content_header' ) );
-                    // Footer.
+					// Footer.
 					remove_action( 'storefront_after_footer', 'storefront_sticky_single_add_to_cart', 999 );
 					break;
 				case 'init':

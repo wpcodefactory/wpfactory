@@ -56,6 +56,14 @@
 </div>
 <div class="blog-bkg"></div>
 
+<!--<div class="wpft-modal">
+    <div class="wpft-modal-content-wrapper">
+        <button class="wpft-modal-close-btn"></button>
+        <div class="wpft-modal-content">
+            <p>asdasdasd</p>
+        </div>
+    </div>
+</div>-->
 
 </body>
 </html>

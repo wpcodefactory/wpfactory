@@ -21,7 +21,9 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Products' ) ) {
 	class Products implements Theme_Component {
 		public function init() {
 			add_action( 'after_setup_theme', array( $this, 'setup_woocommerce_product' ) );
-
+			add_filter ('woocommerce_add_to_cart_redirect', function( $url, $adding_to_cart ) {
+				return wc_get_cart_url();
+			}, 10, 2 );
 		}
 
 		function setup_woocommerce_product() {

@@ -29,7 +29,7 @@ $color7: linear-gradient(180deg, #1A2DC9 calc(30% + 1px), #02F4A1 calc(75% + 1px
 $color8: #435062;
 
 
-a:focus {
+a:focus, button:focus, .button.alt:focus, input:focus, textarea:focus, input[type="button"]:focus, input[type="reset"]:focus, input[type="submit"]:focus, input[type="email"]:focus, input[type="tel"]:focus, input[type="url"]:focus, input[type="password"]:focus, input[type="search"]:focus {
   outline-style: none;
   box-shadow: none;
   border-color: transparent;
@@ -128,17 +128,141 @@ a:focus {
   justify-content: space-between;
 }
 
-.only-mobile-flex-direction-col-reverse{
-  @include mobile{
-    display:flex;
+.only-mobile-flex-direction-col-reverse {
+  @include mobile {
+    display: flex;
     flex-direction: column-reverse;
   }
 }
 
 // Select 2
-.select2-container{
-  font-size:14px;
+.select2-container {
+  font-size: 14px;
 }
-.select2-container--default .select2-results__option--highlighted[aria-selected], .select2-container--default .select2-results__option--highlighted[data-selected]{
-  background-color:$color5;
+
+.select2-container--default .select2-results__option--highlighted[aria-selected], .select2-container--default .select2-results__option--highlighted[data-selected] {
+  background-color: $color5;
+}
+
+// Splide JS
+.splide__arrow {
+  background: #fff;
+  //opacity:1;
+  width: 72px;
+  height: 72px;
+  box-shadow: 0px 12px 24px rgba(57, 65, 73, 0.12);
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    background: $color1;
+
+    svg {
+      fill: #fff;
+    }
+  }
+}
+
+.splide__arrow--prev {
+  left: -36px;
+}
+
+.splide__arrow--next {
+  right: -36px;
+}
+
+// Modal
+.wpft-modal {
+  pointer-events: none;
+  background-color: transparent;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  text-align: center;
+  vertical-align: middle;
+  transition: background-color 0.5s ease-in-out;
+
+  &:before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+  }
+
+  .wpft-modal-content-wrapper {
+    display: inline-block;
+    min-width: 80%;
+    @include desktop {
+      min-width: $desktop;
+    }
+
+    min-height: 70%;
+    //overflow:visible;
+    vertical-align: middle;
+    background: #fff;
+    box-shadow: 0px 12px 24px rgba(20, 36, 59, 0.12);
+    border-radius: 12px;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+    transition: all 0.5s ease-in-out;
+    opacity: 0;
+  }
+
+  .wpft-modal-close-btn {
+    position: absolute;
+    left: -50px;
+    top: -50px;
+    padding: 15px;
+    background-color: transparent !important;
+    @include mobile {
+      left: -25px;
+    }
+
+    &:before {
+      @include sprite($icon-close);
+      content: "";
+      display: inline-block;
+      padding: 0;
+    }
+
+    &:hover {
+      filter: invert(0) sepia(0) saturate(5000%) hue-rotate(346deg) brightness(100%) contrast(100%)
+    }
+  }
+
+  .wpft-modal-content {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+    width: 100%;
+    max-width: 95%;
+    max-height: 90%;
+    overflow-y: auto;
+    @include mobile {
+      max-width: 95%;
+      max-height: 95%;
+    }
+
+    *:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &.open {
+    pointer-events: auto;
+    background-color: rgba(0, 0, 0, 0.3);
+
+    .wpft-modal-content-wrapper {
+      opacity: 1;
+    }
+  }
 }

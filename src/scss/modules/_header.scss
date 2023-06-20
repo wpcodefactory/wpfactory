@@ -63,3 +63,25 @@
   height: 0px;
   transition: height 0.3s ease-in-out;
 }
+.search-field{
+  background:none !important;
+  border:none !important;
+  box-shadow:none !important;
+  font-size:20px;
+  font-weight:700 !important;
+  color:#727C89;
+  &:before{
+
+  }
+}
+.widget_search form:not(.wp-block-search),.widget_product_search form:not(.wp-block-search){
+  &:before{
+    @include sprite($icon-search-2);
+    content:"";
+    left:5px;
+  }
+}
+.widget_search form:not(.wp-block-search) input[type=text], .widget_search form:not(.wp-block-search) input[type=search], .widget_product_search form:not(.wp-block-search) input[type=text], .widget_product_search form:not(.wp-block-search) input[type=search]{
+  padding-left:70px;
+  padding-top:16px;
+}
