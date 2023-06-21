@@ -306,13 +306,15 @@
   }
 }
 
+// FAQ - Modal answers
 .modal-answers {
 
   .splide__arrow--prev {
-    left:15px;
+    left: 15px;
   }
+
   .splide__arrow--next {
-    right:15px;
+    right: 15px;
   }
 
   .answer-label {
@@ -343,4 +345,73 @@
       display: none;
     }
   }
+}
+
+// Product Category section
+.wpftpb-section.prod-category-section {
+  backgrund: red !important;
+
+  .button.see-all{
+    margin:20px 0 30px;
+    padding:18px 34px;
+    font-size:16px;
+  }
+
+  .wpft-mod-description {
+    line-height: 28px;
+    margin-bottom: 40px;
+  }
+
+  .entry-title {
+    font-size: 48px;
+    margin-bottom: 35px;
+  }
+
+  .features {
+    margin: 0;
+    list-style: none;
+
+    li {
+      font-size: 14px;
+      color: $color1;
+      margin-bottom: 21px;
+    }
+  }
+
+  .product-wrapper {
+    background: linear-gradient(180deg, #F2F5FA 0%, rgba(248, 249, 249, 0.5) 100%);
+    border-radius: 12px;
+  }
+
+  .product-title {
+    color: $color1;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 24px;
+    margin:0 0 5px 0;
+    a{
+      color:$color1;
+      &:hover{
+        color:$color2;
+      }
+    }
+  }
+
+  .product-tag {
+    padding: 4px 6px;
+    background: #E3E5E7;
+    border-radius: 6px;
+    color: #727C89;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 24px;
+    margin:0 3px 0 0;
+    &:hover{
+      color:#000000;
+    }
+    &:last-child{
+      margin-right:0;
+    }
+  }
+
 }

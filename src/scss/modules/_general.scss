@@ -174,6 +174,16 @@ a:focus, button:focus, .button.alt:focus, input:focus, textarea:focus, input[typ
   right: -36px;
 }
 
+.splide__arrow{
+  opacity:1;
+  transition: opacity 0.3s ease-in-out;
+  pointer-events: all;
+}
+.splide__arrow[disabled]{
+  opacity:0 !important;
+  pointer-events: none;
+}
+
 // Modal
 .wpft-modal {
   pointer-events: none;

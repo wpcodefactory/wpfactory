@@ -498,6 +498,7 @@ class Association_Field extends Field {
 		 * @param array $args The parameters, passed to WP_Term_Query::__construct().
 		 */
 		$filter_name = 'carbon_fields_association_field_options_' . $this->get_base_name() . '_' . $type . '_' . $taxonomy;
+		//error_log(print_r($filter_name,true));
 
 		$args = apply_filters( $filter_name, array(
 			'hide_empty'             => 0,

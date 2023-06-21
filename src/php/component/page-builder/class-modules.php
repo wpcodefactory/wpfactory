@@ -131,7 +131,6 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 			if ( ! empty( $extra_template_variables_filter = carbon_get_post_meta( $module_id, 'wpft_template_variables_filter' ) ) ) {
 				$template_vars = apply_filters( $extra_template_variables_filter, $template_vars, $module_id );
 			}
-
 			$output = \Timber::compile_string( $template, $template_vars );
 			if ( ! empty( $output ) ) {
 				echo $output;
@@ -180,17 +179,10 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 			} elseif ( ! empty( $modules_from_post ) ) {
 				$context = $this->init_timber_and_get_initial_context( $post_id );
 				foreach ( $modules_from_post as $module ) {
-					$template_vars = $this->sanitize_module_info( $module );
-					//error_log(print_r($template_vars,true));
-					/*if ( false !== ( $timber_posts = $this->maybe_get_timber_posts( $template_vars ) ) ) {
-						$template_vars[ array_keys( $timber_posts )[0] ] = array_values( $timber_posts )[0];
-					}*/
+					$template_vars          = $this->sanitize_module_info( $module );
 					$original_template_vars = $this->get_template_vars_from_module( $module['module'] );
 					$template_vars          = array_replace( $original_template_vars, $template_vars );
 					$template_vars          = $this->maybe_convert_template_vars_to_timber_posts( $template_vars );
-					//error_log(print_r($original_template_vars,true));
-					//error_log(print_r($template_vars,true));
-
 					$this->display_module( array(
 						'module_id'     => $module['module'],
 						'template_vars' => array_merge( $context, $template_vars ),
@@ -355,9 +347,11 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 		function get_dynamic_field_type( $variable ) {
 			$type         = $variable['var_type'];
 			$id_converted = array(
-				'url'       => 'text',
-				'number'    => 'text',
-				'post_type' => 'association'
+				'url'        => 'text',
+				'repeatable' => 'complex',
+				'number'     => 'text',
+				'post_type'  => 'association',
+				'taxonomy'   => 'association'
 			);
 			$type         = isset( $id_converted[ $type ] ) ? $id_converted[ $type ] : $type;
 
@@ -389,6 +383,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 					}
 					$ids_used[ $field_id ] = $field_id;
 					$field                 = Field::make( $this->get_dynamic_field_type( $variable ), $field_id, $variable['var_label'] );
+					$extra_fields          = array();
 					if ( 'select' === $variable['var_type'] ) {
 						$field->set_options( wp_list_pluck( $variable['select_options'], 'option_label', 'option_id' ) );
 					}
@@ -409,21 +404,22 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 								$field->set_types( array(
 									array(
 										'type'      => 'post',
-										'post_type' => $variable['post_type_slug']
+										'post_type' => $variable['post_type_slug'],
 									)
 								) );
-								/*if ( ! empty( $variable['post_type_mode'] ) && 'get_posts_automatically' === $variable['post_type_mode'] ) {
-									//$can_add_field = false;
-								}*/
 								if ( isset( $variable['post_type_taxonomies'] ) && ! empty( $variable['post_type_taxonomies'] ) ) {
-									add_filter( 'carbon_fields_association_field_options_' . $field_id . '_' . 'post' . '_' . $variable['post_type_slug'], function ( $args ) use ( $complex_field_id, $field_id, $container ) {
+									/*add_filter( 'carbon_fields_association_field_options_' . $field_id . '_' . 'post' . '_' . $variable['post_type_slug'], function ( $args ) use ( $complex_field_id, $field_id, $container ) {
 										@$post_id = $_REQUEST['post'] ?? $_REQUEST['id'] ?? $_REQUEST['post_ID'];
+										$unique_id = $container->get_id() . '_' . $complex_field_id . '_' . $field_id;
+										$tax_query = array();
 										if ( ! empty( $post_id ) ) {
-											$fields = carbon_get_post_meta( $post_id, $complex_field_id );
-											foreach ( $fields as $field ) {
+											$fields = carbon_get_post_meta( $post_id, $complex_field_id, $container->get_id() );
+											foreach ( $fields as $k => $field ) {
+												if ( isset( $args[ $unique_id . '_' . $k ] ) ) {
+													continue;
+												}
 												if ( isset( $field[ $field_id . '_post_type_taxonomies' ] ) && ! empty( $tax_values = $field[ $field_id . '_post_type_taxonomies' ] ) ) {
-													$tax_query = array();
-													foreach ( $tax_values as $chosen_tax_info ) {
+													foreach ( $tax_values as $other_key => $chosen_tax_info ) {
 														$tax_query[] = array(
 															'taxonomy' => $chosen_tax_info['subtype'],
 															'field'    => 'id',
@@ -431,21 +427,21 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 														);
 													}
 													if ( ! empty( $tax_query ) ) {
-														$args['tax_query'] = $tax_query;
+														$args[ $unique_id . '_' . $k ] = $k;
+														$args['tax_query']             = $tax_query;
 													}
 												}
 											}
 										}
 
 										return $args;
-									} );
+									} );*/
 									add_filter( 'carbon_fields_association_field_options_' . $field_id . '_' . 'post_type_taxonomies_term_product_cat', function ( $args ) use ( $complex_field_id ) {
 										$args['orderby'] = '';
 
 										return $args;
 									} );
 									foreach ( $variable['post_type_taxonomies'] as $tax_info ) {
-
 										$field_tax_terms =
 											//Field::make( 'association', $field_id . '_'.'post_type_taxonomy_' . $tax_info['tax'], sprintf( 'Taxonomy (%s)', $tax_info['tax'] ) )
 											//carbon_fields_association_field_options_mod_347_faq_posts_post_type_taxonomies_term_wpft_faq_category
@@ -472,13 +468,55 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 											}
 											$field_tax_terms->set_default_value( array( 'term:' . $tax_info['tax'] . ':' . $default_tax_term ) );
 										}
-										$fields[] = $field_tax_terms;
+										//$fields[] = $field_tax_terms;
+										$extra_fields[] = $field_tax_terms;
 									}
 								}
 								$field->set_width( '100%' );
 
 							}
 							//$field->set_types( array( 'type', 'post', 'post_type' => $variable['post_type_slug'] ) );
+							break;
+						case 'taxonomy':
+							//carbon_fields_association_field_options_mod_393_product_cat_term_product_cat
+							//error_log(print_r('carbon_fields_association_field_options_' . $field_id . '_' . 'product_cat_term_product_cat',true));
+							add_filter( 'carbon_fields_association_field_options_' . $field_id . '_' . 'term_product_cat', function ( $args ) use ( $complex_field_id ) {
+								$args['orderby'] = '';
+
+								return $args;
+							} );
+							//error_log(print_r($variable,true));
+							if ( ! empty( $variable['var_id'] ) ) {
+								//error_log(print_r($variable,true));
+								$field->set_types( array(
+									array(
+										'type'      => 'term',
+										'taxonomy' => $variable['var_id'],
+									)
+								) );
+								if (! empty( $default_value = $variable['default_value'] )) {
+									if ( ! is_numeric( $default_value ) ) {
+										$term = $this->get_term_by_slug_via_db( $variable['var_id'], $default_value );
+										if ( false !== $term ) {
+											$default_value = $term->term_id;
+										}
+									}
+									$field->set_default_value( array( 'term:' . $variable['var_id'] . ':' . $default_value ) );
+								}
+							}
+							break;
+						case 'repeatable':
+							$field->set_width( '100%' );
+							if ( isset( $variable['repeatable_group'] ) && ! empty( $variable['repeatable_group'] ) ) {
+								$fields_to_add = array();
+								foreach ( $variable['repeatable_group'] as $group_field ) {
+									$fields_to_add[] = Field::make( $group_field['repeatable_group_field_type'], $group_field['repeatable_group_field_id'], $group_field['repeatable_group_field_label'] )->set_width( '50%' );
+								}
+								$field
+									->set_collapsed( true )
+									->add_fields( $fields_to_add )
+									->set_layout( 'tabbed-vertical' );
+							}
 							break;
 					}
 					$field->set_conditional_logic( array(
@@ -491,6 +529,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 					if ( $can_add_field ) {
 						$fields[] = $field;
 					}
+					$fields = array_merge( $fields, $extra_fields );
 				}
 			}
 
@@ -543,13 +582,15 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 						     Field::make( 'checkbox', 'editable', 'Editable' )->set_width( '50%' )->set_default_value( true ),
 						     Field::make( 'select', 'var_type', 'Type' )->set_width( '50%' )
 						          ->add_options( array(
-							          'text'      => 'Text',
-							          'url'       => 'URL',
-							          'textarea'  => 'Textarea',
-							          'number'    => 'Number',
-							          'select'    => 'Select',
-							          'image'     => 'Image',
-							          'post_type' => 'Post type'
+							          'text'       => 'Text',
+							          'url'        => 'URL',
+							          'textarea'   => 'Textarea',
+							          'number'     => 'Number',
+							          'select'     => 'Select',
+							          'image'      => 'Image',
+							          'post_type'  => 'Post type',
+							          'taxonomy'   => 'Taxonomy term(s)',
+							          'repeatable' => 'Repeatable field'
 						          ) ),
 
 						     Field::make( 'complex', 'select_options', __( 'Select options' ) )
@@ -591,6 +632,26 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 									    <% } %>
 							          ' )
 						          ->set_conditional_logic( $this->get_var_type_conditional( 'post_type' ) ),
+						     Field::make( 'complex', 'repeatable_group', 'Field group' )
+						          ->set_collapsed( true )
+						          ->add_fields( array(
+							          Field::make( 'text', 'repeatable_group_field_label', 'Label' )->set_width( '30%' ),
+							          Field::make( 'text', 'repeatable_group_field_id', 'ID' )->set_width( '30%' ),
+							          Field::make( 'select', 'repeatable_group_field_type', 'Type' )->set_width( '30%' )
+							               ->set_options( function () {
+								               return array(
+									               'text'     => 'Text',
+									               'textarea' => 'Textarea',
+								               );
+							               } )
+						          ,
+						          ) )
+						          ->set_header_template( '
+									    <% if (repeatable_group_field_label) { %>
+									        <%- repeatable_group_field_label %>
+									    <% } %>
+							          ' )
+						          ->set_conditional_logic( $this->get_var_type_conditional( 'repeatable' ) ),
 					     ) )
 					     ->set_header_template( '
 							    <% if (var_label) { %>

@@ -49,15 +49,6 @@ if ( ! function_exists( 'wpft_is_current_page_full_width_content' ) ) {
 				is_product() ||
 				is_singular('post')
 			);
-		/*return ! (
-			is_shop() ||
-			is_cart() ||
-			is_checkout() ||
-			is_author() ||
-			( ! is_front_page() && is_home() ) || // Blog page
-			is_category() ||
-			is_product_category()
-		);*/
 	}
 }
 
@@ -73,11 +64,8 @@ if ( ! function_exists( 'wpft_does_current_page_have_sidebar' ) ) {
 	function wpft_does_current_page_have_sidebar() {
 		return (
 			is_shop() ||
-			is_product_category()
+			is_product_category() ||
+			is_product_tag()
 		);
-		/*return ! (
-			is_shop() ||
-			is_product_category()
-		);*/
 	}
 }

@@ -36,18 +36,17 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Page_Buil
 			$codemirror_field->init();
 			// Adds css classes to page builder modules.
 			add_filter( 'wpft_module_css_classes', array( $this, 'add_css_classes_to_page_builder_module' ) );
-
-			add_filter('terms_clauses',array($this,'test'));
+			// Remove association edit link.
+			add_filter( 'carbon_fields_association_field_options', array( $this, 'remove_association_edit_link' ) );
 		}
 
-		function test($args){
-			if(!isset($args['orderby']) || empty($args['orderby'])){
-				$args['orderby']='';
+		function remove_association_edit_link( $options ) {
+			foreach ( $options as $k => $v ) {
+				unset( $options[ $k ]['edit_link'] );
 			}
-			//error_log(print_r($args,true));
-			return $args;
-		}
 
+			return $options;
+		}
 
 		/**
 		 * add_css_classes_to_page_builder_module.
