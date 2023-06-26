@@ -1,0 +1,29 @@
+// WOOF Products filter
+
+// WOOF widget
+.widget.widget-woof {
+  h4 {
+    color: #14243B;
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 20px;
+  }
+}
+
+// List item
+ul.woof_list li, .widget .woof_redraw_zone ul li {
+  margin-bottom: 10px;
+}
+
+.woof_list label {
+  font-size: 16px;
+  color: #A1A7B1;
+  font-weight: 400;
+  line-height: 21px;
+}
+
+// Item count
+.woof_checkbox_count {
+  color: #C7CAD0;
+}
+

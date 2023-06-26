@@ -27,7 +27,7 @@
   padding-top: 48px;
 }
 
-.content-area{
+.content-area {
   width: 100%;
   float: left;
   margin-left: 0;
@@ -46,8 +46,8 @@
   font-weight: 800;
   color: $color1;
   letter-spacing: -1px;
-  @include mobile{
-    font-size:24px;
+  @include mobile {
+    font-size: 24px;
   }
 
   &.title-size-2 {
@@ -205,3 +205,36 @@
     color:$color2;
   }
 }*/
+
+.has-text-centered {
+  text-align: center;
+}
+
+.has-text-left {
+  text-align: left;
+}
+
+// Image sizes
+img.attachment-size-1 {
+  min-height: 112px;
+  width: auto;
+}
+
+.round-check-list-item {
+  font-size: 14px;
+
+  &:before {
+    content: " ";
+    display: inline-block;
+    @include sprite($icon-ok);
+    vertical-align: text-top;
+    margin: 0 10px 0 0;
+  }
+}
+
+.round-check-list-item-type2 {
+  @extend .round-check-list-item;
+  &:before {
+    filter: invert(36%) sepia(87%) saturate(1061%) hue-rotate(134deg) brightness(75%) contrast(91%);
+  }
+}

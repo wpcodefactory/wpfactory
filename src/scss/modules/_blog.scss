@@ -44,7 +44,6 @@
 
   .author-blog-role {
     float: left;
-    @extend .is-narrow;
   }
 
   @include mobile {
@@ -70,8 +69,6 @@
   }
 
   .wpft-possible-column {
-    @extend .column;
-    @extend .is-mobile;
   }
 
   .post-info {
@@ -105,7 +102,6 @@
 }
 
 .wpft-post-author-container {
-  @extend .columns;
   //margin-top: 26px;
   font-size: 12px;
   color: $color3;
@@ -119,7 +115,6 @@
     font-size: 14px;
     font-weight: 800;
     line-height: 20px;
-    @extend .is-narrow;
     //margin-top: -6px;
 
     a {

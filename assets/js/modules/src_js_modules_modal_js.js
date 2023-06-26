@@ -22,11 +22,14 @@ var modal = {
         modal.closeModal();
       });
     }
-    document.querySelector(modal.modalSelector).addEventListener('mousedown', function (e) {
-      if (e.target.classList.contains('wpft-modal')) {
-        modal.closeModal();
-      }
-    });
+    var modalSelector = document.querySelector(modal.modalSelector);
+    if (modalSelector) {
+      modalSelector.addEventListener('mousedown', function (e) {
+        if (e.target.classList.contains('wpft-modal')) {
+          modal.closeModal();
+        }
+      });
+    }
     document.addEventListener('keydown', function (event) {
       if (event.key === 'Escape') {
         // Escape key

@@ -5,5 +5,172 @@
     margin-right: auto !important;
     margin-bottom: auto !important
   }
-
 }
+
+// Product tag.
+.wpft-product-tags {
+  margin-top: 17px;
+}
+
+.tag {
+  padding: 0px 6px;
+  background: #E3E5E7;
+  border-radius: 6px;
+  color: #727C89;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 24px;
+  margin: 0 3px 5px 0;
+  display: inline-block;
+
+  &:hover {
+    color: #000000;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+// Shop imgs
+ul.products li.product img, ul.products .wc-block-grid__product img, .wc-block-grid__products li.product img, .wc-block-grid__products .wc-block-grid__product img {
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 20px;
+}
+
+// On sale
+.wc-block-grid__product-onsale, .onsale {
+  margin-bottom: 0;
+  display: table;
+  margin-top: 17px;
+}
+
+// Shop products wrapper
+.woocommerce .products {
+  margin-left: -0.75rem;
+  //@extend .columns;
+  //@extend .is-multiline;
+  //@extend .is-variable;
+  //margin:0;
+  //padding:0;
+}
+
+.wpft-product-loop-content {
+  border: 1px solid #F2F5FA;
+  border-radius: 12px;
+  padding: 22px;
+  min-height: 100%;
+}
+
+// Shop products
+//ul.products li.product, ul.products .wc-block-grid__product, .wc-block-grid__products li.product, .wc-block-grid__products .wc-block-grid__product, .site-main ul.products.columns-3 li.product, ul.products.columns-4 li.product, .site-main ul.products.columns-4 li.product {
+.site-main ul.products.columns-3 li.product {
+  margin-right: 0;
+  @extend .column;
+  text-align: left;
+  margin-bottom: 0px;
+}
+
+// All plugins loop
+.all-plugins-access-loop {
+  //background:red;
+  color:#fff;
+  * {
+    color: #fff;
+  }
+
+  .wpft-product-loop-content {
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+
+    .savings {
+      background: #B25E47;
+      border-radius: 18px;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 4px 8px;
+      color: #fff;
+      display: inline-block;
+      vertical-align: sub;
+      margin: 0 0 15px 0;
+      word-spacing: 4px;
+    }
+
+    * {
+      position: relative;
+      z-index: 2;
+      color:#fff;
+    }
+
+    .woocommerce-loop-product__title{
+      color:#fff !important;
+    }
+
+    &:after {
+      content: "";
+      background: left top no-repeat url('/src/img/circles-small.svg');
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      z-index: 1;
+    }
+
+    .variation {
+      margin:0;
+      font-size:14px;
+      dt, dd {
+
+      }
+
+      dt {
+        @extend .round-check-list-item-type2;
+        margin-right: 5px;
+        float: left;
+        color: #fff;
+        font-size:14px;
+      }
+
+      dd {
+        margin:0px 0 5px 0;
+        float:left;
+        color:rgba(199, 202, 208, 1);
+        font-size:14px;
+        //background: linear-gradient(0deg, #FFFFFF, #FFFFFF),
+      //linear-gradient(0deg, #C7CAD0, #C7CAD0);
+
+      }
+
+    }
+    div.round-check-list-item{
+      float:left;
+      clear:both;
+      margin:0 !important;
+      color:rgba(199, 202, 208, 1);
+      font-size:14px;
+    }
+
+    background: linear-gradient(206.17deg, #0B9674 0%, #14243B 43.17%);
+  }
+}
+
+.wpft-product-loop-short-description {
+  color: #727C89;
+  //margin-bottom:17px;
+}
+
+// Shop products title
+ul.products li.product .woocommerce-loop-product__title, ul.products li.product .woocommerce-loop-category__title, ul.products li.product .wc-block-grid__product-title, ul.products li.product .wc-block-grid__product-title > a, ul.products .wc-block-grid__product .woocommerce-loop-product__title, ul.products .wc-block-grid__product .woocommerce-loop-category__title, ul.products .wc-block-grid__product .wc-block-grid__product-title, ul.products .wc-block-grid__product .wc-block-grid__product-title > a, .wc-block-grid__products li.product .woocommerce-loop-product__title, .wc-block-grid__products li.product .woocommerce-loop-category__title, .wc-block-grid__products li.product .wc-block-grid__product-title, .wc-block-grid__products li.product .wc-block-grid__product-title > a, .wc-block-grid__products .wc-block-grid__product .woocommerce-loop-product__title, .wc-block-grid__products .wc-block-grid__product .woocommerce-loop-category__title, .wc-block-grid__products .wc-block-grid__product .wc-block-grid__product-title, .wc-block-grid__products .wc-block-grid__product .wc-block-grid__product-title > a {
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 800;
+  color: #14243B;
+}
+
+/*rgba(11, 150, 116, 1)
+rgba(20, 36, 59, 1)*/
+
+

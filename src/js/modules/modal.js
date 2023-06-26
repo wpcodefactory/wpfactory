@@ -16,11 +16,14 @@ const modal = {
                 modal.closeModal();
             });
         }
-        document.querySelector(modal.modalSelector).addEventListener('mousedown', (e) => {
-            if (e.target.classList.contains('wpft-modal')) {
-                modal.closeModal();
-            }
-        });
+        let modalSelector = document.querySelector(modal.modalSelector);
+        if(modalSelector){
+            modalSelector.addEventListener('mousedown', (e) => {
+                if (e.target.classList.contains('wpft-modal')) {
+                    modal.closeModal();
+                }
+            });
+        }
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') { // Escape key
                 modal.closeModal();

@@ -307,7 +307,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Blog' ) ) {
 
 			return sprintf( '<div class="wpft-post-author-container columns is-variable is-1 is-mobile ' . $is_v_centered_str . '">%s%s</div>',
 				'<div class="avatar-wrapper column is-narrow">' . get_avatar( get_the_author_meta( 'ID' ), $avatar_size ) . '</div>',
-				'<div class="column"><div class="author-title">' . $author . '</div><div class="author-blog-role">' . get_the_author_meta( '_wpft_blog_role' ) . '</div></div>',
+				'<div class="column"><div class="author-title is-narrow">' . $author . '</div><div class="author-blog-role">' . get_the_author_meta( '_wpft_blog_role' ) . '</div></div>',
 				);
 		}
 
@@ -324,12 +324,12 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Blog' ) ) {
 				<?php echo $columns_div_start ?>
 				<?php storefront_edit_post_link(); ?>
 
-                <div class="wpft-possible-column">
+                <div class="wpft-possible-column column is-mobile">
 					<?php echo $this->get_post_categories(); ?>
 					<?php echo $this->get_date(); ?>
                 </div>
 
-                <div class="wpft-possible-column">
+                <div class="wpft-possible-column column is-mobile">
 					<?php echo $this->get_author(); ?>
                 </div>
 				<?php echo $columns_div_end; ?>

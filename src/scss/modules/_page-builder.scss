@@ -113,17 +113,7 @@
   }
 }
 
-.round-check-list-item {
-  font-size: 14px;
 
-  &:before {
-    content: " ";
-    display: inline-block;
-    @include sprite($icon-ok);
-    vertical-align: text-top;
-    margin: 0 10px 0 0;
-  }
-}
 
 // Pricing section
 .wpftpb-section {
@@ -200,6 +190,7 @@
       //vertical-align: middle;
       img {
         width: 40px;
+        min-height:auto;
         height: auto;
         margin: 0 auto;
         position: relative;
@@ -217,7 +208,7 @@
       display: inline-block;*/
     }
 
-    .bundle-price {
+    .formatted-price {
       display: inline-block;
       vertical-align: middle;
       margin: 0 10px 0 0;
@@ -233,8 +224,8 @@
       display: inline-block;
       vertical-align: sub;
       margin: 0 0 15px 0;
+      word-spacing: 4px;
     }
-
   }
 }
 
@@ -351,10 +342,10 @@
 .wpftpb-section.prod-category-section {
   backgrund: red !important;
 
-  .button.see-all{
-    margin:20px 0 30px;
-    padding:18px 34px;
-    font-size:16px;
+  .button.see-all {
+    margin: 20px 0 30px;
+    padding: 18px 34px;
+    font-size: 16px;
   }
 
   .wpft-mod-description {
@@ -388,30 +379,81 @@
     font-size: 16px;
     font-weight: 800;
     line-height: 24px;
-    margin:0 0 5px 0;
-    a{
-      color:$color1;
-      &:hover{
-        color:$color2;
+    margin: 0 0 5px 0;
+
+    a {
+      color: $color1;
+
+      &:hover {
+        color: $color2;
       }
     }
   }
+}
 
-  .product-tag {
-    padding: 4px 6px;
-    background: #E3E5E7;
-    border-radius: 6px;
+// Reviews section
+.wpftpb-section.reviews-section {
+  .initial-reviews {
+    padding: 40px 60px;
+    background: linear-gradient(180deg, #F2F5FA 14.9%, #FFFFFF 37.72%);
+    box-shadow: 0px 12px 24px rgba(114, 124, 137, 0.12);
+    border-radius: 12px;
+  }
+
+  .initial-reviews-content {
+    margin: 40px;
+  }
+
+  background: linear-gradient(180deg, #F2F5FA 14.9%, #FFFFFF 37.72%);
+
+  .review-title {
+    font-weight: 800;
+    font-size: 22px;
+    line-height: 36px;
+    color: #000000;
+    margin: 0 0 20px 0;
+  }
+
+  .review-content {
     color: #727C89;
+    font-size:20px;
+    line-height:36px;
     font-weight: 500;
-    font-size: 12px;
-    line-height: 24px;
-    margin:0 3px 0 0;
-    &:hover{
-      color:#000000;
-    }
-    &:last-child{
-      margin-right:0;
+    margin:0 0 45px 0;
+    > *:last-child{
+      margin-bottom:0;
     }
   }
 
+  .avatar{
+    border-radius: 18px;
+  }
+
+  .review-author{
+    color:#14243B;
+    font-size:16px;
+    font-weight:800;
+  }
+
+  .review-rating{
+    margin-right:13px;
+  }
+
+  .review-rating .star{
+    @include sprite($icon-star);
+    display:inline-block;
+  }
+  .time-ago{
+    font-size:14px;
+    color:#727C89;
+    font-weight: 500;
+    border-left:1px solid #F2F5FA;
+    padding:0 0 0 15px;
+  }
+  .see-all-reviews-btn{
+    font-size:16px;
+    font-weight:700;
+    padding:17px 33px;
+    margin:48px 0;
+  }
 }

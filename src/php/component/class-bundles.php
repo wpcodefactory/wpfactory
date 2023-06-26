@@ -9,6 +9,9 @@
 
 namespace WPFactory\WPFactory_Theme\Component;
 
+use Carbon_Fields\Container;
+use Carbon_Fields\Field;
+use WPFactory\WPFactory_Theme\Carbon_Fields\Carbon_Fields_Post_Meta_Datastore;
 use WPFactory\WPFactory_Theme\Theme_Component;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -25,18 +28,15 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Bundles' ) ) {
 			// Timber.
 			add_filter( 'timber/twig', array( $this, 'add_functions_to_twig' ) );
 
-			// Searches wc_get_products by attribute.
-			add_filter( 'woocommerce_product_data_store_cpt_get_products_query', array(
-				$this,
-				'find_variation_by_attributes'
-			), 10, 2 );
-
 			// Add bundle to cart.
 			add_action( 'wp_loaded', array( $this, 'woocommerce_maybe_add_multiple_products_to_cart' ), 15 );
 			add_action( 'template_redirect', array( $this, 'redirect_to_cart_on_bundle_add_to_cart' ) );
 
 			// Apply bundle coupon discount programmatically
 			add_action( 'woocommerce_before_calculate_totals', array( $this, 'apply_bundle_coupon_dynamically' ) );
+
+			// Create bundles fields on admin product.
+			add_action( 'carbon_fields_register_fields', array( $this, 'create_bundle_fields_on_admin_product' ), 11 );
 
 			// Bundle discount.
 			/*add_action( 'woocommerce_before_calculate_totals', array(
@@ -69,6 +69,25 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Bundles' ) ) {
 			*/
 		}
 
+		function create_bundle_fields_on_admin_product() {
+			if ( true === filter_var( carbon_get_theme_option( 'wpft_bundles_enabled' ), FILTER_VALIDATE_BOOLEAN ) ) {
+				Container::make( 'post_meta', __( 'Bundle products', 'wpfactory' ) )
+				         ->set_datastore( new Carbon_Fields_Post_Meta_Datastore() )
+				         ->where( 'post_type', '=', 'product' )
+				         ->add_fields( array(
+					         Field::make( 'association', 'wpft_bundle_products', '' )
+					              ->set_types( array(
+						              array(
+							              'type'      => 'post',
+							              'post_type' => 'product',
+						              )
+					              ) )
+					              ->set_max( carbon_get_theme_option( 'wpft_bundle_products_qty' ) - 1 )
+				         ) );
+			}
+
+		}
+
 		function apply_bundle_coupon_dynamically( $cart ) {
 			if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
 				return;
@@ -86,7 +105,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Bundles' ) ) {
 			$coupon_code     = sanitize_text_field( $coupon_code );
 
 			// Minimum bundle products necessary to give discount.
-			$bundle_products_min = carbon_get_theme_option( 'wpft_bundle_products_min' );
+			$bundle_products_min = carbon_get_theme_option( 'wpft_bundle_products_qty' );
 
 			// Need to compare cart products with all plugins access product?
 			$all_plugins_product_info = carbon_get_theme_option( 'wpft_all_plugins_access_product' );
@@ -136,23 +155,6 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Bundles' ) ) {
 			) {
 				exit( wp_redirect( wc_get_cart_url() ) );
 			}
-		}
-
-		function find_variation_by_attributes( $query, $query_vars ) {
-			if ( ! empty( $query_vars['attributes'] ) ) {
-				$meta_query_data = array();
-				foreach ( $query_vars['attributes'] as $k => $v ) {
-					$meta_query_data[] = array(
-						'key'     => $k,
-						'value'   => $v,
-						'compare' => '='
-					);
-				}
-				$query['meta_query'][] = array( $meta_query_data );
-
-			}
-
-			return $query;
 		}
 
 		/**
@@ -255,25 +257,51 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Bundles' ) ) {
 		}
 
 		function wpft_get_bundle_products( $variation = null, $all_plugins_access_variation = null ) {
-			$exclude_ids = ! empty( $variation ) ? array( $variation['variation_id'] ) : array();
-			if ( ! empty( $all_plugins_access_variation ) ) {
-				$exclude_ids[] = $all_plugins_access_variation['variation_id'];
+			$variation_product           = ! empty( $variation ) ? wc_get_product( $variation['variation_id'] ) : null;
+			$variation_product_parent_id = ! empty( $variation_product ) ? $variation_product->get_parent_id() : get_the_ID();
+			$bundle_parent_products      = carbon_get_post_meta( $variation_product_parent_id, 'wpft_bundle_products' );
+			$products                    = array();
+			if ( empty( $bundle_parent_products ) ) {
+				$exclude_ids = ! empty( $variation ) ? array( $variation['variation_id'] ) : array();
+				if ( ! empty( $all_plugins_access_variation ) ) {
+					$exclude_ids[] = $all_plugins_access_variation['variation_id'];
+				}
+				$exclude_ids   = $this->get_all_variations_from_parents( $exclude_ids );
+				$products_args = array(
+					'limit'   => carbon_get_theme_option( 'wpft_bundle_products_qty' ) - 1,
+					'type'    => 'variation',
+					'exclude' => $exclude_ids,
+					'order'   => 'ASC',
+					'orderby' => 'rand(' . $variation['variation_id'] . ')',
+				);
+
+				$products_args['attributes'] = $variation_product->get_variation_attributes();
+				// Get products.
+				$products = wc_get_products( $products_args );
+				$this->programmatically_update_product_bundle( $variation_product_parent_id, $products );
+			} else {
+				$productsComponent = wpft_get_theme()->get_component( 'Products' );
+				foreach ( $bundle_parent_products as $bundle_parent_product ) {
+					$attributes_formatted = $variation['attributes'];
+					$found_variation      = $productsComponent->wpft_get_prod_variation_by_attributes( wc_get_product( $bundle_parent_product['id'] ), $attributes_formatted );
+					$products[]           = wc_get_product( $found_variation['variation_id'] );
+				}
 			}
-			$exclude_ids                 = $this->get_all_variations_from_parents( $exclude_ids );
-			$products_args               = array(
-				'limit'   => 1,
-				'type'    => 'variation',
-				'exclude' => $exclude_ids,
-				'orderby' => 'rand',
-			);
-			$variation                   = wc_get_product( $variation['variation_id'] );
-			$products_args['attributes'] = $variation->get_variation_attributes();
-			// Get products.
-			$products                 = wc_get_products( $products_args );
-			$products_args['exclude'] = array_merge( $exclude_ids, array( $products[0]->get_id() ) );
-			$products                 = array_merge( $products, wc_get_products( $products_args ) );
 
 			return $products;
+		}
+
+		function programmatically_update_product_bundle( $prod_id, $bundle_products ) {
+			$association_new_data = array();
+			foreach ( $bundle_products as $product ) {
+				$association_new_data[] = array(
+					'value'   => 'post:product:' . $product->get_parent_id(),
+					'type'    => 'post',
+					'subtype' => 'product',
+					'id'      => $product->get_parent_id(),
+				);
+			}
+			carbon_set_post_meta( $prod_id, 'wpft_bundle_products', $association_new_data );
 		}
 
 		/**
@@ -472,7 +500,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Bundles' ) ) {
 			}
 
 			// Minimum bundle products necessary to give discount.
-			$bundle_products_min = carbon_get_theme_option( 'wpft_bundle_products_min' );
+			$bundle_products_min = carbon_get_theme_option( 'wpft_bundle_products_qty' );
 
 			// Need to compare cart products with all plugins access product?
 			$all_plugins_product_info = carbon_get_theme_option( 'wpft_all_plugins_access_product' );

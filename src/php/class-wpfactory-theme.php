@@ -94,6 +94,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 				'\\WPFactory\\WPFactory_Theme\\Component\\Content_Header',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Bundles',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Pricing_Module',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Reviews_Module',
 				'\\WPFactory\\WPFactory_Theme\\Component\\FAQ',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Page_Builder\\Page_Builder',
 			);
@@ -168,6 +169,9 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 				false
 			);
 
+            // Hint CSS
+			wp_enqueue_style( 'wpft-splide-css', 'https://cdnjs.cloudflare.com/ajax/libs/hint.css/1.2.1/hint.min.css', array(), false );
+
 			//<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/splidejs/4.1.4/css/splide.min.css" integrity="sha512-KhFXpe+VJEu5HYbJyKQs9VvwGB+jQepqb4ZnlhUF/jQGxYJcjdxOTf6cr445hOc791FFLs18DKVpfrQnONOB1g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 			// Main frontend style.
@@ -195,7 +199,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 			);
 
 			// Google fonts.
-			wp_enqueue_style( 'add_google_fonts', 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;800&display=swap', array(), null );
+			wp_enqueue_style( 'add_google_fonts', 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;800&display=swap', array(), null );
 		}
 
 		/**
@@ -213,7 +217,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 					load_theme_textdomain( 'wpfactory', get_template_directory() . '/languages' );
 					// Disable Gutenberg on the back end.
 					add_filter( 'use_block_editor_for_post', '__return_false' );
-					add_image_size( 'size-1', 104, 112 ); // Product icon
+					add_image_size( 'size-1', 0, 112 ); // Product icon
 					add_image_size( 'size-2', 384 ); // Product feature images
 					add_image_size( 'size-3', 160, 40 ); // Product feature images
 					add_image_size( 'size-4', 1920, 546, array( 'center', 'top' ) ); // Post featured images

@@ -85,7 +85,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Admin_Settings\General_Tab' ) ) 
 						'post_type' => 'shop_coupon',
 					)
 				) ),
-				Field::make( 'text', 'wpft_bundle_products_min', __( 'Bundle products minimum', 'wpfactory' ) )->set_default_value( 3 )->set_attribute( 'type', 'number' )->set_attribute( 'step', '1' )->set_attribute( 'min', 0 ),
+				Field::make( 'text', 'wpft_bundle_products_qty', __( 'Bundle products quantity', 'wpfactory' ) )->set_default_value( 3 )->set_attribute( 'type', 'number' )->set_attribute( 'step', '1' )->set_attribute( 'min', 0 ),
 				Field::make( 'separator', 'wpft_separator_all_plugins', __( 'All plugins access', 'wpfactory' ) )->set_help_text('Special product that gives access to all plugins.'),
 				Field::make( 'checkbox', 'wpft_all_plugins_access_enabled', __( 'Enable all plugins access product', 'wpfactory' ) )->set_default_value( true ),
 				Field::make( 'association', 'wpft_all_plugins_access_product', '' )->set_types( array(

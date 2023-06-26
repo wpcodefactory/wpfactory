@@ -121,18 +121,18 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 				$result                 = array_map( 'sanitize_title_with_dashes', $result );
 				$module_wrapper_classes = array_merge( $module_wrapper_classes, $result );
 			}
-			$template      = sprintf(
-				'<section class="%s"><div class="%s">%s</div></section>',
-				implode( " ", $this->sanitize_css_classes_array( apply_filters( 'wpft_module_wrapper_css_classes', $module_wrapper_classes ) ) ),
-				implode( " ", $this->sanitize_css_classes_array( apply_filters( 'wpft_module_css_classes', $module_classes ) ) ),
-				$template
-			);
 			$template_vars = apply_filters( 'wpft_page_builder_template_vars', $template_vars, $args );
 			if ( ! empty( $extra_template_variables_filter = carbon_get_post_meta( $module_id, 'wpft_template_variables_filter' ) ) ) {
 				$template_vars = apply_filters( $extra_template_variables_filter, $template_vars, $module_id );
 			}
 			$output = \Timber::compile_string( $template, $template_vars );
-			if ( ! empty( $output ) ) {
+			if ( ! empty( trim( $output ) ) ) {
+				$output = sprintf(
+					'<section class="%s"><div class="%s">%s</div></section>',
+					implode( " ", $this->sanitize_css_classes_array( apply_filters( 'wpft_module_wrapper_css_classes', $module_wrapper_classes ) ) ),
+					implode( " ", $this->sanitize_css_classes_array( apply_filters( 'wpft_module_css_classes', $module_classes ) ) ),
+					$output
+				);
 				echo $output;
 			}
 		}
@@ -279,13 +279,6 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 			if ( empty( $page_builder_settings ) ) {
 				return;
 			}
-			/*$fields = array(
-				Field::make( 'select', 'module', __( 'Module', 'wpfactory' ) )->set_options( function () {
-					return $this->get_modules_posts_formatted();
-				} )
-			);*/
-
-			//$fields = array_merge( $fields, $this->get_dynamic_fields( array_keys( $this->get_modules_posts_formatted() ) ) );
 			foreach ( $page_builder_settings as $key => $cpt_info ) {
 				foreach ( $cpt_info['display_areas'] as $area_key => $area ) {
 					$container = Container::make( 'post_meta', $area['area_name'] )
@@ -490,11 +483,11 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 								//error_log(print_r($variable,true));
 								$field->set_types( array(
 									array(
-										'type'      => 'term',
+										'type'     => 'term',
 										'taxonomy' => $variable['var_id'],
 									)
 								) );
-								if (! empty( $default_value = $variable['default_value'] )) {
+								if ( ! empty( $default_value = $variable['default_value'] ) ) {
 									if ( ! is_numeric( $default_value ) ) {
 										$term = $this->get_term_by_slug_via_db( $variable['var_id'], $default_value );
 										if ( false !== $term ) {
