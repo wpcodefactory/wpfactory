@@ -56,6 +56,37 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Products' ) ) {
 			), 7 );
 			// Add functions to Timber.
 			add_filter( 'timber/twig', array( $this, 'add_functions_to_twig' ) );
+			// Delete products total meta
+			add_action( 'updated_post_meta', array( $this, 'delete_products_total_meta' ), 10, 4 );
+			add_action( 'added_post_meta', array( $this, 'delete_products_total_meta' ), 10, 4 );
+			add_action( 'deleted_post_meta', array( $this, 'delete_products_total_meta' ), 10, 4 );
+		}
+
+		/**
+		 * Delelte products total meta when some price changes.
+		 *
+		 * @version 2.5.1
+		 * @since   2.5.1
+		 *
+		 * @param $meta_id
+		 * @param $post_id
+		 * @param $meta_key
+		 * @param $meta_value
+		 */
+		function delete_products_total_meta( $meta_id, $post_id, $meta_key, $meta_value ) {
+			if (
+				in_array( $meta_key, array(
+					'_price',
+					'_sale_price',
+				) ) &&
+				is_a( $product = wc_get_product( $post_id ), 'WC_Product' )
+			) {
+				global $wpdb;
+				$prefix           = '_transient_wpft_products_total_'; // Replace with your desired prefix
+				$meta_key_pattern = $wpdb->esc_like( $prefix ) . '%';
+				$query            = $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $meta_key_pattern );
+				$wpdb->query( $query );
+			}
 		}
 
 		function get_all_plugins_access_id() {
@@ -122,7 +153,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Products' ) ) {
 				'exclude'    => array( $all_plugins_variation['variation_id'] )
 			) );
 			$info['all_plugins_variation']         = $all_plugins_variation;
-			$info['all_plugins_savings_formatted'] = round( ( $all_plugins_variation['display_price'] / $variations_price_total ) * 100 ) . '%';
+			$info['all_plugins_savings_formatted'] = round( ( ( ( $variations_price_total - $all_plugins_variation['display_price'] ) / $variations_price_total ) ) * 100 ) . '%';
 
 			return $info;
 		}
@@ -208,18 +239,18 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Products' ) ) {
 		}
 
 		function get_products_prices_total( $args = null ) {
-			$args = wp_parse_args( $args, array(
+			$args           = wp_parse_args( $args, array(
 				'limit' => - 1,
 				'type'  => 'variation',
 			) );
 			$transient_name = 'wpft_products_total_' . md5( serialize( $args ) );
 			if ( false === ( $prices_total = get_transient( $transient_name ) ) ) {
-				$products              = wc_get_products( $args );
-				$prices_total          = 0;
+				$products     = wc_get_products( $args );
+				$prices_total = 0;
 				foreach ( $products as $product ) {
 					$prices_total += $product->get_price();
 				}
-				set_transient( $transient_name, $prices_total, DAY_IN_SECONDS );
+				set_transient( $transient_name, $prices_total );
 			}
 
 			return $prices_total;
