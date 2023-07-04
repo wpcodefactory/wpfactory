@@ -89,7 +89,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Admin_Settings\Page_Builder_Tab'
 
 		function create_settings() {
 			$this->get_container()->add_tab( __( 'Page builder', 'wpfactory' ), array(
-				Field::make( 'complex', 'wpft_page_builder_settings', __( 'Settings' ) )
+				Field::make( 'complex', 'wpft_pb_cpt_settings', __( 'Post type settings' ) )
 				     ->set_collapsed( true )
 				     ->add_fields( array(
 					     Field::make( 'select', 'cpt_relation', 'Custom post type' )
@@ -99,15 +99,30 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Admin_Settings\Page_Builder_Tab'
 					     Field::make( 'complex', 'display_areas', __( 'Display areas' ) )
 					          ->set_collapsed( true )
 					          ->add_fields( array(
-						          Field::make( 'text', 'area_name', 'Area name' ),
+						          Field::make( 'text', 'area_name', 'Area name' )->set_width('30%'),
+						          Field::make( 'text', 'id', 'ID' )->set_width( '30%' ),
+						          Field::make( 'checkbox', 'editable', 'Editable' )->set_width('30%')->set_default_value(true),
 						          Field::make( 'text', 'hook', 'Display hook' )->set_width( '50%' ),
 						          Field::make( 'text', 'hook_priority', 'Hook priority' )->set_width( '50%' ),
-						          Field::make( 'association', 'default_modules', 'Default modules' )->set_types( array(
+						          Field::make( 'complex', 'default_modules', 'Default Modules' )
+							          ->set_collapsed( true )
+							          ->add_fields( array(
+								          Field::make( 'select', 'module_id', 'Module' )
+								               ->set_options( function () {
+									               return wpft_get_theme()->get_component('Page_Builder')->get_modules()->get_modules_posts_formatted();
+								               } )
+							          ))
+							          ->set_header_template( function () {
+								          $modules_formatted_json = json_encode( wpft_get_theme()->get_component('Page_Builder')->get_modules()->get_modules_posts_formatted() );
+
+								          return '<%-' . $modules_formatted_json . '[module_id] %>';
+							          } )
+						          /*Field::make( 'association', 'default_modules', 'Default modules' )->set_types( array(
 							          array(
 								          'type'      => 'post',
 								          'post_type' => 'wpft_module',
 							          )
-						          ) )
+						          ) )*/
 
 					          ) )
 					          ->set_header_template( '
@@ -123,6 +138,8 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Admin_Settings\Page_Builder_Tab'
 				     } ),
 
 			) );
+
+
 		}
 
 		function get_formatted_post_types() {

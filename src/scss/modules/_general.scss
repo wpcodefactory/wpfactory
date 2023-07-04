@@ -94,7 +94,6 @@ a:focus, button:focus, .button.alt:focus, input:focus, textarea:focus, input[typ
 }
 
 .bkg-blue-2 {
-  //background: center no-repeat url('/src/img/bkg-blue-2.jpg');
   background:rgba(20, 36, 59, 1);
   border-radius: 12px;
   background-size: cover;
@@ -122,7 +121,8 @@ a:focus, button:focus, .button.alt:focus, input:focus, textarea:focus, input[typ
     height:100%;
     content:"";
     z-index:2;
-    background: left no-repeat url('/src/img/circles-2.svg');
+    background: left bottom no-repeat url('/src/img/circles-2.svg');
+    background-size:cover;
   }
 }
 
@@ -214,6 +214,9 @@ a:focus, button:focus, .button.alt:focus, input:focus, textarea:focus, input[typ
 // Modal
 .wpft-modal {
   pointer-events: none;
+  a,button{
+    pointer-events: none;
+  }
   background-color: transparent;
   position: fixed;
   left: 0;
@@ -300,6 +303,10 @@ a:focus, button:focus, .button.alt:focus, input:focus, textarea:focus, input[typ
 
     .wpft-modal-content-wrapper {
       opacity: 1;
+    }
+
+    a,button{
+      pointer-events: auto;
     }
   }
 }

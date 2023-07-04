@@ -8,6 +8,22 @@
     font-weight: 800;
     margin-bottom: 20px;
   }
+  // Title
+  .gamma.widget-title{
+    font-size:22px;
+    line-height: 36px;
+    font-weight: 700;
+    color:rgba(20, 36, 59, 1);
+    border:none;
+    margin:-5px 0 30px 0;
+    padding:0;
+    &:before{
+      @include sprite($icon-filter);
+      content:"";
+      display:inline-block;
+      margin:0 15px 0 0;
+    }
+  }
 }
 
 // List item
@@ -17,13 +33,16 @@ ul.woof_list li, .widget .woof_redraw_zone ul li {
 
 .woof_list label {
   font-size: 16px;
-  color: #A1A7B1;
+  color: rgba(114, 124, 137, 1);
   font-weight: 400;
   line-height: 21px;
+}
+
+.woof_childs_list_opener span{
+  filter: contrast(0%);
 }
 
 // Item count
 .woof_checkbox_count {
   color: #C7CAD0;
 }
-

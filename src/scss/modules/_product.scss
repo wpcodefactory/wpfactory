@@ -1,3 +1,4 @@
+// Single page.
 .storefront-full-width-content.single-product div.product, .single-product div.product {
   .summary {
     width: auto !important;
@@ -111,6 +112,7 @@ ul.products li.product img, ul.products .wc-block-grid__product img, .wc-block-g
     &:after {
       content: "";
       background: left top no-repeat url('/src/img/circles-small.svg');
+      background-size: cover;
       position: absolute;
       width: 100%;
       height: 100%;
@@ -168,6 +170,12 @@ ul.products li.product .woocommerce-loop-product__title, ul.products li.product 
   line-height: 28px;
   font-weight: 800;
   color: #14243B;
+}
+
+// Shop title{
+.woocommerce-products-header__title{
+  font-size:22px;
+  margin-bottom:33px;
 }
 
 /*rgba(11, 150, 116, 1)

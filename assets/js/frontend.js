@@ -24,6 +24,14 @@ var map = {
 		"./src/js/modules/codemirror-field.js",
 		"src_js_modules_codemirror-field_js"
 	],
+	"./css-class-manager": [
+		"./src/js/modules/css-class-manager.js",
+		"src_js_modules_css-class-manager_js"
+	],
+	"./css-class-manager.js": [
+		"./src/js/modules/css-class-manager.js",
+		"src_js_modules_css-class-manager_js"
+	],
 	"./general": [
 		"./src/js/modules/general.js",
 		"src_js_modules_general_js"

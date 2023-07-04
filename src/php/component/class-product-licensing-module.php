@@ -1,6 +1,6 @@
 <?php
 /**
- * WPFactory theme - Pricing Module.
+ * WPFactory theme - Product Licensing Module.
  *
  * @version 1.0.0
  * @since   1.0.0
@@ -15,12 +15,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly
 
-if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Pricing_Module' ) ) {
+if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Product_Licensing_Module' ) ) {
 
 	//class Menus {
-	class Pricing_Module implements Theme_Component {
+	class Product_Licensing_Module implements Theme_Component {
 		public function init() {
-			add_filter( 'wpft_pricing_template_info', array( $this, 'add_extra_template_vars' ), 10, 2 );
+			add_filter( 'wpft_module_prod_licensing_template_vars', array( $this, 'add_extra_template_vars' ), 10, 2 );
 		}
 
 		function are_required_keys_present( $array, $required_keys ) {
@@ -46,6 +46,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Pricing_Module' ) ) {
 				$vars['all_plugins_access_enabled']    = true;
 				$info                                  = $productsComponent->get_all_plugins_access_info( $all_plugins_access_id );
 				$vars['all_plugins_variation']         = $info['all_plugins_variation'];
+				$vars['all_plugins_parent']            = $info['all_plugins_parent'];
 				$all_plugins_variation                 = $info['all_plugins_variation'];
 				$vars['all_plugins_savings_formatted'] = $info['all_plugins_savings_formatted'];
 				if ( (int) $vars['product']->get_id() === $all_plugins_access_id ) {
@@ -81,6 +82,20 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Pricing_Module' ) ) {
 				// Bundle add to cart url.
 				$url                            = $bundles_class->generate_bundle_add_to_cart_url( $variation, $bundle_products );
 				$vars['bundle_add_to_cart_url'] = $url;
+			}
+
+			// Free plugin url.
+			if ( ! empty( $free_version_slug = get_post_meta( $vars['product']->get_id(), 'wp_org_free_version_slug', true ) ) ) {
+				$vars['free_plugin_url'] = 'https://wordpress.org/plugins/' . $free_version_slug;
+			}
+
+			// Free vs Pro.
+			if (
+				true === filter_var( carbon_get_theme_option( 'wpft_free_vs_pro_cmb_enabled' ), FILTER_VALIDATE_BOOLEAN ) &&
+				! empty( $free_vs_pro_table = carbon_get_post_meta( $vars['product']->get_id(), 'wpft_free_vs_pro_table' ) )
+			) {
+				//error_log(print_r($free_vs_pro_table,true));
+				$vars['free_vs_pro_table'] = $free_vs_pro_table;
 			}
 
 			return $vars;

@@ -95,15 +95,20 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Admin_Settings\General_Tab' ) ) 
 					)
 				) )
 				->set_max( 1 ),
-				Field::make( 'separator', 'wpft_separator', __( 'Menu', 'wpfactory' ) ),
-				Field::make( 'checkbox', 'wpft_add_menu_icons', __( 'Add menu option to choose icons', 'wpfactory' ) )
-				     ->set_default_value( true )
-				     ->set_option_value( 'yes' )
-				     ->set_help_text( sprintf( __( 'Allows adding an icon on each <a href="%s">nav menu item</a>.' ), admin_url( 'nav-menus.php' ) ) ),
 				Field::make( 'checkbox', 'wpft_hide_nav_menu_item_label', __( 'Add option to hide menu item label', 'wpfactory' ) )
 				     ->set_default_value( true )
 				     ->set_option_value( 'yes' )
 				     ->set_help_text( sprintf( __( 'Allows hiding the <a href="%s">nav menu item</a> label.' ), admin_url( 'nav-menus.php' ) ) ),
+				Field::make( 'separator', 'wpft_separator_free_vs_pro', __( 'Free vs Pro', 'wpfactory' ) ),
+				Field::make( 'checkbox', 'wpft_free_vs_pro_cmb_enabled', __( 'Add a "Free vs Pro" meta box on admin products pages', 'wpfactory' ) )
+				     ->set_default_value( true )
+				     ->set_option_value( 'yes' ),
+				     //->set_help_text( sprintf( __( 'Allows adding an icon on each <a href="%s">nav menu item</a>.' ), admin_url( 'nav-menus.php' ) ) ),
+				Field::make( 'separator', 'wpft_separator', __( 'Menu', 'wpfactory' ) ),
+				Field::make( 'checkbox', 'wpft_add_menu_icons', __( 'Add menu option to choose icons', 'wpfactory' ) )
+				     ->set_default_value( true )
+				     ->set_option_value( true )
+				     ->set_help_text( sprintf( __( 'Allows adding an icon on each <a href="%s">nav menu item</a>.' ), admin_url( 'nav-menus.php' ) ) ),
 			) );
 
 			$this->handle_nav_menu_item_options();

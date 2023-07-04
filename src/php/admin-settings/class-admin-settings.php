@@ -103,6 +103,10 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Admin_Settings\Admin_Settings' )
 			$tab->init();
 			$tab = new Page_Builder_Tab( $admin_settings_page_container );
 			$tab->init();
+			$tab = new Import_Tab( $admin_settings_page_container );
+			$tab->init();
+			$tab = new Export_Tab( $admin_settings_page_container );
+			$tab->init();
 		}
 
 		/**

@@ -152,6 +152,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Products' ) ) {
 				'attributes' => $all_plugins_attributes_formatted,
 				'exclude'    => array( $all_plugins_variation['variation_id'] )
 			) );
+			$info['all_plugins_parent']            = $all_plugins_product;
 			$info['all_plugins_variation']         = $all_plugins_variation;
 			$info['all_plugins_savings_formatted'] = round( ( ( ( $variations_price_total - $all_plugins_variation['display_price'] ) / $variations_price_total ) ) * 100 ) . '%';
 
@@ -211,7 +212,11 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Products' ) ) {
 			remove_filter( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_rating', 5 );
 			// Remove loop price.
 			remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
+			// Add id on features area.
+			//add_action( 'woocommerce_after_single_product_summary', array( $this, 'add_id_on_features_area' ), 12 );
+			//add_filter( 'wpft_module_prod_feature_before_content', array( $this, 'add_id_on_features_area' ) );
 		}
+
 
 		function add_shop_loop_tags() {
 			global $product;
@@ -268,8 +273,8 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Products' ) ) {
 		 * @return array|string
 		 */
 		function wpft_get_prod_variation_by_attributes( $product, $required_attributes ) {
-			$required_attributes = $this->maybe_remove_attributes_prefix($required_attributes);
-			$returned_variation = '';
+			$required_attributes = $this->maybe_remove_attributes_prefix( $required_attributes );
+			$returned_variation  = '';
 			if ( 'variable' === $product->get_type() && ! empty( $variations = $product->get_available_variations() ) ) {
 				foreach ( $variations as $variation ) {
 					$formatted_attributes = $this->maybe_remove_attributes_prefix( $variation['attributes'] );
@@ -309,7 +314,38 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Products' ) ) {
 				'wpft_get_prod_variation_by_attributes'
 			) ) );
 
+			$twig->addFunction( new \Timber\Twig_Function( 'wpft_get_prod_docs_page_url', array(
+				$this,
+				'wpft_get_prod_docs_page_url'
+			) ) );
+
+			$twig->addFunction( new \Timber\Twig_Function( 'wpft_get_prod_support_page_url', array(
+				$this,
+				'wpft_get_prod_support_page_url'
+			) ) );
+
 			return $twig;
+		}
+
+		function wpft_get_prod_docs_page_url( $product_id = null ) {
+			global $product;
+			$product_id = is_null( $product_id ) ? $product->get_id() : $product_id;
+			$product    = ! is_a( $product, 'WC_Product' ) ? wc_get_product( $product_id ) : $product;
+			$permalink  = trailingslashit( site_url() ) . 'docs' . '/' . $product->get_slug();
+
+			return esc_url( $permalink );
+		}
+
+		function wpft_get_prod_support_page_url( $product_id = null ) {
+			global $product;
+			$product_id     = is_null( $product_id ) ? $product->get_id() : $product_id;
+			$prod_permalink = get_permalink( $product_id );
+			$array_from_to  = array(
+				site_url() => trailingslashit( site_url() ) . 'support'
+			);
+			$permalink      = str_replace( array_keys( $array_from_to ), $array_from_to, $prod_permalink );
+
+			return esc_url( $permalink );
 		}
 
 		/*function setup_page_builder() {

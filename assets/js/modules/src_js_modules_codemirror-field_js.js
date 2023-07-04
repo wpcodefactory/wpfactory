@@ -29,8 +29,10 @@ var codeMirrorField = {
         styleActiveLine: true,
         indentWithTabs: true,
         matchBrackets: true,
-        highlightMatches: true
+        highlightMatches: true,
+        firstLineNumber: 20
       });
+      editor.setSize(null, 500);
     }
   }
 };

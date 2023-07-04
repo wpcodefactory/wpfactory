@@ -15,15 +15,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly
 
-if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Reviews_Module' ) ) {
+if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Product_Reviews_Module' ) ) {
 
 	//class Menus {
-	class Reviews_Module implements Theme_Component {
+	class Product_Reviews_Module implements Theme_Component {
 		public function init() {
 			//add_filter( 'wpft_pricing_template_info', array( $this, 'add_extra_template_vars' ), 10, 2 );
 			//add_filter( 'timber/twig', array( $this, 'add_functions_to_twig' ) );
 
-			add_filter( 'wpft_reviews_template_info', array( $this, 'add_extra_template_vars' ), 10, 2 );
+
+			add_filter( 'wpft_module_prod_reviews_template_vars', array( $this, 'add_extra_template_vars' ), 10, 2 );
 		}
 		function add_extra_template_vars( $vars ) {
 			if (

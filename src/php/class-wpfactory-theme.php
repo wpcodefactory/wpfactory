@@ -93,9 +93,11 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 				'\\WPFactory\\WPFactory_Theme\\Component\\Blog',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Content_Header',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Bundles',
-				'\\WPFactory\\WPFactory_Theme\\Component\\Pricing_Module',
-				'\\WPFactory\\WPFactory_Theme\\Component\\Reviews_Module',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Free_Vs_Pro',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Product_Licensing_Module',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Product_Reviews_Module',
 				'\\WPFactory\\WPFactory_Theme\\Component\\FAQ',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Product_Features_Area',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Page_Builder\\Page_Builder',
 			);
 		}
@@ -169,7 +171,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 				false
 			);
 
-            // Hint CSS
+			// Hint CSS
 			wp_enqueue_style( 'wpft-splide-css', 'https://cdnjs.cloudflare.com/ajax/libs/hint.css/1.2.1/hint.min.css', array(), false );
 
 			//<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/splidejs/4.1.4/css/splide.min.css" integrity="sha512-KhFXpe+VJEu5HYbJyKQs9VvwGB+jQepqb4ZnlhUF/jQGxYJcjdxOTf6cr445hOc791FFLs18DKVpfrQnONOB1g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -184,7 +186,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 			// Main frontend script.
 			wp_enqueue_script( 'wpfactory-frontend-js',
 				get_theme_file_uri( '/assets/js/frontend' . $suffix . '.js' ),
-				apply_filters( 'wpft_frontend_js_deps', array( 'jquery','wpft-splide-js' ) ),
+				apply_filters( 'wpft_frontend_js_deps', array( 'jquery', 'wpft-splide-js' ) ),
 				$version,
 				true
 			);
@@ -193,13 +195,14 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 					'modulesRequired' => apply_filters( 'wpft_js_modules_required', array(
 						'smooth-scroll',
 						'slider',
-						'modal'
+						'modal',
+						'css-class-manager'
 					) )
 				) ) ), 'before'
 			);
 
 			// Google fonts.
-			wp_enqueue_style( 'add_google_fonts', 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;800&display=swap', array(), null );
+			wp_enqueue_style( 'add_google_fonts', 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap', array(), null );
 		}
 
 		/**

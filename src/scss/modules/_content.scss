@@ -41,9 +41,9 @@
 }
 
 // Titles
-.entry-title {
+.entry-title, .page-title {
   font-size: 30px;
-  font-weight: 800;
+  font-weight: 700;
   color: $color1;
   letter-spacing: -1px;
   @include mobile {
@@ -71,13 +71,14 @@
 
 // Buttons
 .button, .submit {
+  font-family: 'Plus Jakarta Sans', sans-serif;
   padding: 12px 28px;
   font-size: 14px;
   border-radius: 36px !important;
   color: #fff;
   font-weight: 500;
 
-  &.size-2, &.submit {
+  &.size-2, &.btn-size-2, &.submit {
     font-weight: 700;
     padding: 15px 30px;
     font-size: 16px;
@@ -112,6 +113,156 @@
     vertical-align: top;
     margin: 0 10px 0 0;
   }
+}
+
+// Button get free plugin
+.button.get-free-plugin-btn {
+  font-size: 16px;
+  font-weight: 500;
+  background: $color3;
+  vertical-align: middle;
+  padding: 17px 24px 17px 23px;
+
+  &:hover {
+    background: #202830;
+  }
+
+  &:before {
+    @include sprite($icon-link-new-tab);
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 5px 0 0;
+  }
+
+  .label {
+    vertical-align: middle;
+  }
+}
+
+// Button buy licenses
+.button.buy-licenses-btn {
+  * {
+    //pointer-events: none
+  }
+
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  //padding: 17px 24px 17px 23px;
+  padding: 0 24px 0 23px;
+  position: relative;
+
+  &:after {
+    @include sprite($icon-arrow-down-2);
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    //border-left:1px solid rgba(255, 255, 255, .24);
+    //height:100%;
+    //border:1px solid red;
+  }
+
+  .label {
+    padding: 17px 10px 17px 0;
+    font-size: 16px;
+    font-weight: 500;
+    border-right: 1px solid rgba(255, 255, 255, .24);
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  /*font-size: 16px;
+  font-weight: 500;
+  background: $color3;
+  vertical-align: middle;
+  padding: 17px 24px 17px 23px;
+
+  &:hover {
+    background: #202830;
+  }
+
+  &:before {
+    @include sprite($icon-link-new-tab);
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 5px 0 0;
+  }
+
+  .label {
+    vertical-align: middle;
+  }*/
+
+  .buy-licenses {
+    right: -15px !important;
+    @include mobile{
+      right:0 !important;
+      left: 50% !important;
+      margin-left:auto;
+      margin-right:auto;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  &:hover {
+    .buy-licenses {
+      margin-top: 0px;
+      pointer-events: auto;
+      opacity: 1;
+    }
+  }
+}
+
+// Boxes.
+.box-dropdown {
+  border-radius: 6px;
+  border: 1px solid #F2F5FA;
+  background: #FFF;
+  box-shadow: 0px 12px 12px 0px rgba(57, 65, 73, 0.12);
+  padding: 18px 23px;
+  position: absolute;
+  bottom: auto;
+  right: 0;
+
+  &:before {
+    content: "";
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 12px solid #fff;
+    position: absolute;
+    right: 30px;
+    top: -10px;
+  }
+
+  margin-top: -15px;
+  transition: all 0.2s ease-in-out;
+  pointer-events: none;
+
+  * {
+    //pointer-events: none;
+  }
+
+  opacity:0;
+
+  //opacity:0;
+  /*&.active {
+    opacity: 1;
+    margin-top: -15px;
+    pointer-events: auto;
+
+    * {
+      pointer-events: auto;
+    }
+
+    &:hover {
+      opacity: 1;
+      margin-top: -15px;
+      pointer-events: auto;
+    }
+  }*/
+
 }
 
 // Typography
@@ -234,7 +385,157 @@ img.attachment-size-1 {
 
 .round-check-list-item-type2 {
   @extend .round-check-list-item;
+
   &:before {
     filter: invert(36%) sepia(87%) saturate(1061%) hue-rotate(134deg) brightness(75%) contrast(91%);
+  }
+}
+
+// Tables
+table.wpft-table-type-1 {
+  //background: #f8f9f9;
+  background: #F2F5FA;
+  border-radius: 12px;
+  border-collapse: separate !important;
+  //overflow: hidden;
+  //overflow-y:hidden;
+  th{
+    background:transparent;
+  }
+
+  thead {
+    color: rgba(26, 45, 201, 1);
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 29px;
+    //letter-spacing: -0.03em;
+    text-align: left;
+
+    th {
+      font-weight: 800;
+      //padding-top: 21px;
+      //padding-bottom: 21px;
+      padding-top:13px;
+      padding-bottom:13px;
+    }
+  }
+
+  td {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    padding-top: 17px;
+    padding-bottom: 17px;
+    letter-spacing: 0em;
+    text-align: left;
+    border-top: 1px solid rgba(227, 229, 231, 1);
+
+    &.checked-yes {
+      text-align: center;
+
+      &:after {
+        @include sprite($icon-checked-yes);
+        content: '';
+        display: inline-block;
+      }
+    }
+
+    &.checked-no {
+      text-align: center;
+
+      &:after {
+        @include sprite($icon-checked-no);
+        content: '';
+        display: inline-block;
+      }
+    }
+  }
+
+  @include mobile {
+    caption {
+      font-size: 1.3em;
+    }
+
+    //table:not( .has-background ) tbody tr:nth-child(2n) td, fieldset, fieldset legend {
+    tbody tr:nth-child(2n) td:first-child{
+     background:transparent;
+    }
+
+    thead {
+      border: none;
+      clip: rect(0 0 0 0);
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      width: 1px;
+    }
+
+    tr {
+      display: block;
+      &:first-child{
+        td:first-child{
+          border-top:none;
+        }
+      }
+    }
+
+    td {
+      display: block;
+      font-size: .8em;
+      text-align: right !important;
+      text-align: right;
+      width: 100% !important;
+      //background: rgba(255, 255, 255, 0.95) !important;
+
+      &:first-child {
+        //border-top:none;
+        //font-weight: 800;
+        font-size: 16px;
+        background:transparent;
+        //background: #fff !important;
+        text-align: left !important;
+        //color: rgba(26, 45, 201, 1);
+        //text-align: center;
+      }
+    }
+
+    tfoot{
+      td{
+        text-align: center !important;
+      }
+    }
+
+    td::before {
+      content: attr(data-label);
+      float: left;
+    }
+
+    td:last-child {
+      border-bottom: 0;
+    }
+  }
+}
+
+// Image container with a shape in the background
+.img-wrapper-type-1 {
+  background: center no-repeat url('/src/img/img-bkg.png');
+  width: 442px;
+  min-height: 500px;
+  //text-align:center;
+  position: relative;
+  display: grid;
+  place-content: center;
+
+  img {
+    margin: 0;
+  }
+
+  @include mobile {
+    width: auto;
+    background-size: contain;
+    background-repeat: no-repeat;
+    min-height: auto;
   }
 }
