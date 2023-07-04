@@ -98,6 +98,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 				'\\WPFactory\\WPFactory_Theme\\Component\\Product_Reviews_Module',
 				'\\WPFactory\\WPFactory_Theme\\Component\\FAQ',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Product_Features_Area',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Product_Feature_Module',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Page_Builder\\Page_Builder',
 			);
 		}

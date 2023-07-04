@@ -172,6 +172,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 				$result                 = array_map( 'sanitize_title_with_dashes', $result );
 				$module_wrapper_classes = array_merge( $module_wrapper_classes, $result );
 			}
+			$module_wrapper_classes = apply_filters( 'wpft_module_wrapper_css_classes', $module_wrapper_classes );
 			$template_vars = apply_filters( 'wpft_module_template_vars', $template_vars, $args );
 			$template_vars = apply_filters( "wpft_module_{$module_id_string}_template_vars", $template_vars, $args );
 			/*if ( ! empty( $extra_template_variables_filter = carbon_get_post_meta( $module_id, 'wpft_template_variables_filter' ) ) ) {
@@ -181,7 +182,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 			if ( ! empty( trim( $output ) ) ) {
 				$output = sprintf(
 					'<section class="%s">%s<div class="%s">%s</div></section>',
-					implode( " ", $this->sanitize_css_classes_array( apply_filters( 'wpft_module_wrapper_css_classes', $module_wrapper_classes ) ) ),
+					implode( " ", $this->sanitize_css_classes_array( apply_filters( "wpft_module_{$module_id_string}_wrapper_css_classes", $module_wrapper_classes ) ) ),
 					apply_filters( "wpft_module_{$module_id_string}_before_content", '' ),
 					implode( " ", $this->sanitize_css_classes_array( apply_filters( 'wpft_module_css_classes', $module_classes ) ) ),
 					$output

@@ -4,7 +4,7 @@
   padding-top: 60px;
   background: #fff;
 
-  &.layout_reverse {
+  &.even {
     .columns {
       flex-direction: row-reverse;
 
@@ -22,7 +22,7 @@
     padding-top: 20px;
 
     img {
-      box-shadow: 0px 11px 20px -12px rgba(0, 0, 0, 0.45);
+      filter: drop-shadow(0px 11px 17px rgba(0, 0, 0, 0.15));
       margin-left: auto;
       @include mobile {
         margin-right: auto;
@@ -32,7 +32,8 @@
 }
 
 // Product feature section
-.prod-feature-section {
+//.prod-feature-section {
+.wpftpb-mod-wrapper-prod_feature {
   padding-bottom: 0px;
 
   .mod-img-wrapper {
@@ -57,9 +58,9 @@
     }*/
   }
 
-  &:last-child {
+  /*&:last-child {
     padding-bottom: 60px;
-  }
+  }*/
 }
 
 // Intro section from home and product modules
@@ -375,11 +376,13 @@
           @include sprite($icon-single-price);
         }
       }
+
       &.bundle {
         &:before {
           @include sprite($icon-bundle);
         }
       }
+
       &.all-plugins {
         &:before {
           @include sprite($icon-all-plugins);
@@ -576,6 +579,8 @@
 
 // Reviews section
 .wpftpb-mod-wrapper-prod_reviews {
+  margin-top: 60px;
+
   .initial-reviews {
     padding: 40px 60px;
     background: linear-gradient(180deg, #F2F5FA 14.9%, #FFFFFF 37.72%);
