@@ -21,9 +21,9 @@ var CSSClassManager = {
   manageClasses: function manageClasses(event) {
     if (event.target.classList && event.target.classList.contains("css-modifier")) {
       var _event$target$dataset, _event$target$dataset2, _event$target$dataset3;
-      if (event.type === 'mouseout') {
-        console.log(event.target);
-      }
+      /*if(event.type==='mouseout'){
+          console.log(event.target)
+      }*/
       var cssClassesStr = (_event$target$dataset = event.target.dataset.classes) !== null && _event$target$dataset !== void 0 ? _event$target$dataset : 'active';
       var cssClasses = cssClassesStr.split(",");
       var gettersSelector = event.target.dataset.classGetters;

@@ -7,9 +7,9 @@ const CSSClassManager = {
     manageClasses: function (event) {
 
         if (event.target.classList && event.target.classList.contains("css-modifier")) {
-            if(event.type==='mouseout'){
+            /*if(event.type==='mouseout'){
                 console.log(event.target)
-            }
+            }*/
             let cssClassesStr = event.target.dataset.classes ?? 'active';
             let cssClasses = cssClassesStr.split(",");
             let gettersSelector = event.target.dataset.classGetters;

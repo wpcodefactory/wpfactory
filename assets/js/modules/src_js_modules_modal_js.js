@@ -16,20 +16,11 @@ var modal = {
     this.handleTriggers();
   },
   handleModalClose: function handleModalClose() {
-    var closeButton = document.querySelector(modal.closeButtonSelector);
-    if (closeButton) {
-      closeButton.addEventListener('mousedown', function () {
+    document.addEventListener("click", function (event) {
+      if (event.target.matches(modal.closeButtonSelector) || event.target.matches(modal.modalSelector)) {
         modal.closeModal();
-      });
-    }
-    var modalSelector = document.querySelector(modal.modalSelector);
-    if (modalSelector) {
-      modalSelector.addEventListener('mousedown', function (e) {
-        if (e.target.classList.contains('wpft-modal')) {
-          modal.closeModal();
-        }
-      });
-    }
+      }
+    });
     document.addEventListener('keydown', function (event) {
       if (event.key === 'Escape') {
         // Escape key
@@ -54,20 +45,18 @@ var modal = {
     });
   },
   closeModal: function closeModal() {
-    document.querySelector(modal.modalSelector).classList.remove('open');
+    //console.log(document.querySelector(modal.modalSelector));
+    (document.querySelectorAll(modal.modalSelector) || []).forEach(function (element) {
+      /*const modal = trigger.dataset.target;
+      const target = document.querySelectorAll(modal);
+      trigger.addEventListener('click', () => {
+          this.openTargetModal(target);
+      });*/
+      //console.log(element);
+      element.classList.remove('open');
+    });
+    //document.querySelector(modal.modalSelector).classList.remove('open')
   }
-
-  /*openModal: function () {
-     document.querySelector(modal.modalSelector).classList.add('open')
-  },*/
-
-  /* cloneTargetAndOpenModal: function (elements) {
-      (elements || []).forEach((elem) => {
-          //jQuery(elem).remove();
-          jQuery(elem).clone().appendTo(modal.modalContent);
-          modal.openModal();
-      });
-  },*/
 };
 
 module.exports = modal;

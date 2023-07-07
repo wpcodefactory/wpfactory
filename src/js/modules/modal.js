@@ -10,20 +10,15 @@ const modal = {
     },
 
     handleModalClose: function () {
-        let closeButton = document.querySelector(modal.closeButtonSelector);
-        if (closeButton) {
-            closeButton.addEventListener('mousedown', () => {
+        document.addEventListener("click", function (event) {
+            if (
+                event.target.matches(modal.closeButtonSelector) ||
+                event.target.matches(modal.modalSelector)
+            ) {
                 modal.closeModal();
-            });
-        }
-        let modalSelector = document.querySelector(modal.modalSelector);
-        if(modalSelector){
-            modalSelector.addEventListener('mousedown', (e) => {
-                if (e.target.classList.contains('wpft-modal')) {
-                    modal.closeModal();
-                }
-            });
-        }
+            }
+        });
+
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') { // Escape key
                 modal.closeModal();
@@ -47,20 +42,19 @@ const modal = {
             });
         });
     },
+
     closeModal: function () {
-        document.querySelector(modal.modalSelector).classList.remove('open')
-    },
-
-    /*openModal: function () {
-       document.querySelector(modal.modalSelector).classList.add('open')
-   },*/
-
-    /* cloneTargetAndOpenModal: function (elements) {
-        (elements || []).forEach((elem) => {
-            //jQuery(elem).remove();
-            jQuery(elem).clone().appendTo(modal.modalContent);
-            modal.openModal();
+        //console.log(document.querySelector(modal.modalSelector));
+        (document.querySelectorAll(modal.modalSelector) || []).forEach((element) => {
+            /*const modal = trigger.dataset.target;
+            const target = document.querySelectorAll(modal);
+            trigger.addEventListener('click', () => {
+                this.openTargetModal(target);
+            });*/
+            //console.log(element);
+            element.classList.remove('open');
         });
-    },*/
+        //document.querySelector(modal.modalSelector).classList.remove('open')
+    }
 }
 module.exports = modal;

@@ -61,7 +61,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Page_Buil
 			if (
 				! empty( $field->get_conditional_logic() ) &&
 				'checkbox' !== $field->get_type() &&
-				empty( $value )
+				'' === $value
 			) {
 				$save = false;
 			}

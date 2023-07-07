@@ -49,17 +49,96 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Products' ) ) {
 			// Product columns total.
 			add_filter( 'loop_shop_columns', array( $this, 'loop_shop_columns_total' ), 999 );
 			add_filter( 'woocommerce_post_class', array( $this, 'add_css_classes_to_product_loop' ) );
-			// All plugins access info
+			// All plugins access info.
 			add_filter( 'woocommerce_after_shop_loop_item_title', array(
 				$this,
 				'add_all_plugins_access_info_to_loop'
 			), 7 );
 			// Add functions to Timber.
 			add_filter( 'timber/twig', array( $this, 'add_functions_to_twig' ) );
-			// Delete products total meta
-			add_action( 'updated_post_meta', array( $this, 'delete_products_total_meta' ), 10, 4 );
-			add_action( 'added_post_meta', array( $this, 'delete_products_total_meta' ), 10, 4 );
-			add_action( 'deleted_post_meta', array( $this, 'delete_products_total_meta' ), 10, 4 );
+			// Test.
+			add_filter( 'term_link', array( $this, 'change_term_permalink_to_husky_format' ), 10, 3 );
+			// Handle transient removal.
+			$this->handle_transient_removal();
+		}
+
+		function change_term_permalink_to_husky_format( $termlink, $term, $taxonomy ) {
+			if (
+				'yes' === wpft_get_option( '_wpft_change_term_link_to_husky_format', 'yes' ) &&
+				in_array( $taxonomy, array( 'product_cat', 'product_tag' ) )
+			) {
+				$new_link = add_query_arg( array(
+					'swoof'   => 1,
+					$taxonomy => $term->slug,
+				), trailingslashit( wc_get_page_permalink( 'shop' ) ) );
+				$termlink = $new_link;
+			}
+
+			return $termlink;
+		}
+
+		function handle_transient_removal() {
+			// Delete products prices total transient.
+			add_action( 'updated_post_meta', array( $this, 'delete_products_prices_total_transient' ), 10, 4 );
+			add_action( 'added_post_meta', array( $this, 'delete_products_prices_total_transient' ), 10, 4 );
+			add_action( 'deleted_post_meta', array( $this, 'delete_products_prices_total_transient' ), 10, 4 );
+			// Delete products amount transient.
+			add_action( 'publish_product', array( $this, 'delete_products_amount_transient' ), 10, 3 );
+			add_action( 'wp_trash_post', array( $this, 'delete_products_amount_transient' ) );
+			add_action( 'untrash_post', array( $this, 'delete_products_amount_transient' ) );
+			add_action( 'delete_post', array( $this, 'delete_products_amount_transient' ) );
+			// Delete all active installs transient.
+			add_action( 'woocommerce_payment_complete', array(
+				$this,
+				'delete_all_products_active_installs_transient'
+			) );
+
+
+		}
+
+		function delete_all_products_active_installs_transient() {
+			global $wpdb;
+			$prefix           = '_transient_wpft_all_products_active_installs'; // Replace with your desired prefix
+			$meta_key_pattern = $wpdb->esc_like( $prefix ) . '%';
+			$query            = $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $meta_key_pattern );
+			$wpdb->query( $query );
+		}
+
+		function get_all_products_active_installs() {
+			global $wpdb;
+
+			$transient_name = 'wpft_all_products_active_installs';
+			if ( false === ( $install_count = get_transient( $transient_name ) ) ) {
+				$query = ( "
+				SELECT SUM(total_sales) AS installs
+			    FROM {$wpdb->prefix}wc_product_meta_lookup AS pm
+			    JOIN {$wpdb->prefix}posts AS p ON p.ID = pm.product_id
+			    WHERE total_sales > 0
+			    " );
+
+				$install_count = $wpdb->get_var( $query );
+				set_transient( $transient_name, $install_count );
+			}
+
+			return $install_count;
+		}
+
+		function delete_products_amount_transient( $post_id ) {
+			if (
+				'product' !== get_post_type( $post_id ) ||
+				wp_is_post_revision( $post_id ) ||
+				wp_is_post_autosave( $post_id ) ||
+				( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) ||
+				( defined( 'DOING_AJAX' ) && DOING_AJAX )
+			) {
+				return;
+			}
+
+			global $wpdb;
+			$prefix           = '_transient_wpft_products_amount'; // Replace with your desired prefix
+			$meta_key_pattern = $wpdb->esc_like( $prefix ) . '%';
+			$query            = $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $meta_key_pattern );
+			$wpdb->query( $query );
 		}
 
 		/**
@@ -73,7 +152,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Products' ) ) {
 		 * @param $meta_key
 		 * @param $meta_value
 		 */
-		function delete_products_total_meta( $meta_id, $post_id, $meta_key, $meta_value ) {
+		function delete_products_prices_total_transient( $meta_id, $post_id, $meta_key, $meta_value ) {
 			if (
 				in_array( $meta_key, array(
 					'_price',
@@ -82,7 +161,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Products' ) ) {
 				is_a( $product = wc_get_product( $post_id ), 'WC_Product' )
 			) {
 				global $wpdb;
-				$prefix           = '_transient_wpft_products_total_'; // Replace with your desired prefix
+				$prefix           = '_transient_wpft_prod_prices_total_'; // Replace with your desired prefix
 				$meta_key_pattern = $wpdb->esc_like( $prefix ) . '%';
 				$query            = $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $meta_key_pattern );
 				$wpdb->query( $query );
@@ -106,7 +185,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Products' ) ) {
 		}
 
 		function add_css_classes_to_product_loop( $classes ) {
-			if ( is_shop() ) {
+			if ( is_shop() || is_archive() ) {
 				$classes = array_merge( $classes, array(
 					'column',
 					'is-4',
@@ -217,7 +296,6 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Products' ) ) {
 			//add_filter( 'wpft_module_prod_feature_before_content', array( $this, 'add_id_on_features_area' ) );
 		}
 
-
 		function add_shop_loop_tags() {
 			global $product;
 			$tags_string = wc_get_product_tag_list( $product->get_id(), ' ' );
@@ -243,12 +321,30 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Products' ) ) {
 			return $post_post_excerpt;
 		}
 
+		function get_products_amount() {
+			$args           = array(
+				'limit'  => - 1,
+				'return' => 'ids',
+			);
+			$transient_name = 'wpft_products_amount';
+			if ( false === ( $total = get_transient( $transient_name ) ) ) {
+				if ( false !== ( $all_plugins_access_id = wpft_get_theme()->get_component( 'Products' )->get_all_plugins_access_id() ) ) {
+					$args['exclude'] = array( $all_plugins_access_id );
+				}
+				$products = wc_get_products( $args );
+				$total    = count( $products );
+				set_transient( $transient_name, $total );
+			}
+
+			return $total;
+		}
+
 		function get_products_prices_total( $args = null ) {
 			$args           = wp_parse_args( $args, array(
 				'limit' => - 1,
 				'type'  => 'variation',
 			) );
-			$transient_name = 'wpft_products_total_' . md5( serialize( $args ) );
+			$transient_name = 'wpft_prod_prices_total_' . md5( serialize( $args ) );
 			if ( false === ( $prices_total = get_transient( $transient_name ) ) ) {
 				$products     = wc_get_products( $args );
 				$prices_total = 0;

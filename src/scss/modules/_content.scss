@@ -43,7 +43,7 @@
 // Titles
 .entry-title, .page-title {
   font-size: 30px;
-  font-weight: 700;
+  font-weight: 800;
   color: $color1;
   letter-spacing: -1px;
   @include mobile {
@@ -374,12 +374,15 @@ img.attachment-size-1 {
 .round-check-list-item {
   font-size: 14px;
 
+
   &:before {
     content: " ";
     display: inline-block;
     @include sprite($icon-ok);
     vertical-align: text-top;
     margin: 0 10px 0 0;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateZ(0) scale(1, 1);
   }
 }
 

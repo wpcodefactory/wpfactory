@@ -4,9 +4,15 @@
   padding-top: 60px;
   background: #fff;
 
+  .columns {
+
+  }
+
+  //flex-direction: row-reverse;
+
   &.even {
     .columns {
-      flex-direction: row-reverse;
+      //flex-direction: row;
 
       .mod-img-wrapper img {
         margin-right: 0;
@@ -22,7 +28,7 @@
     padding-top: 20px;
 
     img {
-      filter: drop-shadow(0px 11px 17px rgba(0, 0, 0, 0.15));
+      filter: drop-shadow(0px 11px 17px rgba(114, 124, 137, 0.24));
       margin-left: auto;
       @include mobile {
         margin-right: auto;
@@ -38,29 +44,15 @@
 
   .mod-img-wrapper {
     @extend .img-wrapper-type-1;
-    /*background: center no-repeat url('/src/img/img-bkg.png');
-    width: 442px;
-    min-height: 500px;
-    //text-align:center;
-    position: relative;
-    display: grid;
-    place-content: center;
-
-    img {
-      margin: 0;
-    }
-
-    @include mobile {
-      width: auto;
-      background-size: contain;
-      background-repeat: no-repeat;
-      min-height: auto;
-    }*/
   }
 
-  /*&:last-child {
-    padding-bottom: 60px;
-  }*/
+  .columns {
+    flex-direction: row-reverse;
+  }
+
+  &.even .columns {
+    flex-direction: row;
+  }
 }
 
 // Intro section from home and product modules
@@ -577,9 +569,10 @@
   }
 }
 
-// Reviews section
+// Reviews and statistics section
 .wpftpb-mod-wrapper-prod_reviews {
   margin-top: 60px;
+  background: linear-gradient(180deg, #F2F5FA 14.9%, #FFFFFF 37.72%);
 
   .initial-reviews {
     padding: 40px 60px;
@@ -591,8 +584,6 @@
   .initial-reviews-content {
     margin: 40px;
   }
-
-  background: linear-gradient(180deg, #F2F5FA 14.9%, #FFFFFF 37.72%);
 
   .review-title {
     font-weight: 800;
@@ -644,7 +635,179 @@
   .see-all-reviews-btn {
     font-size: 16px;
     font-weight: 700;
-    padding: 17px 33px;
-    margin: 48px 0;
+    padding: 18px 33px;
+    margin: 48px 0 30px;
+  }
+
+  .stats-box {
+    border-radius: 12px;
+    background: #FFF;
+    box-shadow: 0px 12px 24px 0px rgba(114, 124, 137, 0.24);
+    padding: 60px 36px;
+
+    .value {
+      color: #14243B;
+      font-size: 90px;
+      font-style: normal;
+      font-weight: 800;
+      line-height: normal;
+      letter-spacing: -2.7px;
+      margin-bottom: 18px;
+    }
+
+    .label {
+      display: flex;
+      align-items: center;
+      column-gap: 10px;
+
+      .icon {
+        border-radius: 18px;
+        background: #ccc;
+        padding: 14px 14px;
+        display: inline-block;
+        font-size: 0;
+
+        &:before {
+          font-size: 0;
+          content: "";
+          display: inline-block;
+          vertical-align: middle;
+        }
+
+        &.icon-install {
+          background: linear-gradient(180deg, #EF8A66 0%, rgba(239, 138, 102, 0.36) 100%);
+
+          &:before {
+            @include sprite($icon-install);
+          }
+        }
+
+        &.icon-wordpress {
+          background: linear-gradient(180deg, #1A2DC9 0%, rgba(26, 45, 201, 0.36) 100%);
+
+          &:before {
+            @include sprite($icon-wordpress);
+          }
+        }
+
+        &.icon-rating {
+          background: linear-gradient(180deg, #00A0DF 0%, rgba(0, 160, 223, 0.36) 100%);
+
+          &:before {
+            @include sprite($icon-star-2);
+          }
+        }
+      }
+
+      .content {
+        display: inline-block;
+        line-height: normal;
+        color: #14243B;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .minor-stat {
+    border-left: 3px solid #1A2DC9;
+    padding: 0 12px;
+
+    .label {
+      color: #A1A7B1;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+    }
+
+    .value,.value button {
+      color: #14243B;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 800;
+      line-height: normal;
+    }
+    .value button{
+      background:none;
+      padding:0;
+      text-decoration: underline;
+      &:hover{
+        color:$color2;
+      }
+    }
+  }
+}
+
+// Modal - changelog.
+.modal-changelog {
+  .modal-title {
+    color: #14243B;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 42px;
+    text-align: left;
+    margin: 0 0 48px 0;
+    @include mobile {
+      margin-top: 5px;
+      margin-bottom: 30px;
+    }
+  }
+
+  .wpft-modal-content {
+    padding: 0px 25px;
+    @include mobile {
+      padding: 0 20px 15px 15px;
+    }
+  }
+
+  .content-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    @include mobile {
+      display: block;
+      //padding: 15px 20px 15px 15px;
+    }
+
+    h4 {
+      width: 25%;
+      border-left: 3px solid #1A2DC9;
+      padding: 0 12px;
+      font-size: 14px;
+      text-align: left;
+      font-weight: 800;
+      @include mobile {
+        width: auto;
+        padding: 0 0 3px 0;
+        border: none;
+        border-bottom: 1px solid #eee;
+      }
+    }
+
+    ul {
+      margin: 0 0 15px 0;
+      padding: 0;
+      width: 75%;
+      text-align: left;
+      list-style: none;
+      @include mobile {
+        width: auto;
+        margin-bottom: 0px;
+      }
+
+      li {
+        @extend .round-check-list-item;
+        color: #14243B;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 24px;
+        margin-bottom: 10px;
+      }
+    }
+
   }
 }

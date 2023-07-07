@@ -226,7 +226,8 @@ a:focus, button:focus, .button.alt:focus, input:focus, textarea:focus, input[typ
   z-index: 999;
   text-align: center;
   vertical-align: middle;
-  transition: background-color 0.5s ease-in-out;
+  //transition: background-color 0.5s ease-in-out;
+  transition: all 0.4s ease-in-out;
 
   &:before {
     content: "";
@@ -251,7 +252,7 @@ a:focus, button:focus, .button.alt:focus, input:focus, textarea:focus, input[typ
     text-align: center;
     vertical-align: middle;
     position: relative;
-    transition: all 0.5s ease-in-out;
+    transition: all 0.4s ease-in-out;
     opacity: 0;
   }
 
@@ -300,6 +301,7 @@ a:focus, button:focus, .button.alt:focus, input:focus, textarea:focus, input[typ
   &.open {
     pointer-events: auto;
     background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
 
     .wpft-modal-content-wrapper {
       opacity: 1;

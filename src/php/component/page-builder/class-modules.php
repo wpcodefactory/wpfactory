@@ -750,7 +750,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 				         Field::make( 'set', 'wpft_inherited_modules', __( 'Inherit module(s)', 'wpfactory' ) )->set_options( function () {
 					         $args              = array();
 					         $modules_formatted = $this->get_modules_posts_formatted( $args );
-					         if ( ! empty( $post_id = $this->get_post_id_from_request() ) ) {
+					         if ( ! empty( $post_id = $this->get_post_id_from_request() ) && ! empty( $modules_formatted ) ) {
 						         unset( $modules_formatted[ $post_id ] );
 					         }
 

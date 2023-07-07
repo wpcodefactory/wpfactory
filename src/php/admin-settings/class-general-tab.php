@@ -78,15 +78,15 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Admin_Settings\General_Tab' ) ) 
 				Field::make( 'separator', 'wpft_separator_bundles', __( 'Bundles', 'wpfactory' ) ),
 				Field::make( 'checkbox', 'wpft_bundles_enabled', __( 'Enable Bundles', 'wpfactory' ) )->set_default_value( true ),
 				//Field::make( 'text', 'wpft_bundles_discount', __( 'Discount', 'wpfactory' ) )->set_default_value( 0.8 )->set_attribute( 'type', 'number' )->set_attribute( 'step', '0.01' )->set_attribute( 'max', 1 )->set_attribute( 'min', 0 ),
-				Field::make( 'association', 'wpft_bundles_discount_coupon', __( 'Discount coupon', 'wpfactory' ) )->set_help_text('<ul style="list-style: inside"><li>The coupon has to be set with a percentage discount.</li><li>The coupon has to exclude the All Plugins access product.</li></ul>')
+				Field::make( 'association', 'wpft_bundles_discount_coupon', __( 'Discount coupon', 'wpfactory' ) )->set_help_text( '<ul style="list-style: inside"><li>The coupon has to be set with a percentage discount.</li><li>The coupon has to exclude the All Plugins access product.</li></ul>' )
 				     ->set_types( array(
-					array(
-						'type'      => 'post',
-						'post_type' => 'shop_coupon',
-					)
-				) ),
+					     array(
+						     'type'      => 'post',
+						     'post_type' => 'shop_coupon',
+					     )
+				     ) ),
 				Field::make( 'text', 'wpft_bundle_products_qty', __( 'Bundle products quantity', 'wpfactory' ) )->set_default_value( 3 )->set_attribute( 'type', 'number' )->set_attribute( 'step', '1' )->set_attribute( 'min', 0 ),
-				Field::make( 'separator', 'wpft_separator_all_plugins', __( 'All plugins access', 'wpfactory' ) )->set_help_text('Special product that gives access to all plugins.'),
+				Field::make( 'separator', 'wpft_separator_all_plugins', __( 'All plugins access', 'wpfactory' ) )->set_help_text( 'Special product that gives access to all plugins.' ),
 				Field::make( 'checkbox', 'wpft_all_plugins_access_enabled', __( 'Enable all plugins access product', 'wpfactory' ) )->set_default_value( true ),
 				Field::make( 'association', 'wpft_all_plugins_access_product', '' )->set_types( array(
 					array(
@@ -94,21 +94,27 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Admin_Settings\General_Tab' ) ) 
 						'post_type' => 'product',
 					)
 				) )
-				->set_max( 1 ),
-				Field::make( 'checkbox', 'wpft_hide_nav_menu_item_label', __( 'Add option to hide menu item label', 'wpfactory' ) )
-				     ->set_default_value( true )
-				     ->set_option_value( 'yes' )
-				     ->set_help_text( sprintf( __( 'Allows hiding the <a href="%s">nav menu item</a> label.' ), admin_url( 'nav-menus.php' ) ) ),
+				     ->set_max( 1 ),
 				Field::make( 'separator', 'wpft_separator_free_vs_pro', __( 'Free vs Pro', 'wpfactory' ) ),
 				Field::make( 'checkbox', 'wpft_free_vs_pro_cmb_enabled', __( 'Add a "Free vs Pro" meta box on admin products pages', 'wpfactory' ) )
 				     ->set_default_value( true )
 				     ->set_option_value( 'yes' ),
-				     //->set_help_text( sprintf( __( 'Allows adding an icon on each <a href="%s">nav menu item</a>.' ), admin_url( 'nav-menus.php' ) ) ),
+				//->set_help_text( sprintf( __( 'Allows adding an icon on each <a href="%s">nav menu item</a>.' ), admin_url( 'nav-menus.php' ) ) ),
 				Field::make( 'separator', 'wpft_separator', __( 'Menu', 'wpfactory' ) ),
 				Field::make( 'checkbox', 'wpft_add_menu_icons', __( 'Add menu option to choose icons', 'wpfactory' ) )
 				     ->set_default_value( true )
-				     ->set_option_value( true )
+				     ->set_option_value( 'yes' )
 				     ->set_help_text( sprintf( __( 'Allows adding an icon on each <a href="%s">nav menu item</a>.' ), admin_url( 'nav-menus.php' ) ) ),
+				Field::make( 'checkbox', 'wpft_hide_nav_menu_item_label', __( 'Add option to hide menu item label', 'wpfactory' ) )
+				     ->set_default_value( true )
+				     ->set_option_value( 'yes' )
+				     ->set_help_text( sprintf( __( 'Allows hiding the <a href="%s">nav menu item</a> label.' ), admin_url( 'nav-menus.php' ) ) ),
+				Field::make( 'separator', 'wpft_separator_husky', __( 'Husky compatibility', 'wpfactory' ) )->set_help_text( sprintf( __( 'Husky is the <a target="_blank" href="%s">products filter plugin</a> in use.', 'wpfactory' ), 'https://wordpress.org/plugins/woocommerce-products-filter/' ) ),
+				Field::make( 'checkbox', 'wpft_change_term_link_to_husky_format', __( 'Change product category and tag term links to Husky format', 'wpfactory' ) )
+				     ->set_default_value( true )
+				     ->set_option_value( 'yes' )
+				     ->set_help_text( sprintf( __( 'Allows hiding the <a href="%s">nav menu item</a> label.' ), admin_url( 'nav-menus.php' ) ) ),
+
 			) );
 
 			$this->handle_nav_menu_item_options();

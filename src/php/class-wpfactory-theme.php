@@ -69,6 +69,15 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 			$admin_settings->init();
 			// Timber
 			add_filter( 'timber/twig', array( $this, 'add_functions_to_twig' ), 9 );
+
+			/*add_action( 'admin_init', function () {
+				$obj               = new \stdClass();
+				$obj->version      = '1.3.2';
+				$obj->last_updated = '2023-05-02';
+				$option            = array( 'ean-for-woocommerce-pro' => $obj );
+				update_option( 'alg_saved_items_data', $option );
+			} );*/
+			//ean-for-woocommerce-pro
 		}
 
 		/**
@@ -96,6 +105,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 				'\\WPFactory\\WPFactory_Theme\\Component\\Free_Vs_Pro',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Product_Licensing_Module',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Product_Reviews_Module',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Home_Intro_Module',
 				'\\WPFactory\\WPFactory_Theme\\Component\\FAQ',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Product_Features_Area',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Product_Feature_Module',
@@ -121,8 +131,53 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 				'wpft_add_to_cart_url'
 			) ) );
 			$twig->addFunction( new \Timber\Twig_Function( 'wpft_exit', array( $this, 'wpft_exit' ) ) );
+			// Filters.
+			$twig->addFilter( new \Timber\Twig_Filter( 'short_number', array( $this, 'short_number' ) ) );
 
 			return $twig;
+		}
+
+		function get_short_number_suffixes() {
+			return array(
+				'thousand' => 'K',
+				'million'  => 'M',
+				'billion'  => 'B',
+				'trillion' => 'T',
+			);
+		}
+
+		function short_number( $n ) {
+			if ( ! is_numeric( $n ) ) {
+				return $n;
+			}
+			if ( $n >= 0 && $n < 10000 ) {
+				// 1 - 9999
+				$n_format = floor( $n );
+				$suffix   = '';
+			} else if ( $n >= 10000 && $n < 1000000 ) {
+				// 10k-999k
+				$n_format = floor( $n / 1000 );
+				$plus_sign = fmod( $n, 1000 ) != 0 ? '+' : '';
+				$suffix = $this->get_short_number_suffixes()['thousand'] . $plus_sign;
+			} else if ( $n >= 1000000 && $n < 1000000000 ) {
+				// 1m-999m
+				$n_format = floor( $n / 1000000 );
+				$plus_sign = fmod( $n, 1000000 ) != 0 ? '+' : '';
+				$suffix   = $this->get_short_number_suffixes()['million'] . $plus_sign;
+			} else if ( $n >= 1000000000 && $n < 1000000000000 ) {
+				// 1b-999b
+				$n_format = floor( $n / 1000000000 );
+				$plus_sign = fmod( $n, 1000000000 ) != 0 ? '+' : '';
+				$suffix   = $this->get_short_number_suffixes()['billion'] . $plus_sign;
+			} else if ( $n >= 1000000000000 ) {
+				// 1t+
+				$n_format = floor( $n / 1000000000000 );
+				$plus_sign = fmod( $n, 1000000000000 ) != 0 ? '+' : '';
+				$suffix   = $this->get_short_number_suffixes()['trillion'] . $plus_sign;
+			}
+			$temp = $n_format . $suffix;
+
+			return ! empty( $temp ) ? $n_format . $suffix : 0;
 		}
 
 		function wpft_exit() {
