@@ -576,9 +576,24 @@
 
   .initial-reviews {
     padding: 40px 60px;
+    @include mobile{
+      padding:30px 30px;
+    }
     background: linear-gradient(180deg, #F2F5FA 14.9%, #FFFFFF 37.72%);
     box-shadow: 0px 12px 24px rgba(114, 124, 137, 0.12);
     border-radius: 12px;
+
+    .columns.splide__list{
+      transition: all 0.3s ease-in-out;
+      align-items: flex-start;
+    }
+    .splide__slide{
+      transition: all 0.3s ease-in-out;
+    }
+    .splide__slide:not(.is-active) {
+      //height:0;
+      //height: 0;    // or 100vh, or something what fits your case
+    }
   }
 
   .initial-reviews-content {
@@ -722,19 +737,21 @@
       line-height: normal;
     }
 
-    .value,.value button {
+    .value, .value button {
       color: #14243B;
       font-size: 18px;
       font-style: normal;
       font-weight: 800;
       line-height: normal;
     }
-    .value button{
-      background:none;
-      padding:0;
+
+    .value button {
+      background: none;
+      padding: 0;
       text-decoration: underline;
-      &:hover{
-        color:$color2;
+
+      &:hover {
+        color: $color2;
       }
     }
   }
@@ -810,4 +827,52 @@
     }
 
   }
+}
+
+.modal-reviews {
+  .wpft-modal-content-wrapper {
+    background: transparent;
+    box-shadow: none;
+    min-width: 90%;
+    min-height: 80%;
+  }
+
+  .wpft-modal-content{
+    max-widh:90%;
+  }
+
+  .wpft-modal-close-btn {
+    left: -10px;
+    top: -20px;
+    z-index: 3;
+  }
+
+  .review-box {
+    background: #fff;
+    padding: 20px;
+    width: 33%;
+    border-radius: 12px;
+    text-align: left;
+    @include tablet {
+      width: 40%;
+    }
+    @include mobile {
+      width: 93%;
+    }
+    @include desktop {
+      width: 30%;
+    }
+    @include fullhd {
+      width: 20%;
+    }
+  }
+
+  .review-content {
+    color: #727C89;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 28px;
+  }
+
 }

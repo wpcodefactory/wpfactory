@@ -38,6 +38,7 @@ var slider = {
         //3.1 if no options are defined by 'data-splide' attribute: take these default options
         var splideDefaultOptions = {
           type: 'slide',
+          autoHeight: true,
           pagination: false,
           perMove: 1,
           breakpoints: {

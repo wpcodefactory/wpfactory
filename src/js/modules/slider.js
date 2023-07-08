@@ -31,6 +31,7 @@ const slider = {
                 var splideDefaultOptions =
                     {
                         type: 'slide',
+                        autoHeight:true,
                         pagination: false,
                         perMove: 1,
                         breakpoints: {

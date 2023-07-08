@@ -4754,6 +4754,18 @@ rgba(20, 36, 59, 1)*/
   box-shadow: 0px 12px 24px rgba(114, 124, 137, 0.12);
   border-radius: 12px;
 }
+@media screen and (max-width: 768px) {
+  .wpftpb-mod-wrapper-prod_reviews .initial-reviews {
+    padding: 30px 30px;
+  }
+}
+.wpftpb-mod-wrapper-prod_reviews .initial-reviews .columns.splide__list {
+  transition: all 0.3s ease-in-out;
+  align-items: flex-start;
+}
+.wpftpb-mod-wrapper-prod_reviews .initial-reviews .splide__slide {
+  transition: all 0.3s ease-in-out;
+}
 .wpftpb-mod-wrapper-prod_reviews .initial-reviews-content {
   margin: 40px;
 }
@@ -4970,6 +4982,55 @@ rgba(20, 36, 59, 1)*/
   font-weight: 500;
   line-height: 24px;
   margin-bottom: 10px;
+}
+
+.modal-reviews .wpft-modal-content-wrapper {
+  background: transparent;
+  box-shadow: none;
+  min-width: 90%;
+  min-height: 80%;
+}
+.modal-reviews .wpft-modal-content {
+  max-widh: 90%;
+}
+.modal-reviews .wpft-modal-close-btn {
+  left: -10px;
+  top: -20px;
+  z-index: 3;
+}
+.modal-reviews .review-box {
+  background: #fff;
+  padding: 20px;
+  width: 33%;
+  border-radius: 12px;
+  text-align: left;
+}
+@media screen and (min-width: 769px), print {
+  .modal-reviews .review-box {
+    width: 40%;
+  }
+}
+@media screen and (max-width: 768px) {
+  .modal-reviews .review-box {
+    width: 93%;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .modal-reviews .review-box {
+    width: 30%;
+  }
+}
+@media screen and (min-width: 1408px) {
+  .modal-reviews .review-box {
+    width: 20%;
+  }
+}
+.modal-reviews .review-content {
+  color: #727C89;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 28px;
 }
 
 .wpft-article-container {
