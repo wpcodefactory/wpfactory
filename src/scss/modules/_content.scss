@@ -196,11 +196,11 @@
 
   .buy-licenses {
     right: -15px !important;
-    @include mobile{
-      right:0 !important;
+    @include mobile {
+      right: 0 !important;
       left: 50% !important;
-      margin-left:auto;
-      margin-right:auto;
+      margin-left: auto;
+      margin-right: auto;
       left: 50%;
       transform: translateX(-50%);
     }
@@ -244,7 +244,7 @@
     //pointer-events: none;
   }
 
-  opacity:0;
+  opacity: 0;
 
   //opacity:0;
   /*&.active {
@@ -402,8 +402,8 @@ table.wpft-table-type-1 {
   border-collapse: separate !important;
   //overflow: hidden;
   //overflow-y:hidden;
-  th{
-    background:transparent;
+  th {
+    background: transparent;
   }
 
   thead {
@@ -418,8 +418,8 @@ table.wpft-table-type-1 {
       font-weight: 800;
       //padding-top: 21px;
       //padding-bottom: 21px;
-      padding-top:13px;
-      padding-bottom:13px;
+      padding-top: 13px;
+      padding-bottom: 13px;
     }
   }
 
@@ -460,8 +460,8 @@ table.wpft-table-type-1 {
     }
 
     //table:not( .has-background ) tbody tr:nth-child(2n) td, fieldset, fieldset legend {
-    tbody tr:nth-child(2n) td:first-child{
-     background:transparent;
+    tbody tr:nth-child(2n) td:first-child {
+      background: transparent;
     }
 
     thead {
@@ -477,9 +477,10 @@ table.wpft-table-type-1 {
 
     tr {
       display: block;
-      &:first-child{
-        td:first-child{
-          border-top:none;
+
+      &:first-child {
+        td:first-child {
+          border-top: none;
         }
       }
     }
@@ -496,7 +497,7 @@ table.wpft-table-type-1 {
         //border-top:none;
         //font-weight: 800;
         font-size: 16px;
-        background:transparent;
+        background: transparent;
         //background: #fff !important;
         text-align: left !important;
         //color: rgba(26, 45, 201, 1);
@@ -504,8 +505,8 @@ table.wpft-table-type-1 {
       }
     }
 
-    tfoot{
-      td{
+    tfoot {
+      td {
         text-align: center !important;
       }
     }
@@ -540,5 +541,76 @@ table.wpft-table-type-1 {
     background-size: contain;
     background-repeat: no-repeat;
     min-height: auto;
+  }
+}
+
+// Loader
+.wpft-loader-core {
+  display: inline-block;
+  vertical-align: middle;
+  width: 50px;
+  height: 50px;
+  margin: 0px 0 0 0;
+  border: solid 8px #fff;
+  border-radius: 50%;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  transition: all 0.4s ease-in;
+  animation-name: rotate;
+  animation-duration: 0.9s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.bkg-loader {
+  &.is-loading {
+    &:after {
+      @extend .wpft-loader-core;
+      content: " ";
+      display: inline-block;
+      vertical-align: middle;
+      width: 50px;
+      height: 50px;
+      border-width: 8px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-left: -25px;
+      margin-top: -25px;
+    }
+  }
+}
+
+.btn-loader {
+  &.is-loading {
+    &:after {
+      @extend .wpft-loader-core;
+      content: " ";
+      display: inline-block;
+      vertical-align: middle;
+      width: 15px;
+      height: 15px;
+      margin: 0px -3px 0 10px;
+      border-width: 3px;
+    }
+  }
+}
+
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
   }
 }

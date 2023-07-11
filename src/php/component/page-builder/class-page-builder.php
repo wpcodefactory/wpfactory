@@ -53,9 +53,17 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Page_Buil
 				'prevent_conditional_empty_field_from_saving'
 			), 10, 3 );
 
+
+			//add_filter('comments_clauses',array($this,'test'));
 			// Useful function to change option name.
 			//add_action('admin_init',array($this,'update_options'));
 		}
+
+		/*function test($clauses){
+			error_log('--- q ---');
+			error_log(print_r($clauses,true));
+			return $clauses;
+		}*/
 
 		function prevent_conditional_empty_field_from_saving( $save, $value, $field ) {
 			if (

@@ -105,6 +105,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 				'\\WPFactory\\WPFactory_Theme\\Component\\Free_Vs_Pro',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Product_Licensing_Module',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Product_Reviews_Module',
+				'\\WPFactory\\WPFactory_Theme\\Component\\Home_Reviews_Module',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Home_Intro_Module',
 				'\\WPFactory\\WPFactory_Theme\\Component\\FAQ',
 				'\\WPFactory\\WPFactory_Theme\\Component\\Product_Features_Area',

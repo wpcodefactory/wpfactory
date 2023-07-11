@@ -25,12 +25,12 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Product_Reviews_Module
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ), 11 );
 			add_action( 'wp_footer', array( $this, 'handle_reviews_loading' ) );
 			// AJAX
-			add_action( 'wp_ajax_load_reviews', array( $this, 'load_all_reviews' ) );
-			add_action( 'wp_ajax_nopriv_load_reviews', 'load_all_reviews' );
+			add_action( 'wp_ajax_load_all_reviews', array( $this, 'load_all_reviews_via_ajax' ) );
+			add_action( 'wp_ajax_nopriv_load_all_reviews', array( $this, 'load_all_reviews_via_ajax' ) );
 		}
 
-		function load_all_reviews() {
-			check_ajax_referer( 'load_reviews_ajax', 'nonce' );
+		function load_all_reviews_via_ajax() {
+			check_ajax_referer( 'load_all_reviews_ajax', 'nonce' );
 			ob_clean();
 			$product_id = intval( $_POST['product_id'] );
 			$args       = array(
@@ -91,8 +91,8 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Product_Reviews_Module
 			}
 			$php_to_js = array(
 				'ajaxURL' => admin_url( 'admin-ajax.php' ),
-				'action'   => 'load_reviews',
-                'nonce' => wp_create_nonce('load_reviews_ajax')
+				'action'  => 'load_all_reviews',
+				'nonce'   => wp_create_nonce( 'load_all_reviews_ajax' )
 			);
 			?>
             <script>
@@ -104,6 +104,9 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Product_Reviews_Module
 
                     function showAllReviews() {
                         if (!reviewsLoaded) {
+                            let targetSelector = jQuery(this).data('target');
+                            let bkgLoader = jQuery(targetSelector).find('.bkg-loader');
+                            bkgLoader.addClass('is-loading');
                             reviewsLoaded = true;
                             let ajaxData = {
                                 action: jsData.action,
@@ -111,16 +114,16 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Product_Reviews_Module
                                 product_id: jQuery(this).data('product-id')
                             };
                             jQuery.post(jsData.ajaxURL, ajaxData, function (response) {
-                                jQuery(response.data.html).appendTo('.modal-reviews .reviews-container');
+                                jQuery('.modal-reviews .reviews-container').html(response.data.html)
                                 let magicGrid = new MagicGrid({
                                     container: ".reviews-container", // Required. Can be a class, id, or an HTMLElement.
                                     static: true,
-                                    //items: 3, // For a grid with 20 items. Required for dynamic content.
-                                    animate: true, // Optional.
+                                    animate: true,
 
                                 });
                                 magicGrid.listen();
                                 magicGrid.positionItems();
+                                bkgLoader.removeClass('is-loading');
                             });
                         }
                     }

@@ -45,7 +45,12 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 			add_action( 'updated_post_meta', array( $this, 'update_compressed_id_from_id' ), 10, 4 );
 			add_action( 'added_post_meta', array( $this, 'update_compressed_id_from_id' ), 10, 4 );
 			add_action( 'deleted_post_meta', array( $this, 'update_compressed_id_from_id' ), 10, 4 );
+
+			// Test
+			//add_action( 'carbon_fields_register_fields', array( $this, 'create_fake_reviews_meta_box' ),99999 );
 		}
+
+
 
 		/**
 		 * update_compressed_id_from_id
@@ -146,16 +151,16 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 			$module_id        = $args['module_id'];
 			$module_id_hashed = $args['module_id_hashed'];
 			if ( empty( $module_id ) && ! empty( $module_id_hashed ) ) {
-				$module = $this->get_module_post_from_id_hashed( $module_id_hashed );
+				$module    = $this->get_module_post_from_id_hashed( $module_id_hashed );
 				$module_id = $module->ID;
 			}
-			$module_id_string = get_post_meta( $module_id, '_wpft_module_id', true );
-			$template_vars          = $args['template_vars'];
-			$template               = carbon_get_post_meta( $module_id, 'wpft_template' );
-			$module_classes         = array(
+			$module_id_string          = get_post_meta( $module_id, '_wpft_module_id', true );
+			$template_vars             = $args['template_vars'];
+			$template                  = carbon_get_post_meta( $module_id, 'wpft_template' );
+			$module_classes            = array(
 				'wpftpb-mod',
 			);
-			$module_wrapper_classes = array(
+			$module_wrapper_classes    = array(
 				'wpftpb-section',
 				'wpftpb-mod-wrapper-' . $module_id,
 				'wpftpb-mod-wrapper-' . $module_id_string,
@@ -173,8 +178,8 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 				$module_wrapper_classes = array_merge( $module_wrapper_classes, $result );
 			}
 			$module_wrapper_classes = apply_filters( 'wpft_module_wrapper_css_classes', $module_wrapper_classes );
-			$template_vars = apply_filters( 'wpft_module_template_vars', $template_vars, $args );
-			$template_vars = apply_filters( "wpft_module_{$module_id_string}_template_vars", $template_vars, $args );
+			$template_vars          = apply_filters( 'wpft_module_template_vars', $template_vars, $args );
+			$template_vars          = apply_filters( "wpft_module_{$module_id_string}_template_vars", $template_vars, $args );
 			/*if ( ! empty( $extra_template_variables_filter = carbon_get_post_meta( $module_id, 'wpft_template_variables_filter' ) ) ) {
 				$template_vars = apply_filters( $extra_template_variables_filter, $template_vars, $module_id );
 			}*/
@@ -461,8 +466,10 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 						$field->set_options( wp_list_pluck( $variable['select_options'], 'option_label', 'option_id' ) );
 					}
 					if ( ! empty( $default_value = $variable['default_value'] ) ) {
+
 						$field->set_default_value( $default_value );
 					}
+
 
 					$field->set_width( '33%' );
 					switch ( $variable['var_type'] ) {
@@ -762,9 +769,9 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 				         Field::make( 'text', 'wpft_css_classes', 'CSS classes' )->set_help_text( 'Adds extra CSS classes to the module wrapper. Separate by space.' ),
 				         Field::make( 'text', 'wpft_template_vars_to_css', __( 'Template variables to CSS', 'wpfactory' ) )->set_help_text( 'Adds extra CSS classes from the Template variables to the module wrapper. Separate by comma. Use the variable Id.' )
 			         ) );
-			         /*->add_tab( __( 'PHP', 'wpfactory' ), array(
-				         Field::make( 'text', 'wpft_template_variables_filter', 'Template variables filter' )->set_help_text( 'Custom hook filter used to send info to template as an associative array. ' ),
-			         ) );*/
+			/*->add_tab( __( 'PHP', 'wpfactory' ), array(
+				Field::make( 'text', 'wpft_template_variables_filter', 'Template variables filter' )->set_help_text( 'Custom hook filter used to send info to template as an associative array. ' ),
+			) );*/
 		}
 
 		function get_post_id_from_request() {
@@ -833,6 +840,47 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 
 			register_post_type( 'wpft_module', $args );
 		}
+
+		/*function create_fake_reviews_meta_box() {
+			Container::make( 'post_meta', 'Reviews test' )
+			         ->set_datastore( new Carbon_Fields_Post_Meta_Datastore() )
+			         ->where( 'post_type', '=', 'page' )
+			         ->add_fields( array(
+				         Field::make( 'complex', 'association_complex0', 'Filter posts by taxonomies' )
+				              ->set_collapsed( true )
+				              ->add_fields( array(
+						              Field::make( 'association', 'association_post0', 'Reviews' )->set_types( array(
+							              array(
+								              'type' => 'post',
+								              'post_type' => 'post',
+							              )
+						              ) ),
+						              Field::make( 'association', 'association_review0', 'Reviews' )->set_types( array(
+							              array(
+								              'type' => 'comment',
+							              )
+						              ) )
+					              )
+				              ),
+				         Field::make( 'complex', 'association_complex', 'Filter posts by taxonomies' )
+				              ->set_collapsed( true )
+				              ->add_fields( array(
+					              Field::make( 'association', 'association_post', 'Reviews' )->set_types( array(
+						              array(
+							              'type' => 'post',
+							              'post_type' => 'post',
+						              )
+					              ) ),
+						              Field::make( 'association', 'association_review', 'Reviews' )->set_types( array(
+							              array(
+								              'type' => 'comment',
+							              )
+						              ) )
+					              )
+				              )
+			         ) );
+
+		}*/
 
 	}
 }

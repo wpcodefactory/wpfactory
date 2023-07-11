@@ -570,26 +570,29 @@
 }
 
 // Reviews and statistics section
-.wpftpb-mod-wrapper-prod_reviews {
+.wpftpb-mod-wrapper-prod_reviews, .wpftpb-mod-wrapper-home_reviews {
   margin-top: 60px;
   background: linear-gradient(180deg, #F2F5FA 14.9%, #FFFFFF 37.72%);
 
+
   .initial-reviews {
     padding: 40px 60px;
-    @include mobile{
-      padding:30px 30px;
+    @include mobile {
+      padding: 30px 30px;
     }
     background: linear-gradient(180deg, #F2F5FA 14.9%, #FFFFFF 37.72%);
     box-shadow: 0px 12px 24px rgba(114, 124, 137, 0.12);
     border-radius: 12px;
 
-    .columns.splide__list{
+    .columns.splide__list {
       transition: all 0.3s ease-in-out;
       align-items: flex-start;
     }
-    .splide__slide{
+
+    .splide__slide {
       transition: all 0.3s ease-in-out;
     }
+
     .splide__slide:not(.is-active) {
       //height:0;
       //height: 0;    // or 100vh, or something what fits your case
@@ -757,6 +760,69 @@
   }
 }
 
+// Home reviews;
+.wpftpb-mod-wrapper-home_reviews {
+  background: none;
+  padding-bottom:20px;
+
+  .load-more-reviews-btn {
+    font-size: 16px;
+    font-weight: 700;
+    padding: 18px 33px;
+    margin: 48px 0 30px;
+  }
+
+  .initial-reviews {
+    background: none;
+    box-shadow: none;
+    padding: 0;
+    border-radius: unset;
+    margin-left: -1.8rem;
+    margin-right: -1.8rem;
+    @include mobile {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  .review-box {
+    padding: 24px 24px 36px 24px;
+    border: 1px solid #F2F5FA;
+    background: #fff;
+
+
+    @include mobile {
+      width: 100%;
+    }
+
+    @include tablet {
+      width: 45%;
+    }
+
+    @include desktop {
+      width: 30%;
+    }
+    @include fullhd {
+      width: 30%;
+    }
+
+    //width:30%;
+  }
+
+  .review-content {
+    margin: 0 0 0 0;
+    color: #727C89;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 28px;
+
+    p {
+      margin-bottom: 15px;
+    }
+  }
+}
+
 // Modal - changelog.
 .modal-changelog {
   .modal-title {
@@ -829,7 +895,53 @@
   }
 }
 
-.modal-reviews {
+// Review box
+.review-box {
+  background: #fff;
+  padding: 20px;
+  width: 33%;
+  border-radius: 12px;
+  text-align: left;
+  transition: all 0.2s ease-in-out !important;
+  &:hover{
+    box-shadow: 0px 12px 24px 0px rgba(114, 124, 137, 0.24);
+  }
+  @include tablet {
+    width: 40%;
+  }
+  @include mobile {
+    width: 93%;
+  }
+  @include desktop {
+    width: 30%;
+  }
+  @include fullhd {
+    width: 20%;
+  }
+
+  .review-reference {
+    color: #727C89;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: normal;
+    margin-bottom: 20px;
+
+    .product-title, .product-title a {
+      font-size: 14px;
+      font-weight: 800;
+      line-height: normal;
+      color: #000;
+      display: inline;
+    }
+    .product-title a:hover{
+      //color:$color2;
+      text-decoration: underline;
+    }
+  }
+}
+
+// Modal - reviews
+.modal-reviews, .modal-wpf-reviews {
   .wpft-modal-content-wrapper {
     background: transparent;
     box-shadow: none;
@@ -837,34 +949,14 @@
     min-height: 80%;
   }
 
-  .wpft-modal-content{
-    max-widh:90%;
+  .wpft-modal-content {
+    max-widh: 90%;
   }
 
   .wpft-modal-close-btn {
     left: -10px;
     top: -20px;
     z-index: 3;
-  }
-
-  .review-box {
-    background: #fff;
-    padding: 20px;
-    width: 33%;
-    border-radius: 12px;
-    text-align: left;
-    @include tablet {
-      width: 40%;
-    }
-    @include mobile {
-      width: 93%;
-    }
-    @include desktop {
-      width: 30%;
-    }
-    @include fullhd {
-      width: 20%;
-    }
   }
 
   .review-content {
