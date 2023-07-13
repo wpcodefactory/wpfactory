@@ -108,6 +108,9 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Menus' ) ) {
 
 			// Top right menu.
 			add_action( 'storefront_header', array( $this, 'top_right_menu' ), 24 );
+
+            // Footer menu.
+			remove_action( 'storefront_footer', 'storefront_footer_widgets', 10 );
 		}
 
 		/**
