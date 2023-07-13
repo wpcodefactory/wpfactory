@@ -45,9 +45,10 @@ if ( ! function_exists( 'wpft_is_current_page_full_width_content' ) ) {
 	function wpft_is_current_page_full_width_content() {
 		return
 			(
+				is_page_template( 'template-homepage.php' ) ||
 				is_front_page() ||
 				is_product() ||
-				is_singular('post')
+				is_singular( 'post' )
 			);
 	}
 }
