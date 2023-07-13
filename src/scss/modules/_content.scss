@@ -72,20 +72,34 @@
 // Buttons
 .button, .submit {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  padding: 12px 28px;
-  font-size: 14px;
+  padding: 18px 30px;
+  font-size: 16px;
   border-radius: 36px !important;
   color: #fff;
   font-weight: 500;
+  background: $color5;
+  transition: all 0.15s ease-in-out;
+  &:hover{
+    background: #155bff;
+    color:#fff;
+  }
 
   &.size-2, &.btn-size-2, &.submit {
     font-weight: 700;
-    padding: 15px 30px;
-    font-size: 16px;
+    //padding: 15px 30px;
+    //font-size: 16px;
     @include mobile {
       padding: 13px 23px;
       font-size: 14px;
     }
+  }
+}
+
+.button.alt{
+  @extend .button;
+  background:#727C89;
+  &:hover{
+    background:$color1;
   }
 }
 

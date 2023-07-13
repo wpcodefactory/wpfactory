@@ -26,7 +26,11 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Carbon_Fields\Carbon_Fields_Sani
 					$value = sanitize_text_field( $value );
 					break;
 				default:
-					$value = wp_kses_post( $value );
+					global $allowedposttags;
+					$value = wp_kses( $value, array_merge_recursive( $allowedposttags, array(
+						'img' => array( 'srcset' => true, 'sizes' => true )
+					) ) );
+				//$value = wp_kses_post( $value );
 			}
 
 			return $value;

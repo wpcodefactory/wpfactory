@@ -23,6 +23,17 @@
 }
 
 .wpftpb-mod {
+
+  .entry-title{
+    color: #14243B;
+    text-align: center;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    letter-spacing: -1.44px;
+  }
+
   .mod-img-wrapper {
     padding-bottom: 20px;
     padding-top: 20px;
@@ -37,10 +48,28 @@
   }
 }
 
+// Help
+.wpftpb-mod-wrapper-prod_help {
+  .entry-title {
+    color:#fff;
+  }
+}
+
+// Help
+.wpftpb-mod-wrapper-explore_plugins {
+  .entry-title {
+    color:#fff;
+  }
+}
+
 // Product feature section
 //.prod-feature-section {
 .wpftpb-mod-wrapper-prod_feature {
   padding-bottom: 0px;
+
+  .entry-title{
+    text-align: left;
+  }
 
   .mod-img-wrapper {
     @extend .img-wrapper-type-1;
@@ -55,11 +84,27 @@
   }
 }
 
+// Multiple features (Incredible features);
+.wpftpb-mod-wrapper-prod_multi_features {
+  .wpft-mod-description{
+    color: #14243B;
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 28px;
+  }
+}
+
 // Intro section from home and product modules
 .intro-section {
   padding-top: 0;
   background: none;
   margin-top: 20px;
+
+  .entry-title{
+    text-align: left;
+  }
 
   .wpft-mod-footer {
     @include mobile {
@@ -107,9 +152,19 @@
   }
 }
 
+.wpftpb-mod-wrapper-home_intro{
+  .entry-title{
+    font-size:55px;
+  }
+}
+
 // Pricing section
 .wpftpb-section.wpftpb-mod-wrapper-prod_licensing {
   @extend .bkg-blue;
+
+  .entry-title{
+    color:#fff;
+  }
 
   .switcher-btns-wrapper {
     //display: inline-block;
@@ -198,6 +253,10 @@
 
   .box-license-content {
     padding: 12px 25px 26px;
+    .entry-title{
+      color:#14243B;
+      text-align: left;
+    }
   }
 
   .variation_features {
@@ -528,7 +587,7 @@
   }
 
   .entry-title {
-    font-size: 48px;
+    text-align: left;
     margin-bottom: 35px;
   }
 
@@ -573,6 +632,7 @@
 .wpftpb-mod-wrapper-prod_reviews, .wpftpb-mod-wrapper-home_reviews {
   margin-top: 60px;
   background: linear-gradient(180deg, #F2F5FA 14.9%, #FFFFFF 37.72%);
+
 
 
   .initial-reviews {

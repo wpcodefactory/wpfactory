@@ -278,8 +278,8 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\WPFactory_Theme' ) ) {
 					// Disable Gutenberg on the back end.
 					add_filter( 'use_block_editor_for_post', '__return_false' );
 					add_image_size( 'size-1', 0, 112 ); // Product icon
-					add_image_size( 'size-2', 384 ); // Product feature images
-					add_image_size( 'size-3', 160, 40 ); // Product feature images
+					add_image_size( 'size-2', 490 ); // Product feature images
+					add_image_size( 'size-3', 160, 40 ); // Website logos
 					add_image_size( 'size-4', 1920, 546, array( 'center', 'top' ) ); // Post featured images
 					add_image_size( 'size-5', 382, 186, array( 'center', 'top' ) ); // Blog thumbnail images
 					// Body classes.

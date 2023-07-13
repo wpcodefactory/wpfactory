@@ -67,7 +67,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Admin_Settings\Admin_Settings' )
 		 *
 		 * @return void
 		 */
-		function sanitize_fields( $container ) {
+		/*function sanitize_fields( $container ) {
 			foreach ( $container->get_fields() as $field ) {
 				add_filter( "sanitize_option__{$field->get_base_name()}", function ( $value, $option ) use ( $field ) {
 					if ( strpos( substr( $option, 0, 6 ), 'wpft_' ) !== false ) {
@@ -78,7 +78,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Admin_Settings\Admin_Settings' )
 				}, 10, 2 );
 
 				add_filter( "sanitize_post_meta__wpft_template", function ( $value, $option ) {
-					error_log( 'asdasd' );
+					//error_log( 'asdasd' );
 					if ( strpos( substr( $option, 0, 6 ), 'wpft_' ) !== false ) {
 						$value = sanitize_text_field( $value );
 					}
@@ -86,7 +86,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Admin_Settings\Admin_Settings' )
 					return $value;
 				}, 10, 2 );
 			}
-		}
+		}*/
 
 		/**
 		 * handle_tabs.

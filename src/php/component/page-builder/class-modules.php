@@ -51,7 +51,6 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 		}
 
 
-
 		/**
 		 * update_compressed_id_from_id
 		 *
@@ -722,6 +721,7 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Page_Builder\Modules' 
 								               return array(
 									               'text'     => 'Text',
 									               'textarea' => 'Textarea',
+									               'image'    => 'Image',
 								               );
 							               } )
 						          ,
