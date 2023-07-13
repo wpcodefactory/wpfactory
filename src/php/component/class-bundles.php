@@ -97,8 +97,14 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Bundles' ) ) {
 				return;
 			}
 
-			// Your settings
-			$coupon_code = $this->get_bundle_discount_coupon()->get_code();
+			if (
+				true !== filter_var( carbon_get_theme_option( 'wpft_bundles_enabled' ), FILTER_VALIDATE_BOOLEAN ) ||
+				false === ( $coupon = $this->get_bundle_discount_coupon() )
+			) {
+				return;
+			}
+
+			$coupon_code = $coupon->get_code();
 
 			// Initializing variables
 			$applied_coupons = $cart->get_applied_coupons();
