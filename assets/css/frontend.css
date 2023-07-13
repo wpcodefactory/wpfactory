@@ -3751,8 +3751,8 @@ a:focus, button:focus, .button.alt:focus, .alt.button2:focus, .alt.button1:focus
 
 .button, .button2, .alt.button2, .button1, .alt.button1, .button.alt, .submit {
   font-family: "Plus Jakarta Sans", sans-serif;
-  padding: 18px 30px;
-  font-size: 16px;
+  padding: 10px 25px;
+  font-size: 14px;
   color: #fff;
   font-weight: 500;
   background: #1A2DC9;
@@ -4385,6 +4385,10 @@ rgba(20, 36, 59, 1)*/
   margin-left: 0;
 }
 
+.wpftpb-mod .button, .wpftpb-mod .button1, .wpftpb-mod .button2 {
+  padding: 18px 32px;
+  font-size: 16px;
+}
 .wpftpb-mod .entry-title, .wpftpb-mod .blog .entry-title a, .blog .entry-title .wpftpb-mod a, .wpftpb-mod .single-post .entry-title a, .single-post .entry-title .wpftpb-mod a, .wpftpb-mod .category .entry-title a, .category .entry-title .wpftpb-mod a, .wpftpb-mod .archive .entry-title a, .archive .entry-title .wpftpb-mod a, .wpftpb-mod .author .entry-title a, .author .entry-title .wpftpb-mod a {
   color: #14243B;
   text-align: center;
