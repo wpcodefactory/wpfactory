@@ -33,7 +33,10 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Home_Reviews_Module' )
 		}
 
 		function handle_magic_grid_on_initial_reviews() {
-			if ( ! is_front_page() ) {
+			if (
+				! is_page_template( 'template-homepage.php' ) &&
+				! is_front_page()
+			) {
 				return;
 			}
 			?>
@@ -125,7 +128,10 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Home_Reviews_Module' )
 		}
 
 		function handle_modal_reviews_loading() {
-			if ( ! is_front_page() ) {
+			if (
+				! is_page_template( 'template-homepage.php' ) &&
+				! is_front_page()
+			) {
 				return;
 			}
 			$php_to_js = array(
@@ -206,7 +212,10 @@ if ( ! class_exists( 'WPFactory\WPFactory_Theme\Component\Home_Reviews_Module' )
 		}
 
 		function enqueue_scripts() {
-			if ( ! is_front_page() ) {
+			if (
+				! is_page_template( 'template-homepage.php' ) &&
+				! is_front_page()
+			) {
 				return;
 			}
 
