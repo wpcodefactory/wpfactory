@@ -539,7 +539,8 @@ table.wpft-table-type-1 {
 // Image container with a shape in the background
 .img-wrapper-type-1 {
   background: center no-repeat url('/src/img/img-bkg.png');
-  width: 442px;
+  background-size: contain;
+  //width: 442px;
   min-height: 500px;
   //text-align:center;
   position: relative;

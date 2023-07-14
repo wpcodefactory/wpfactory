@@ -2572,7 +2572,7 @@ a:focus, button:focus, .button.alt:focus, .alt.button2:focus, .alt.button1:focus
 }
 .main-bkg svg {
   position: relative;
-  top: -8%;
+  top: 0;
   right: -3%;
   width: 100%;
   height: 100%;
@@ -2628,7 +2628,7 @@ a:focus, button:focus, .button.alt:focus, .alt.button2:focus, .alt.button1:focus
   background-size: cover;
 }
 
-.single-product .main-bkg, .home .main-bkg {
+body.single-product .main-bkg, body.home .main-bkg, body.page-template-template-homepage .main-bkg {
   display: block;
 }
 
@@ -4161,7 +4161,7 @@ table.wpft-table-type-1 td.checked-no:after {
 
 .img-wrapper-type-1, .wpftpb-mod-wrapper-home_prod_cat .mod-img-wrapper, .wpftpb-mod-wrapper-prod_feature .mod-img-wrapper {
   background: center no-repeat url(..//img/97b2c7505976fbeb528a.png);
-  width: 442px;
+  background-size: contain;
   min-height: 500px;
   position: relative;
   display: grid;
